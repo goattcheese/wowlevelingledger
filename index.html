@@ -770,29 +770,29 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <div class="s-results" id="s-results" hidden></div>
   </div>
   <nav class="tabs" role="tablist" aria-label="Sections">
-    <button role="tab" data-tab="tonight" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Tonight</button>
+    <button role="tab" data-tab="pairs" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Pairs</button>
+    <button role="tab" data-tab="tonight" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Tonight</button>
     <button role="tab" data-tab="sched" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Schedule</button>
-    <button role="tab" data-tab="rested" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bed"/></svg>Rested</button>
-    <button role="tab" data-tab="wish" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg>Wishlist</button>
-    <button role="tab" data-tab="log" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg>Log</button>
-    <button role="tab" data-tab="stats" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>Stats</button>
-    <button role="tab" data-tab="mail" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Mailbox<span class="ml-count" id="ml-count"></span></button>
-    <button role="tab" data-tab="pairs" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Pairs</button>
-    <button role="tab" data-tab="swap" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg>Swap matrix</button>
-    <button role="tab" data-tab="camp" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-tent"/></svg>Camp buffs</button>
+    <button role="tab" data-tab="launch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-rocket"/></svg>Launch prep</button>
+    <button role="tab" data-tab="route" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>Leveling map</button>
     <button role="tab" data-tab="classq" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-scroll-text"/></svg>Class quests</button>
-    <button role="tab" data-tab="legacy" aria-selected="false">Legacy</button>
+    <button role="tab" data-tab="dungeons" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-castle"/></svg>Dungeons</button>
     <button role="tab" data-tab="talents" aria-selected="false">Talents and gear</button>
     <button role="tab" data-tab="profs" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-anvil"/></svg>Professions</button>
-    <button role="tab" data-tab="dungeons" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-castle"/></svg>Dungeons</button>
-    <button role="tab" data-tab="route" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>Leveling map</button>
-    <button role="tab" data-tab="launch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-rocket"/></svg>Launch prep</button>
-    <button role="tab" data-tab="rules" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg>Ground rules</button>
+    <button role="tab" data-tab="wish" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg>Wishlist</button>
+    <button role="tab" data-tab="rested" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bed"/></svg>Rested</button>
+    <button role="tab" data-tab="mail" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Mailbox<span class="ml-count" id="ml-count"></span></button>
+    <button role="tab" data-tab="log" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg>Log</button>
+    <button role="tab" data-tab="stats" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>Stats</button>
+    <button role="tab" data-tab="legacy" aria-selected="false">Legacy</button>
     <button role="tab" data-tab="patch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg>Patch watch<span class="ml-count" id="pw-count"></span></button>
+    <button role="tab" data-tab="swap" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg>Swap matrix</button>
+    <button role="tab" data-tab="camp" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-tent"/></svg>Camp buffs</button>
+    <button role="tab" data-tab="rules" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg>Ground rules</button>
   </nav>
 
   <main>
-    <section class="view" id="view-tonight">
+    <section class="view" id="view-tonight" hidden>
       <div class="tn-top">
         <div class="prose"><h2>Tonight</h2><p class="muted">Everything one pair needs for a session: the next dungeons, what to pick up and where, what you are carrying, class quests coming due and the next profession milestone. Tap a name once when that character picks a quest up and again when it is turned in.</p></div>
         <label for="tn-pair" class="tn-pick">Pair <select id="tn-pair"></select></label>
@@ -924,7 +924,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
       <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-scroll-text"/></svg>Everything in the queue</h3><div id="ml-all"></div></section>
     </section>
 
-    <section class="view" id="view-pairs" hidden>
+    <section class="view" id="view-pairs">
       <div class="intro">
         <div class="prose">
           <p>Each pair puts one character from each of you together. The tank side favours Warrior, Paladin, Druid, Warlock and Shaman early and saves Priest for last. The healer side leads with the four healing classes, then tanking on Warrior.</p>
