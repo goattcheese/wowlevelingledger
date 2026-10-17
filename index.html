@@ -725,8 +725,8 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     </div>
     <div class="players">
       <div class="themes fac-switch" role="group" aria-label="Faction"><button type="button" data-fac-set="h" aria-pressed="true">Horde</button><button type="button" data-fac-set="a" aria-pressed="false">Alliance</button></div>
-      <label for="name-c">Tank side player<input id="name-c" data-player="c" value="Cousin"></label>
-      <label for="name-s">Healer side player<input id="name-s" data-player="s" value="Shane"></label>
+      <label for="name-c">Player 1<input id="name-c" data-player="c" value="Blair"></label>
+      <label for="name-s">Player 2<input id="name-s" data-player="s" value="Shane"></label>
       <span class="sync" id="sync">Connecting…</span>
       <button type="button" class="btn play-launch" data-ask-open hidden aria-expanded="false" aria-controls="ask-panel"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>Ask Claude</button>
       <button type="button" class="btn play-launch" id="play-open"><svg class="ic" aria-hidden="true"><use href="#i-gamepad-2"/></svg>Play mode</button>
@@ -927,7 +927,8 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <section class="view" id="view-pairs">
       <div class="intro">
         <div class="prose">
-          <p>Each pair puts one character from each of you together. The tank side favours Warrior, Paladin, Druid, Warlock and Shaman early and saves Priest for last. The healer side leads with the four healing classes, then tanking on Warrior.</p>
+          <p>Each pair puts one character from each of you together, and a pair is judged first on <b>synergy</b>: how well the two classes cover each other while you level, through crowd control, self-healing, pets, buffs and how you split the pulls. One tank plus one healer is a good default because it makes dungeons easy, but it is a guideline, not a requirement. A Demonology Warlock's pet can hold mobs in the open world while a healer keeps it alive, and two pet classes can duo almost anything outside dungeons.</p>
+          <p><span data-pname="c">Blair</span> favours Warrior, Paladin, Druid, Warlock and Shaman early and saves Priest for last. <span data-pname="s">Shane</span> leads with the four healing classes, then tanking on Warrior. A pair without a tank or healer simply finds that role in the guild or Group Finder for dungeons.</p>
           <p>Within a pair no primary profession repeats, each character places one campsite object that is not cancelled by a class buff in the pair, and armor or stat priorities differ so drops are rarely contested. The checks under each pair recompute when you change anything.</p>
         </div>
         <div class="legend">
@@ -946,7 +947,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <section class="view" id="view-swap" hidden>
       <div class="prose">
         <h2>If you swap at level 20 or 30</h2>
-        <p>Rows are the tank side's options, columns the healer side's. Each cell shows how the two would share loot and whether they can start in the same zone. The plan levels a replacement up to the swapped pair's level, so any three-star cell is a safe swap.</p>
+        <p>Rows are <span data-pname="c">Blair</span>'s tank options, columns are <span data-pname="s">Shane</span>'s healer options. Each cell shows how the two would share loot and whether they can start in the same zone. The plan levels a replacement up to the swapped pair's level, so any three-star cell is a safe swap.</p>
       </div>
       <div class="scroll"><table class="matrix" id="matrix"></table></div>
       <div class="box prose">
@@ -954,7 +955,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <ul>
           <li><b>Paladin + Priest (A) to Warrior + Druid (B):</b> both are zero-overlap pairs, so you can also cross them (Paladin + Druid, Warrior + Priest) and stay clean.</li>
           <li><b>Bear + Shaman (C):</b> if the bear stalls, Warrior + Shaman is the best rescue; Tauren, Troll, Orc and Skyborne all allow both.</li>
-          <li><b>Shaman tank (D):</b> the riskiest tank on the list. At 40 dual spec lets the healer side go Protection on the Paladin while the Shaman goes Enhancement or Restoration.</li>
+          <li><b>Shaman tank (D):</b> the riskiest tank on the list. At 40 dual spec lets <span data-pname="s">Shane</span> go Protection on the Paladin while the Shaman goes Enhancement or Restoration.</li>
         </ul>
       </div>
     </section>
@@ -965,7 +966,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <p>Each primary profession unlocks its first object at 20 skill (free from the Camping 101 quest in the starting zones, or the trainer). First Aid and Fishing objects are open to every character. A buff from a camp object is mutually exclusive with the matching class buff, so the pair grid below flags any object that would be wasted.</p>
       </div>
       <div class="scroll"><table id="camp-table"></table></div>
-      <div class="prose"><h3>Buff coverage by pair</h3><p class="muted">Tank side and healer side class buffs, plus the two placed objects. A red cell means an object is cancelled by a class buff.</p></div>
+      <div class="prose"><h3>Buff coverage by pair</h3><p class="muted">Class buffs for both of you, plus the two placed objects. A red cell means an object is cancelled by a class buff.</p></div>
       <div class="scroll"><table class="cov" id="cov"></table></div>
       <div class="box prose">
         <h3>Campfire basics</h3>
@@ -1028,7 +1029,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         </div>
       </div>
       <div class="toolbar">
-        <label for="pf-who">Player <select id="pf-who"><option value="both">Both</option><option value="c">Tank side</option><option value="s">Healer side</option></select></label>
+        <label for="pf-who">Player <select id="pf-who"><option value="both">Both</option><option value="c" data-pname="c">Blair</option><option value="s" data-pname="s">Shane</option></select></label>
         <label for="pf-show">Characters <select id="pf-show"><option value="active">Active (Leveling, Locked at 40, Level 60)</option><option value="bench">Active and benched</option><option value="all">All 18</option></select></label>
       </div>
       <div class="prose"><h3>Material funnel</h3></div>
@@ -1122,6 +1123,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <div class="prose">
           <h2>Suggested ground rules</h2>
           <ol>
+            <li><b>Synergy first, roles second.</b> Pick pairs whose classes cover each other: one controls or tanks while the other heals or burns, and both enjoy playing them. One tank plus one healer is the easy default for dungeons, not a rule. A damage pair is fine when it duos well, such as a Demonology Warlock whose pet holds mobs; it just finds a tank or healer in the guild or Group Finder for dungeons.</li>
             <li><b>Paired characters only earn XP together.</b> Solo time goes to professions, auction house, fishing or travel. If one of you slips a level ahead, the other catches up before the next session.</li>
             <li><b>Swap checkpoints at 20 and 30.</b> At each, spend five minutes asking whether both of you still enjoy the pair. If not, pick a three-star cell from the swap matrix and level the replacement to match while the other benches.</li>
             <li><b>Level 40 is the lock.</b> Train riding, set up dual spec (open world plus dungeon), and commit to 60.</li>
@@ -1274,15 +1276,15 @@ const PAIRS_H = [
   pros:['Zero gear overlap: mail then plate against cloth','Undead Paladin is a brand new combo; Touch of the Grave helps tank sustain','Dark Sacrifice lets the Priest skip drinking','Blessings plus Fortitude cover most of the buff bar','Blacksmith and tailor both make gear the pair wears; enchanting covers both'],
   cons:['Protection Paladin AoE threat is soft early (Consecration was toned down)','Two slow killers while questing until talents come online','No curse removal in the pair'],
   patch:['Holy Shield block raised to 30% (Oct 1)','Righteous Fury holy threat lowered to 60% (Sept 24)','Power Word: Shield can now overwrite a shield on a target without Weakened Soul'],
-  swap:'Paladin stalls: tank side rolls the Warrior from B. Priest stalls: healer side rolls the Druid from B. Both swaps keep zero overlap.'},
+  swap:'Paladin stalls: {C} rolls the Warrior from B. Priest stalls: {S} rolls the Druid from B. Both swaps keep zero overlap.'},
  {k:'B',name:'The Thunderhorns',wave:1,route:'kalimdor',
   c:{race:'tauren',cls:'warrior',spec:'Protection',p1:'mining',p2:'engineering',camp:'lodestone'},
   s:{race:'tauren',cls:'druid',spec:'Restoration',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
-  why:'The bench pair. Level it alongside A as your swap option, or launch with it if Warrior is the tank side\'s first love. Mulgore into the Barrens gives you Ragefire Chasm and Wailing Caverns quest hubs, and Tauren racials suit both roles.',
+  why:'The bench pair. Level it alongside A as your swap option, or launch with it if Warrior is {C}\'s first love. Mulgore into the Barrens gives you Ragefire Chasm and Wailing Caverns quest hubs, and Tauren racials suit both roles.',
   pros:['Zero gear overlap: plate against leather','Tauren Endurance for the tank; War Stomp on both for emergency stops','Druid can cat or bear to speed up questing','Leatherworking feeds the Druid; Engineering goggles and guns suit a Warrior','Camp Tent means rested XP every logout'],
   cons:['Protection Warrior feels slow before Shield Slam (the Oct 1 build moved Focused Rage earlier to help)','Restoration Druid solo damage is modest until Balance talents or cat form','No magic dispel'],
   patch:['Warrior rage from basic attack crits: added at +75% on Oct 1, then raised to +100% in the evening Warrior update; Sunder threat corrected','Wrath base damage up about 50% (Sept 24)','Rejuvenation and Wild Growth can crit'],
-  swap:'If the tank side wants Warrior and Paladin running together, give the Warrior Blacksmithing instead of Engineering and let the Paladin keep Mining and switch its second slot.'},
+  swap:'If {C} wants Warrior and Paladin running together, give the Warrior Blacksmithing instead of Engineering and let the Paladin keep Mining and switch its second slot.'},
  {k:'C',name:'The Windborn',wave:2,route:'west',
   c:{race:'skyborne',cls:'druid',spec:'Feral (Bear)',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
   s:{race:'skyborne',cls:'shaman',spec:'Restoration',p1:'herbalism',p2:'alchemy',camp:'mana_well'},
@@ -1302,7 +1304,7 @@ const PAIRS_H = [
  {k:'F',name:'Fel and Fang',wave:3,route:'kalimdor',
   c:{race:'orc',cls:'warlock',spec:'Affliction',p1:'tailoring',p2:'enchanting',camp:'enchanted_lute'},
   s:{race:'orc',cls:'hunter',spec:'Beast Mastery',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
-  why:'The first all damage pair, built around a favourite of the tank side. Two pets make it the safest open world duo on the list.',
+  why:'The first all damage pair, built around a favourite of {C}. Two pets make it the safest open world duo on the list.',
   pros:['No gear overlap: cloth against leather then mail','Two pets: a Voidwalker and a hunter pet can hold mobs','Orc Blood Fury on both, Savage crit for the Hunter'],
   cons:['Dungeons need a tank and healer from the guild or Group Finder','No healing beyond Health Funnel, bandages and potions'],
   patch:['Pet Aggressive mode is back for Hunters and Warlocks','Hunters can no longer tame beasts above their level'],
@@ -1320,7 +1322,7 @@ const PAIRS_H = [
   s:{race:'orc',cls:'rogue',spec:'Combat',p1:'leatherworking',p2:'skinning',camp:'camp_chair'},
   why:'Orc Mage is new to Forever. Mage control plus Rogue stuns makes a strong pull-and-burst duo, and the Mage feeds both of you.',
   pros:['No gear overlap: cloth against leather','Polymorph and Sap give two hard crowd control tools','Mage food and water, plus portals later'],
-  cons:['Needs a tank and healer for dungeons','Mage gets cloth from your tailor elsewhere (the tank side\'s Warlock)'],
+  cons:['Needs a tank and healer for dungeons','Mage gets cloth from your tailor elsewhere ({C}\'s Warlock)'],
   patch:['Fire: Hot Streak renamed Heating Up; Wake of Fire lasts 30 seconds'],
   swap:'Swap with I any time.'},
  {k:'I',name:'Grave Company',wave:3,route:'west',
@@ -1334,9 +1336,9 @@ const PAIRS_H = [
  {k:'E',name:'The Last Watch',wave:4,route:'west',
   c:{race:'troll',cls:'priest',spec:'Discipline',p1:'tailoring',p2:'enchanting',camp:'enchanted_lute'},
   s:{race:'troll',cls:'warrior',spec:'Protection',p1:'mining',p2:'engineering',camp:'lodestone'},
-  why:'The role reversal, saved for last because the tank side dislikes Priest. The healer side gets its Protection Warrior, and Discipline keeps the Priest active with shields.',
-  pros:['Zero gear overlap: plate against cloth','Troll Regeneration for the tank; Hex of Weakness for the Priest','Engineering on the healer side\'s tank, which you enjoy'],
-  cons:['Priest is the tank side\'s least favourite class','By then both of you know Warrior tanking, so less novelty'],
+  why:'The role reversal, saved for last because {C} dislikes Priest. {S} gets its Protection Warrior, and Discipline keeps the Priest active with shields.',
+  pros:['Zero gear overlap: plate against cloth','Troll Regeneration for the tank; Hex of Weakness for the Priest','Engineering on {S}\'s tank, which you enjoy'],
+  cons:['Priest is {C}\'s least favourite class','By then both of you know Warrior tanking, so less novelty'],
   patch:['Protection Warrior: Focused Rage earlier, Toughness removed (Oct 1)'],
   swap:'If the Priest is a chore, play it as Shadow and recruit a guild healer for dungeons.'}
 ];
@@ -1944,14 +1946,14 @@ const PAIRS_A = [
   why:'Recommended Alliance launch pair, the mirror of the Lightbound. Both start in Northshire, and Westfall and Redridge lead straight into the Deadmines (seven Alliance quests) and the Stockade (six). Plate against cloth means almost nothing drops that you both want.',
   pros:['Zero gear overlap: mail then plate against cloth','Human Will to Survive breaks stuns on the tank','Blessings plus Fortitude cover most of the buff bar','Blacksmith and tailor both make gear the pair wears; enchanting covers both'],
   cons:['Protection Paladin AoE threat is soft early','Two slow killers while questing until talents come online','No curse removal in the pair'],
-  patch:[],swap:'Paladin stalls: tank side rolls the Warrior from K. Priest stalls: healer side rolls the Druid from K.'},
+  patch:[],swap:'Paladin stalls: {C} rolls the Warrior from K. Priest stalls: {S} rolls the Druid from K.'},
  {k:'K',name:'The Shadowglen Pact',wave:1,route:'allykal',fac:'a',
   c:{race:'nightelf',cls:'warrior',spec:'Protection',p1:'mining',p2:'engineering',camp:'lodestone'},
   s:{race:'nightelf',cls:'druid',spec:'Restoration',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
   why:'The Alliance bench pair. Teldrassil into Darkshore gives you Blackfathom Deeps with four Alliance quests, and Quickness plus Shadowmeld suit a tank and a healer.',
   pros:['Plate tank, leather healer: little gear overlap','Mark of the Wild plus Battle Shout','Shadowmeld lets the healer drop out of a bad pull','Engineering bombs cover crowd control'],
   cons:['Protection Warrior feels slow before Shield Slam','Restoration Druid solo damage is modest early','No magic dispel'],
-  patch:[],swap:'Warrior stalls: tank side rolls the Paladin from J. Druid stalls: healer side rolls the Priest from J.'},
+  patch:[],swap:'Warrior stalls: {C} rolls the Paladin from J. Druid stalls: {S} rolls the Priest from J.'},
  {k:'L',name:'Wind and Stone',wave:2,route:'allyek',fac:'a',
   c:{race:'skyborneA',cls:'druid',spec:'Feral (Bear)',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
   s:{race:'dwarf',cls:'shaman',spec:'Restoration',p1:'herbalism',p2:'alchemy',camp:'mana_well'},
@@ -1997,7 +1999,7 @@ const PAIRS_A = [
  {k:'R',name:'The Last Watch (Alliance)',wave:4,route:'allyek',fac:'a',
   c:{race:'gnome',cls:'priest',spec:'Discipline',p1:'tailoring',p2:'enchanting',camp:'enchanted_lute'},
   s:{race:'dwarf',cls:'warrior',spec:'Protection',p1:'mining',p2:'engineering',camp:'lodestone'},
-  why:'The role reversal: the tank side heals and the healer side tanks. Gnome Priest is new in Forever, and both start in Coldridge Valley.',
+  why:'The role reversal: {C} heals and {S} tanks. Gnome Priest is new in Forever, and both start in Coldridge Valley.',
   pros:['Gnome Priest is a new combo','Plate against cloth','Stoneform on the tank'],
   cons:['You each play the other role','Discipline is a learning curve'],
   patch:[],swap:'Either side can go back to its usual role with the J pair.'}
@@ -2052,7 +2054,7 @@ function overlap(a,b){
 function sharedRaces(ca,cb){return facRaces().filter(r=>RACES[r].classes.includes(ca)&&RACES[r].classes.includes(cb));}
 function checks(k){
   const c=state.slots[k+'-c'], s=state.slots[k+'-s'], out=[];
-  const nm={c:state.players.c||'Tank side',s:state.players.s||'Healer side'};
+  const nm={c:pnName('c'),s:pnName('s')};
   if(c.cls===s.cls) out.push(['bad','Same class on both sides: all gear is contested.']);
   const pc=[c.p1,c.p2], ps=[s.p1,s.p2];
   if(c.p1&&c.p1===c.p2) out.push(['bad',nm.c+' has the same profession twice.']);
@@ -2278,7 +2280,7 @@ function profCard(id){
       '<input id="sk-'+id+'-'+prof+'" class="num" type="number" min="0" max="300" data-skill="'+id+'|'+prof+'" value="'+v+'"'+ro+'>'+
       '<div class="pinfo" id="pi-'+id+'-'+prof+'">'+profInfo(prof,v)+'</div>'+(PROF_PLAN[prof]?(()=>{const k=id+'|'+prof, o=ppOpen.has(k); return '<details class="pp" data-pp="'+k+'"'+(o?' open':'')+'><summary>Materials planner</summary><div class="pp-body"'+(o?' data-done="1">'+ppHTML(id,prof):'>')+'</div></details>';})():'')+'</div>';
   }).join('');
-  return '<article class="pcard" data-pcard="'+id+'"><header><span class="who '+who+'">'+esc(state.players[who]||(who==='c'?'Tank side':'Healer side'))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(sl.name||'Unnamed')+'</span><span class="muted" style="font-size:.88rem">'+esc(RACES[sl.race].name+' '+C.name+' · pair '+id.split('-')[0]+' · lvl '+(+sl.level||1))+'</span><span class="chip">'+esc(sl.status)+'</span></header>'+
+  return '<article class="pcard" data-pcard="'+id+'"><header><span class="who '+who+'">'+esc(pnName(who))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(sl.name||'Unnamed')+'</span><span class="muted" style="font-size:.88rem">'+esc(RACES[sl.race].name+' '+C.name+' · pair '+id.split('-')[0]+' · lvl '+(+sl.level||1))+'</span><span class="chip">'+esc(sl.status)+'</span></header>'+
    rows+
    '<label class="crafts" for="cr-'+id+'">Recipes, blueprints and key crafts learned<textarea id="cr-'+id+'" data-crafts="'+id+'" placeholder="e.g. Blueprint: Anvil; Heavy Armor Kit; Strong Anti-Venom"'+ro+'>'+esc(sl.crafts||'')+'</textarea></label></article>';
 }
@@ -2388,7 +2390,7 @@ function sideHTML(k,who){
   const camp=CAMP[sl.camp];
   const priestR=(sl.cls==='priest'&&R.priest)?'<div><b>Priest racials:</b> '+esc(R.priest.join('; '))+'</div>':'';
   return '<div class="side" data-slot="'+id+'">'+
-   '<div class="side-head"><span class="who '+who+'">'+esc(state.players[who]||(who==='c'?'Tank side':'Healer side'))+'</span>'+
+   '<div class="side-head"><span class="who '+who+'">'+esc(pnName(who))+'</span>'+
    raceBadge(sl.race)+classBadge(sl.cls)+'<span class="cls-name">'+esc(R.name+' '+specInfo(sl).name+' '+C.name)+'</span>'+roleTag(specInfo(sl).role)+
    (canWrite?'<button type="button" class="btn mini" data-move="'+id+'" aria-expanded="'+(ui.moving===id)+'">Swap…</button>':'')+'</div>'+moveBoxHTML(id)+
    '<div class="fields">'+
@@ -2457,7 +2459,7 @@ function refreshPair(k){
 function renderMatrix(){
   const tanks=[['warrior','Protection'],['paladin','Protection'],['druid','Feral (Bear)'],['shaman','Enhancement (Tank)']];
   const heals=[['priest','Holy'],['druid','Restoration'],['shaman','Restoration'],['paladin','Holy']];
-  let h='<thead><tr><th>Tank side \\ Healer side</th>'+heals.map(x=>'<th>'+classBadge(x[0],1)+' '+CLASSES[x[0]].name+'</th>').join('')+'</tr></thead><tbody>';
+  let h='<thead><tr><th>'+esc(pnName('c'))+' (tank) \\ '+esc(pnName('s'))+' (healer)</th>'+heals.map(x=>'<th>'+classBadge(x[0],1)+' '+CLASSES[x[0]].name+'</th>').join('')+'</tr></thead><tbody>';
   for(const t of tanks){
     h+='<tr><th scope="row" style="background:var(--panel)">'+classBadge(t[0],1)+' '+CLASSES[t[0]].name+(t[0]==='shaman'?' <span class="flag">unproven</span>':'')+'</th>';
     for(const he of heals){
@@ -2578,7 +2580,7 @@ function renderCQ(){
   const colors={done:'var(--teal)',due:'var(--warn)',soon:'var(--brass)','':'var(--panel)'};
   sides.forEach(([who,sl],i)=>{
     const y=top+i*laneH+laneH/2, id=p.k+'-'+who, qs=cqOf(sl.cls).slice().sort((a,b)=>a.lvl-b.lvl);
-    o+='<text x="'+(L-14)+'" y="'+(y-4)+'" text-anchor="end" font-size="13" font-family="var(--f-body)" fill="var(--ink)">'+esc(state.players[who]||(who==='c'?'Tank side':'Healer side'))+'</text>';
+    o+='<text x="'+(L-14)+'" y="'+(y-4)+'" text-anchor="end" font-size="13" font-family="var(--f-body)" fill="var(--ink)">'+esc(pnName(who))+'</text>';
     o+='<text x="'+(L-14)+'" y="'+(y+12)+'" text-anchor="end" font-size="11.5" font-family="var(--f-mono)" fill="var(--muted)">'+esc(CLASSES[sl.cls].name)+'</text>';
     o+='<line x1="'+x(1)+'" x2="'+x(60)+'" y1="'+y+'" y2="'+y+'" stroke="var(--muted)" stroke-width="1.5" opacity=".5"/>';
     const lv=Math.max(1,Math.min(60,+sl.level||1));
@@ -2606,7 +2608,7 @@ function renderCQ(){
   $('#cq-cols').innerHTML=sides.map(([who,sl])=>{
     const id=p.k+'-'+who, qs=cqOf(sl.cls).slice().sort((a,b)=>a.lvl-b.lvl);
     const done=qs.filter(q=>state.cq[cqKey(id,q.id)]).length;
-    return '<div class="cq-col"><header><span class="who '+who+'">'+esc(state.players[who]||(who==='c'?'Tank side':'Healer side'))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(RACES[sl.race].name+' '+CLASSES[sl.cls].name)+'</span><span class="chip">'+(sl.name?esc(sl.name)+' · ':'')+'lvl '+(+sl.level||1)+'</span><span class="chip ok">'+done+'/'+qs.length+' done</span></header>'+
+    return '<div class="cq-col"><header><span class="who '+who+'">'+esc(pnName(who))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(RACES[sl.race].name+' '+CLASSES[sl.cls].name)+'</span><span class="chip">'+(sl.name?esc(sl.name)+' · ':'')+'lvl '+(+sl.level||1)+'</span><span class="chip ok">'+done+'/'+qs.length+' done</span></header>'+
       qs.map((q,n)=>cqRow(q,id,sl,n+1)).join('')+'</div>';
   }).join('');
   /* reference */
@@ -2738,12 +2740,26 @@ $('#pf-cards').addEventListener('input',e=>{
 
 document.querySelectorAll('[data-player]').forEach(inp=>inp.addEventListener('input',()=>{
   state.players[inp.dataset.player]=inp.value.slice(0,20);
-  queue('players',()=>{writeDoc('meta','players',Object.assign({},state.players)); renderPairs(); },700);
+  queue('players',()=>{writeDoc('meta','players',Object.assign({},state.players)); renderPairs(); renderMatrix(); pnFill(); },700);
 }));
+
+/* ---------- Player names in text ---------- */
+function pnName(w){return state.players[w]||(w==='c'?'Player 1':'Player 2');}
+// Static text uses <span data-pname>; rendered text uses {C} and {S} tokens, swapped as nodes are added.
+function pnFill(){document.querySelectorAll('[data-pname]').forEach(e=>{e.textContent=pnName(e.dataset.pname);});}
+const PN_RE=/\{([CS])\}/g;
+function pnFix(root){
+  if(root.nodeType===3){if(root.nodeValue.indexOf('{')>-1) root.nodeValue=root.nodeValue.replace(PN_RE,(m,k)=>pnName(k.toLowerCase())); return;}
+  if(root.nodeType!==1) return;
+  const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n;
+  while((n=tw.nextNode())) if(n.nodeValue.indexOf('{')>-1) n.nodeValue=n.nodeValue.replace(PN_RE,(m,k)=>pnName(k.toLowerCase()));
+}
+new MutationObserver(ms=>{for(const m of ms) m.addedNodes.forEach(pnFix);}).observe(document.body,{childList:true,subtree:true});
 
 function renderAll(force){
   renderPairs(force); renderMatrix(); renderCamp(); renderCQ(); renderProfs(); renderDgChart(); renderDgList(); renderChains(); renderRoute(); bkRender(); renderTonight(); renderWishlist(); renderLog(); renderMail(); renderPatch(); renderStats(); renderRested(); renderLaunch(); renderSched(); renderTalents(); renderLegacy();
   document.querySelectorAll('[data-player]').forEach(i=>{if(document.activeElement!==i) i.value=state.players[i.dataset.player]; i.readOnly=!canWrite;});
+  pnFill();
 }
 
 /* ---------- Search ---------- */
@@ -2924,7 +2940,7 @@ function travelCost(id,h){const sl=state.slots[id]; if(fastTo(id,h).length) retu
 function travelWhy(id,h){const f=fastTo(id,h); if(f.length) return f[0]; const sl=state.slots[id]; if(!sl.hearth&&HOME[sl.race]===h) return 'home city'; return '';}
 /* Build a divide-and-conquer plan from the pickup groups (hub -> items). */
 function splitPlan(k,groups,firstDg){
-  const ids=[k+'-c',k+'-s'], who=id=>state.players[id.slice(-1)]||(id.endsWith('c')?'Tank side':'Healer side');
+  const ids=[k+'-c',k+'-s'], who=id=>pnName(id.slice(-1));
   const meet=firstDg?STAGE[firstDg.id]:null;
   const plan={c:[],s:[],both:[],meetItems:[],entrance:[],shareNow:[],alt:[],meet,tools:[]};
   const load={[ids[0]]:0,[ids[1]]:0};
@@ -3000,7 +3016,7 @@ function qpGet(slotId,dgId,qname){return state.qp[qpKey(slotId,dgId,qname)]||'';
 function qEligible(sl,q){return !q[4]||q[4]===sl.cls;}
 function qpIcon(st){return ic(st==='done'?'circle-check':st==='up'?'circle-dot':'circle');}
 function qpBtn(slotId,d,q){
-  const sl=state.slots[slotId], who=slotId.slice(-1), pl=state.players[who]||(who==='c'?'Tank side':'Healer side');
+  const sl=state.slots[slotId], who=slotId.slice(-1), pl=pnName(who);
   if(!qEligible(sl,q)) return '<span class="qp na" title="'+esc(CLASSES[q[4]].name)+' only">'+esc(pl)+': n/a</span>';
   const st=qpGet(slotId,d.id,q[0]);
   return '<button type="button" class="qp s-'+(st||'none')+'" data-qp="'+esc(slotId+'|'+d.id+'|'+q[0])+'" title="'+esc(charName(slotId))+': '+QP_TXT[st]+'" aria-label="'+esc(pl+', '+charName(slotId)+', '+q[0]+': '+QP_TXT[st]+'. Activate to mark '+QP_TXT[QP_NEXT[st]])+'"'+(canWrite?'':' disabled')+'>'+qpIcon(st)+'<span>'+esc(pl)+'</span></button>';
@@ -4817,7 +4833,7 @@ function legRestMult(id){return 1+0.04*legRank(id,'wellrested');}
 function legNear(){
   const out=[];
   for(const side of ['c','s']){
-    const a=legAuto(side), ids=legSide(side), who=state.players[side]||(side==='c'?'Tank side':'Healer side');
+    const a=legAuto(side), ids=legSide(side), who=pnName(side);
     for(const cls of LEG_CLS){
       const best=ids.filter(id=>state.slots[id].cls===cls).sort((x,y)=>(+state.slots[y].level||0)-(+state.slots[x].level||0))[0]; if(!best) continue;
       const lv=+state.slots[best].level||0; const n=[25,45,60].find(x=>!a['cls-'+cls+'-'+x]); if(!n||lv<1) continue;
@@ -4842,7 +4858,7 @@ function renderLegacy(){
   if(!$('#view-legacy')) return;
   const dis=canWrite?'':' disabled';
   $('#leg-pools').innerHTML=['c','s'].map(side=>{
-    const pool=legPool(side), a=legAuto(side), m=legManual(side), who=esc(state.players[side]||(side==='c'?'Tank side':'Healer side'));
+    const pool=legPool(side), a=legAuto(side), m=legManual(side), who=esc(pnName(side));
     const cat=(title,items)=>'<h4>'+esc(title)+'</h4><ul class="ln-list">'+items.map(([id,t,auto])=>'<li class="'+((auto||m[id])?'done':'')+'"><label><input type="checkbox" data-legch="'+side+'|'+id+'"'+((auto||m[id])?' checked':'')+(auto?' disabled':dis)+'> <span>'+esc(t)+(auto?' <span class="chip">from your levels</span>':'')+'</span></label></li>').join('')+'</ul>';
     const cls=LEG_CLS.flatMap(c=>[25,45,60].map(n=>['cls-'+c+'-'+n,CLASSES[c].name+' to level '+n,!!a['cls-'+c+'-'+n]]));
     const trd=LEG_CRAFT.flatMap(p=>[150,225,300].map(n=>['trade-'+p+'-'+n,PROFS[p].name+' to '+n+' skill',!!a['trade-'+p+'-'+n]]));
