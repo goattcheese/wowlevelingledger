@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Only the two signed-in accounts may read or write. Replace both emails.
+    match /{document=**} {
+      allow read, write: if request.auth != null
+        && request.auth.token.email in ['SHANE_EMAIL@example.com', 'COUSIN_EMAIL@example.com'];
+    }
+  }
+}

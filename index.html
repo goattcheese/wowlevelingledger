@@ -750,6 +750,8 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <p class="muted" id="bk-restore-note"></p>
         <label class="btn" id="bk-file-label" for="bk-file"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Choose a backup file</label>
         <input type="file" id="bk-file" accept=".json,application/json" class="vh">
+        <label class="btn" for="all-file">Load a full data export</label>
+        <input type="file" id="all-file" accept=".json,application/json" class="vh">
       </div>
       <div class="bk-card wide">
         <div class="bk-head"><h3>Snapshots in the ledger</h3><button type="button" class="btn" id="bk-snap" data-bk="snap"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg>Save a snapshot now</button></div>
@@ -3910,6 +3912,13 @@ $('#backup-panel').addEventListener('click',async e=>{
   }
   if(a==='confirm'&&bkPending){await bkApply(bkPending.data); return;}
   if(a==='cancel'){bkPending=null; bkMsg('',''); bkRender(); return;}
+});
+$('#all-file').addEventListener('change',async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f||!db) return;
+  try{const all=JSON.parse(await f.text()); let n=0;
+    for(const c of Object.keys(all)) for(const id of Object.keys(all[c])){await db.collection(c).doc(id).set(all[c][id]); n++;}
+    bkMsg('Loaded '+n+' documents. Reload the page to see them.','ok');
+  }catch(err){bkMsg('That file could not be loaded.','bad');}
 });
 $('#bk-file').addEventListener('change',async e=>{
   const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return;

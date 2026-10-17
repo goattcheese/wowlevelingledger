@@ -1,0 +1,274 @@
+{
+ "pairs": {
+  "A": {
+   "notes": "",
+   "route": "west",
+   "title": "The Hex and Hollow"
+  }
+ },
+ "slots": {
+  "A-s": {
+   "camp": "enchanted_lute",
+   "cls": "priest",
+   "crafts": "",
+   "level": 1,
+   "name": "",
+   "p1": "tailoring",
+   "p2": "enchanting",
+   "race": "undead",
+   "skill": {},
+   "spec": "Holy",
+   "status": "Leveling"
+  },
+  "B-c": {
+   "camp": "lodestone",
+   "cls": "warrior",
+   "level": 1,
+   "name": "",
+   "p1": "mining",
+   "p2": "engineering",
+   "race": "tauren",
+   "spec": "Protection",
+   "status": "Benched"
+  }
+ },
+ "meta": {
+  "players": {
+   "c": "Blair",
+   "s": "Shane"
+  },
+  "patch": {
+   "lastCheck": "2026-10-16T12:52:30Z",
+   "mode": "beta",
+   "req": null,
+   "reqBy": ""
+  }
+ },
+ "patch": {
+  "p-20261007-0853": {
+   "at": "2026-10-07T12:53:20Z",
+   "covers": "October 5 to October 7, 2026: Beta Development Notes thread (latest update still October 1), Wowhead report of the beta restart for priority fixes, Blizzard news page.",
+   "items": [],
+   "sources": [
+    {
+     "title": "WoW Forever Beta Development Notes (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/2360696"
+    },
+    {
+     "title": "WoW: Forever Beta Restarting for Priority Fixes (Wowhead)",
+     "url": "https://www.wowhead.com/forever/news/wow-forever-beta-restarting-for-priority-fixes-383278"
+    },
+    {
+     "title": "World of Warcraft news (Blizzard)",
+     "url": "https://worldofwarcraft.blizzard.com/en-us/news"
+    }
+   ],
+   "summary": "No new development notes have been posted since the October 1 update (level cap 30, Excavation Site: Wetlands 26-31, Razorfen Downs and Uldaman unlocked), which the last check already covered. Since then Blizzard only restarted the beta for priority fixes: quest items in respawning chests disappearing, occasional disconnects on elevators and transports, and a guild join/leave error. None of this changes anything the ledger lists. Launch is still set for November 4, 2026, and the beta is reported to end October 21."
+  },
+  "p-20261016-0852": {
+   "at": "2026-10-16T12:52:30Z",
+   "covers": "October 14 to October 16, 2026: the October 15 beta build and its Development Notes post (Blizzard forums, post 6 of the thread), plus the Blizzard news page and Icy Veins, Wowhead and MMO-Champion coverage.",
+   "items": [
+    {
+     "area": "other",
+     "change": "Horde: Orc Axe Specialization is replaced by Savage (1% more critical strike chance), Blood Fury cooldown is now 3 minutes, and Shatter Curse now dispels Curses and Banes and cuts magic damage taken by 5%.",
+     "id": "i1",
+     "ledger": "RACES.orc lists 'Axe Specialization' (around line 1187); the pair pros line 'Orc Blood Fury on both, Axe Specialization for the Hunter' (around line 1260); the role tip 'Axe Specialization if you use axes' (around line 2045).",
+     "suggest": "In RACES.orc replace 'Axe Specialization' with 'Savage: 1% more crit chance' and 'Shatter Curse: removes curses' with 'Shatter Curse: dispels curses and banes, 5% less magic damage'. Change the pair pro to 'Orc Blood Fury on both, Savage crit for the Hunter' and the dps tip to 'Orc Blood Fury adds burst; Savage adds 1% crit'.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "other",
+     "change": "Horde: Tauren Endurance keeps its 5% health bonus, but its 1% hit chance bonus is replaced by 2% more critical damage and healing. Plainsrunning also adds 3% mounted speed (and now needs steady movement to stay active), Cultivation cooldown is 15 minutes (was 60) and War Stomp is 90 seconds (was 2 minutes).",
+     "id": "i2",
+     "ledger": "RACES.tauren says 'Endurance: more health, slight damage boost' (around line 1189). The health parts of the pair pro 'Tauren Endurance for the tank' (around line 1236) and the role tip 'Tauren Endurance adds health for the tank' (around line 2047) are still correct.",
+     "suggest": "In RACES.tauren change 'Endurance: more health, slight damage boost' to 'Endurance: 5% more health, 2% more crit damage and healing' and 'Plainsrunning: early speed boost' to 'Plainsrunning: early speed boost, plus 3% mounted speed'. Leave the tank tip and pair pro as they are.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "other",
+     "change": "Skyborne (both factions): Wind Blessed haste rises to 3% (was 1%), Walk on Air cooldown is now 90 seconds, and Skysight and Read Ley Line can be cast while moving.",
+     "id": "i3",
+     "ledger": "RACES.skyborneA says 'Wind Blessed: 1% haste' (around line 1892); RACES.skyborne says 'Wind Blessed: slight throughput boost' (around line 1191); role tips say 'Wind Blessed adds a little throughput' (around lines 2049 and 2995).",
+     "suggest": "Change both racial lines to 'Wind Blessed: 3% haste' and the tank tips to 'Skyborne Wind Blessed adds 3% haste'.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "other",
+     "change": "Alliance: Human Sword Specialization is replaced by Ruthless (2% more critical strike chance).",
+     "id": "i4",
+     "ledger": "RACES.human lists 'Sword Specialization: swords add 2% spell and ability crit' (around line 1888); the role tip 'Human Sword Specialization if you use swords' (around line 2991).",
+     "suggest": "Replace with 'Ruthless: 2% more crit chance' and change the dps tip to 'Human Ruthless adds 2% crit; Perception for rogues'.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "other",
+     "change": "Alliance: Dwarf Mace Specialization is replaced by Earth Fury (2% more critical damage and healing), and Find Treasure can now find extra items in most chests.",
+     "id": "i5",
+     "ledger": "RACES.dwarf lists 'Mace Specialization: maces add 1% spell and ability crit' and 'Find Treasure' (around line 1889); the role tip 'Dwarf Big Game Hunter and Mace Specialization' (around line 2992).",
+     "suggest": "Replace with 'Earth Fury: 2% more crit damage and healing' and 'Find Treasure: also extra items from most chests'; change the dps tip to 'Dwarf Big Game Hunter and Earth Fury'.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "other",
+     "change": "Alliance: Gnome Eureka! is now an 8 second buff with no charges (same cost and damage effects), also boosts Power Word: Shield, and cannot be used in stealth or invisibility.",
+     "id": "i6",
+     "ledger": "RACES.gnome says 'Eureka!: next 3 spells or abilities cost 10% less and hit 10% harder' (around line 1891).",
+     "suggest": "Change to 'Eureka!: for 8 seconds, spells and abilities cost 10% less and hit 10% harder (not in stealth)'.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "area": "dungeon",
+     "change": "Horde: Horde players are no longer welcome in open-world Dalaran and are attacked on sight. Blizzard says this does not affect access to the City of Dalaran dungeon, but the Horde Dalaran Sewer Key questline no longer gives unrestricted access to the city.",
+     "id": "i7",
+     "ledger": "DG entry id 'dal' (City of Dalaran, Alterac Mountains, 28 to 33, around line 1370) notes only 'Quests not yet documented. Tarren Mill is the closest Horde base.' HORDE_Q_ADD.dal has Opportunistic Education picked up near the Dalaran sewer entrance.",
+     "suggest": "Add to the dal note: 'Horde are attacked on sight in open-world Dalaran, and the Sewer Key questline no longer opens the city. Dungeon access is unaffected.' (Separately, 'Quests not yet documented' looks stale now that HORDE_Q_ADD.dal lists three quests.)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    }
+   ],
+   "sources": [
+    {
+     "title": "WoW Forever Beta Development Notes, updated October 15 (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-15/2360696/6"
+    },
+    {
+     "title": "WoW Forever Beta Development Notes, October 15 (MMO-Champion)",
+     "url": "https://www.mmo-champion.com/content/14618-WoW-Forever-Beta-Development-Notes-October-15"
+    },
+    {
+     "title": "WoW Forever Beta Development Notes, October 15 (PatchBot)",
+     "url": "https://patchbot.io/games/world-of-warcraft-forever/articles/1810-wow-forever-beta-development-notes-october-15"
+    }
+   ],
+   "summary": "Blizzard updated the beta on October 15 with a large build: racial changes for Tauren, Orc, Undead, Troll, Human, Dwarf, Gnome, Night Elf and Skyborne, class tuning for all nine classes (Mage gets a new Frost Blast spell at 24, Paladin Blessing of Salvation becomes Salvation and Mass Salvation, Battle Shout, Leader of the Pack and Trueshot Aura become raid-wide), Auto Shot and wands now need you to stand still 0.5 seconds before firing, and Battleground Marks of Honor stack to 30. Several quest fixes landed (Stormwind's The Attack! is now shareable and no longer an escort; Darkshore, Ashenvale, Mulgore, Teldrassil and Wetlands fixes), and Horde players are now attacked on sight in open-world Dalaran (dungeon access is unaffected). The racial changes make several racial descriptions in the ledger out of date, and the Dalaran change is worth a note on the Horde City of Dalaran entry. No level cap, beta end or launch date changes were announced; launch is still November 4, 2026. Racial items were rechecked word for word against Blizzard's notes after a correction (Tauren Endurance keeps its 5% health; only the hit bonus changed)."
+  },
+  "p-20261008-2051": {
+   "at": "2026-10-09T00:51:21Z",
+   "covers": "October 7 to October 8, 2026: Beta Development Notes updated October 8 (Blizzard forums), Beta Realm Maintenance October 8, Icy Veins and Warcraft Tavern coverage of the October 8 beta update. Requested manually by Shane.",
+   "items": [
+    {
+     "area": "quest",
+     "change": "The new Desolace Gelkis and Magram centaur quests, starting with Valley of Bones, now require level 35 instead of 30, and their 16 rewards (Abandoned Ferocity, Centaur Spear, Staff of Revelations, Wanderer's Broadsword and others) will get a level 35 equip requirement in a hotfix.",
+     "id": "i1",
+     "ledger": "ZONES lists Desolace as 30 to 40 and both Kalimdor routes (ROUTES kalimdor and allykal) put Desolace right after Needles or Wetlands, with no note about this chain.",
+     "suggest": "Add a note to the Desolace stop on both Kalimdor routes: 'Gelkis and Magram chain (Valley of Bones) needs level 35; do Desolace late or come back at 35.' Keep the zone range at 30 to 40.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-8/2360696/5"
+    },
+    {
+     "area": "other",
+     "change": "Creature XP in dungeons is up about 20%, and party XP for killing lower-level enemies now uses each player's own level instead of the highest-level party member, as in Classic Era.",
+     "id": "i2",
+     "ledger": "The 'What the Oct 1 build changed' section only notes that dungeon quests give 50% less bonus XP; nothing covers the Oct 8 XP changes.",
+     "suggest": "Add a 'What the Oct 8 build changed' list with: dungeon creature XP up about 20%; party XP penalty for low-level enemies now based on each player's own level (a level gap in a duo no longer cuts the lower player's XP); City of Dalaran dungeon open for testing; Desolace Gelkis and Magram quests need 35.",
+     "url": "https://www.icy-veins.com/wow-forever/news/class-and-item-tuning-many-fixes-new-dungeon-xp-buffs-wow-forever-beta-update-notes-october-8th/"
+    },
+    {
+     "area": "item",
+     "change": "Various dungeon quest rewards were lowered from Rare to Uncommon with stats adjusted to match; Blizzard did not name which ones.",
+     "id": "i3",
+     "ledger": "WL_DATA lists many dungeon quest rewards (type 'Q') at quality 3 (Rare) with Classic stats.",
+     "suggest": "No exact edit yet. When Wowhead's Forever database shows the new values, recheck the quality and stats of the dungeon quest rewards in WL_DATA (and WL_STAT_FIX) and change any that are now Uncommon to quality 2.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-8/2360696/5"
+    }
+   ],
+   "sources": [
+    {
+     "title": "WoW Forever Beta Development Notes, updated October 8 (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-8/2360696/5"
+    },
+    {
+     "title": "Beta Realm Maintenance, October 8 (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/beta-realm-maintenance-october-8/2375900"
+    },
+    {
+     "title": "Class and Item Tuning, Many Fixes, New Dungeon, XP Buffs: Beta Update Notes, October 8 (Icy Veins)",
+     "url": "https://www.icy-veins.com/wow-forever/news/class-and-item-tuning-many-fixes-new-dungeon-xp-buffs-wow-forever-beta-update-notes-october-8th/"
+    },
+    {
+     "title": "City of Dalaran Dungeon and Legacy Points Now Live in the Beta (Warcraft Tavern)",
+     "url": "https://www.warcrafttavern.com/forever/news/city-of-dalaran-dungeon-legacy-points-now-live-in-the-wow-forever-beta/"
+    }
+   ],
+   "summary": "The October 8 beta build opens the City of Dalaran dungeon for testing (Blizzard gave no level range, so the ledger's 28 to 33 stays as is), raises creature XP in dungeons by about 20%, and makes party XP for lower-level enemies use each player's own level, which helps duos with a level gap. Desolace's new Gelkis and Magram quest chain now needs level 35, and quests around Shadowvale and Bandarion Keep in Tirisfal were raised in level (no numbers given). Other changes do not touch the ledger: Truthseeker's Bow now needs level 40, class tuning (Warrior and Druid rage, Druid Thorns and Cat Form health, Retribution Aura, Penance, Disengage threat), Armor Kits no longer double Ranged Attack Power, Enchanting vendor prices, and beta Legacy Points with 1 silver respecs. Launch is still November 4, 2026."
+  },
+  "p-20261014-0854": {
+   "at": "2026-10-14T12:54:32Z",
+   "covers": "October 9 to October 14, 2026: Beta Development Notes thread (newest post still October 8), small beta client builds 1.60.1.70334 (October 9) and 1.60.1.70338 (October 10), Blizzard post 'Temporary Economy Holds For RMT' (October 13), Blizzard news page.",
+   "items": [],
+   "sources": [
+    {
+     "title": "WoW Forever Beta Development Notes (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/2360696"
+    },
+    {
+     "title": "Temporary Economy Holds For RMT (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/temporary-economy-holds-for-rmt/2381433"
+    },
+    {
+     "title": "WoW Forever patch notes, October 9 and 10 builds (ForeverChanges, fan site)",
+     "url": "https://foreverchanges.pro/patch-notes"
+    },
+    {
+     "title": "Blizzard World of Warcraft news",
+     "url": "https://worldofwarcraft.blizzard.com/en-us/news"
+    }
+   ],
+   "summary": "Blizzard has posted no new development notes since the October 8 build, which was covered in the last report. The October 9 and 10 beta client builds were technical (crash reporting, loader, graphics) plus three cosmetic items with no announced source (Tabard of Eternal Exploration, Eternal Explorer's Backpack, Azurky murloc pet), and they did not change talents, spells, quests or gear. On October 13 Blizzard announced Temporary Economy Holds for suspected real money trading, which can block trade, mail, guild banks and the Auction House for flagged accounts. Nothing touches the ledger; the beta is still set to end October 21 and launch is still November 4, 2026."
+  },
+  "p-20261005-1436": {
+   "at": "2026-10-05T18:36:06Z",
+   "covers": "Sept 28 to Oct 5, 2026: Blizzard beta development notes updated Oct 1 (level 30 build), Oct 1 known issues, Oct 4 Australian dialog bug fix, Blizzard news through Oct 1 (Forever class deep dives, podcast ep. 2). No newer beta build or hotfix post found after Oct 1.",
+   "items": [
+    {
+     "area": "dungeon",
+     "change": "Blizzard's Oct 1 notes list the new dungeon as Excavation Site: Wetlands (26-31).",
+     "id": "i1",
+     "ledger": "DG entry id 'excav' has lo:24, hi:31, and the QREQ_RAW 'excav|...' rows use 24 as the required level; the Oct 1 summary text already says 'listed 26 to 31'.",
+     "suggest": "In DG, change the excav entry from lo:24 to lo:26. Leave the QREQ_RAW quest accept levels at 24 unless you confirmed them in game, since quest accept level can be lower than the dungeon's listed range.",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-1/2360696/4"
+    }
+   ],
+   "sources": [
+    {
+     "title": "WoW Forever Beta Development Notes, updated October 1 (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-october-1/2360696/4"
+    },
+    {
+     "title": "WoW Forever Beta Known Issues, October 1 (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-known-issues-october-1/2352687"
+    },
+    {
+     "title": "Dialog Bug for Australian Testers, fixed (Blizzard forums)",
+     "url": "https://us.forums.blizzard.com/en/wow/t/dialog-bug-for-australian-testers-fixed/2368931"
+    },
+    {
+     "title": "World of Warcraft news (Blizzard)",
+     "url": "https://worldofwarcraft.blizzard.com/en-us/news"
+    },
+    {
+     "title": "WoW Forever Beta Development Notes, October 1 (MMO-Champion)",
+     "url": "https://www.mmo-champion.com/content/14573-World-of-Warcraft-Forever-Beta-Development-Notes-October-1"
+    }
+   ],
+   "summary": "The only beta build this week was the Oct 1 level 30 update, and the ledger's 'What the Oct 1 build changed' section already covers its main points. One small mismatch: Blizzard lists Excavation Site: Wetlands as 26 to 31, while the ledger's dungeon data uses 24 to 31. Other Oct 1 notes (new Mulgore quest Kyle's Gone Missing!, Fury Berserker Rage at level 30, some Blacksmithing and Leatherworking recipes now dropping in dungeons, crafted wands selling for 1 copper, honor costs up about 50%, barbershops in Thunder Bluff and Darnassus) do not change anything the ledger tracks. Launch is still set for November 4, 2026 at 3:00 p.m. PST."
+  }
+ },
+ "patchok": {
+  "p-20261008-2051__i3": {
+   "at": "2026-10-09T15:01:15.355Z",
+   "s": "yes"
+  },
+  "p-20261008-2051__i1": {
+   "at": "2026-10-09T15:10:00.000Z",
+   "s": "done"
+  },
+  "p-20261005-1436__i1": {
+   "at": "2026-10-09T15:10:00.000Z",
+   "s": "done"
+  },
+  "p-20261008-2051__i2": {
+   "at": "2026-10-09T15:10:00.000Z",
+   "s": "done"
+  }
+ }
+}
