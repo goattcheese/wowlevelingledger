@@ -4,7 +4,7 @@ service cloud.firestore {
     // Only the two signed-in accounts may read or write. Replace both emails.
     match /{document=**} {
       allow read, write: if request.auth != null
-        && request.auth.token.email in ['SHANE_EMAIL@example.com', 'COUSIN_EMAIL@example.com'];
+        && request.auth.token.email in ['goattcheese@gmail.com', 'emenem3@hotmail.com', 'blair_duncan@live.ca','ledger-bot@shane.soehner.com','ledger];
     }
   }
 }
