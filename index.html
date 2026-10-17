@@ -1230,11 +1230,11 @@ const CLASSES = {
 };
 const UTIL_NAMES = {rez:'Resurrection',magic:'Magic dispel',poison:'Poison cure',disease:'Disease cure',curse:'Curse removal',cc:'Crowd control',interrupt:'Interrupt'};
 const RACES = {
-  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window','Shatter Curse: removes curses','Axe Specialization','Hardiness: stun resistance']},
+  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window','Shatter Curse: dispels curses and banes, 5% less magic damage','Savage: 1% more crit chance','Hardiness: stun resistance']},
   undead:{name:'Undead',start:'Deathknell, Tirisfal Glades',zone:'tirisfal',classes:['warrior','mage','rogue','priest','warlock','paladin'],racials:['Will of the Forsaken: break fear and charm','Cannibalize: out of combat sustain','Underwater Breathing','Touch of the Grave: sustain plus a little damage; good on tanks'],priest:['Dark Sacrifice: trade health for mana instead of drinking','Touch of Weakness']},
-  tauren:{name:'Tauren',start:'Red Cloud Mesa, Mulgore',zone:'mulgore',classes:['warrior','hunter','druid','shaman'],racials:['War Stomp: area stun','Cultivation: bonus herbs, pairs with Alchemy','Plainsrunning: early speed boost','Endurance: more health, slight damage boost']},
+  tauren:{name:'Tauren',start:'Red Cloud Mesa, Mulgore',zone:'mulgore',classes:['warrior','hunter','druid','shaman'],racials:['War Stomp: area stun','Cultivation: bonus herbs, pairs with Alchemy','Plainsrunning: early speed boost, plus 3% mounted speed','Endurance: 5% more health, 2% more crit damage and healing']},
   troll:{name:'Troll',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','priest','warlock','shaman'],racials:['Berserking: burst window','Rapid Regeneration: sustain','Beast Slaying','Regeneration: helps tanking and open world'],priest:['Hex of Weakness: cuts enemy damage and healing','Shadowguard: damage to attackers']},
-  skyborne:{name:'Skyborne',start:'Zephras Isle (1 to 12)',zone:'zephras',classes:['warrior','hunter','rogue','druid','shaman'],racials:['Walk on Air: slow fall','Skysight: speed boost minigame','Wind Blessed: slight throughput boost','Elemental Insight: bonus damage on some enemies']}
+  skyborne:{name:'Skyborne',start:'Zephras Isle (1 to 12)',zone:'zephras',classes:['warrior','hunter','rogue','druid','shaman'],racials:['Walk on Air: slow fall','Skysight: speed boost minigame','Wind Blessed: 3% haste','Elemental Insight: bonus damage on some enemies']}
 };
 const PROFS = {
   alchemy:{name:'Alchemy',makes:'Potions, elixirs, flasks',armor:[]},
@@ -1303,7 +1303,7 @@ const PAIRS_H = [
   c:{race:'orc',cls:'warlock',spec:'Affliction',p1:'tailoring',p2:'enchanting',camp:'enchanted_lute'},
   s:{race:'orc',cls:'hunter',spec:'Beast Mastery',p1:'leatherworking',p2:'skinning',camp:'camp_tent'},
   why:'The first all damage pair, built around a favourite of the tank side. Two pets make it the safest open world duo on the list.',
-  pros:['No gear overlap: cloth against leather then mail','Two pets: a Voidwalker and a hunter pet can hold mobs','Orc Blood Fury on both, Axe Specialization for the Hunter'],
+  pros:['No gear overlap: cloth against leather then mail','Two pets: a Voidwalker and a hunter pet can hold mobs','Orc Blood Fury on both, Savage crit for the Hunter'],
   cons:['Dungeons need a tank and healer from the guild or Group Finder','No healing beyond Health Funnel, bandages and potions'],
   patch:['Pet Aggressive mode is back for Hunters and Warlocks','Hunters can no longer tame beasts above their level'],
   swap:'Swap with G any time: same classes, mirrored sides.'},
@@ -1413,7 +1413,7 @@ const DG = [
   ['Prehistoric Prism','Prospector Whelgar','Bring the relic to High Explorer Magellas, Hall of Explorers, Ironforge.',2,'','Choose one: Explorer\'s League Dustcover (cloak, +4 Str, +4 Agi, +7 Int), Healer\'s Staff or Heavehammer.']],
  loot:'Who takes what. Earthen Echo: the healer takes Healer\'s Staff, which will last a long time. A Feral druid, or a tank still leveling with a two-hander, takes Heavehammer for its +70 armour. A sword-and-board tank takes the Furs cloak instead. Open the Maw: cloth wearers take the Rag; leather and mail wearers take the Bracers. Changing Tastes: rogues and agility users take the Claw; everyone else takes the Satchel trinket.',
  note:'Opened in the Oct 1 beta build. Group Finder lists it at 26. Four bosses, including Saltspine, Shadetooth and the Relic Guardian. Areas: Lost Marsh, Stalker\'s Thicket, Site of the Guardian and Lost Dig Site. Reach it from Arathi Highlands over Thandol Span. Before you go, take Changing Tastes in Orgrimmar. Take Open the Maw at the entrance. Rewards are from Wowhead\'s beta data and may change.'},
- {id:'dal',name:'City of Dalaran',zone:'Alterac Mountains',lo:28,hi:33,isNew:1,q:[],note:'Quests not yet documented. Tarren Mill is the closest Horde base.'},
+ {id:'dal',name:'City of Dalaran',zone:'Alterac Mountains',lo:28,hi:33,isNew:1,q:[],note:'Tarren Mill is the closest Horde base. Horde are attacked on sight in open-world Dalaran, and the Sewer Key questline no longer opens the city. Dungeon access is unaffected.'},
  {id:'sm',name:'Scarlet Monastery',zone:'Tirisfal Glades',lo:30,hi:45,q:[
   ['Into The Scarlet Monastery','Varimathras, Undercity','All wings',0],
   ['Hearts of Zeal','Master Apothecary Faranell, Undercity','After Going, Going, Guano!',0],
@@ -1931,11 +1931,11 @@ const ROUTES = {
    (quests, wishlist, mail, sessions, class quests) stays separate from the Horde pairs A to I. */
 Object.values(RACES).forEach(r=>{r.fac=r.fac||'h';});
 Object.assign(RACES,{
-  human:{fac:'a',name:'Human',start:'Northshire Valley, Elwynn Forest',zone:'elwynn',classes:['warrior','paladin','hunter','mage','rogue','priest','warlock'],racials:['Will to Survive: instantly remove all stuns','Perception: detect stealthed enemies for 20 seconds','Sword Specialization: swords add 2% spell and ability crit','The Human Spirit: 5% more Spirit'],priest:['Divine Grace at 10','Feedback stays as it was']},
-  dwarf:{fac:'a',name:'Dwarf',start:'Coldridge Valley, Dun Morogh',zone:'dunmorogh',classes:['warrior','paladin','hunter','rogue','priest','shaman'],racials:['Stoneform: immune to poisons, bleeds and diseases, less physical damage for 8 seconds','Find Treasure','Mace Specialization: maces add 1% spell and ability crit','Big Game Hunter: 5% more damage to beasts'],priest:['Desperate Prayer at 10','Chastise at 20','Fear Ward is now open to every race']},
+  human:{fac:'a',name:'Human',start:'Northshire Valley, Elwynn Forest',zone:'elwynn',classes:['warrior','paladin','hunter','mage','rogue','priest','warlock'],racials:['Will to Survive: instantly remove all stuns','Perception: detect stealthed enemies for 20 seconds','Ruthless: 2% more crit chance','The Human Spirit: 5% more Spirit'],priest:['Divine Grace at 10','Feedback stays as it was']},
+  dwarf:{fac:'a',name:'Dwarf',start:'Coldridge Valley, Dun Morogh',zone:'dunmorogh',classes:['warrior','paladin','hunter','rogue','priest','shaman'],racials:['Stoneform: immune to poisons, bleeds and diseases, less physical damage for 8 seconds','Find Treasure: also extra items from most chests','Earth Fury: 2% more crit damage and healing','Big Game Hunter: 5% more damage to beasts'],priest:['Desperate Prayer at 10','Chastise at 20','Fear Ward is now open to every race']},
   nightelf:{fac:'a',name:'Night Elf',start:'Shadowglen, Teldrassil',zone:'teldrassil',classes:['warrior','hunter','rogue','priest','druid'],racials:['Elune\'s Light: 10% crit for 15 seconds','Shadowmeld: stealth while standing still','Quickness: 2% dodge and movement speed','Wisp Spirit: 75% faster corpse runs'],priest:['Starshards at 10','Elune\'s Grace at 20']},
-  gnome:{fac:'a',name:'Gnome',start:'Coldridge Valley, Dun Morogh',zone:'dunmorogh',classes:['warrior','mage','rogue','priest','warlock'],racials:['Escape Artist: break roots and snares, immune for 5 seconds','Eureka!: next 3 spells or abilities cost 10% less and hit 10% harder','Expansive Mind: 5% more mana, rage and energy','Engineering Specialization: 20% fewer device failures'],priest:['Confounding Flash at 10','Contingency Plan at 20']},
-  skyborneA:{fac:'a',name:'Skyborne (High Order)',start:'Zephras Isle (1 to 12)',zone:'zephras',classes:['warrior','hunter','mage','rogue','druid'],racials:['Read Ley Line: 10% health and mana regen for 30 seconds, or 15 minutes on a ley line','Walk on Air: glide down for 10 seconds','Wind Blessed: 1% haste','Elemental Insight: 5% more damage to elementals']}
+  gnome:{fac:'a',name:'Gnome',start:'Coldridge Valley, Dun Morogh',zone:'dunmorogh',classes:['warrior','mage','rogue','priest','warlock'],racials:['Escape Artist: break roots and snares, immune for 5 seconds','Eureka!: for 8 seconds, spells and abilities cost 10% less and hit 10% harder (not in stealth)','Expansive Mind: 5% more mana, rage and energy','Engineering Specialization: 20% fewer device failures'],priest:['Confounding Flash at 10','Contingency Plan at 20']},
+  skyborneA:{fac:'a',name:'Skyborne (High Order)',start:'Zephras Isle (1 to 12)',zone:'zephras',classes:['warrior','hunter','mage','rogue','druid'],racials:['Read Ley Line: 10% health and mana regen for 30 seconds, or 15 minutes on a ley line','Walk on Air: glide down for 10 seconds','Wind Blessed: 3% haste','Elemental Insight: 5% more damage to elementals']}
 });
 const PAIRS_A = [
  {k:'J',name:'The Silver Hand',wave:1,route:'allyek',fac:'a',
@@ -2088,11 +2088,11 @@ function checks(k){
 const ORIG={}; PAIRS_ALL.forEach(p=>{ORIG[p.k]={c:{race:p.c.race,cls:p.c.cls,spec:p.c.spec},s:{race:p.s.race,cls:p.s.cls,spec:p.s.spec}};});
 function isOriginal(k){const o=ORIG[k];return ['c','s'].every(w=>{const sl=state.slots[k+'-'+w];return sl.race===o[w].race&&sl.cls===o[w].cls&&sl.spec===o[w].spec;});}
 const RACE_ROLE={
- orc:{tank:'Orc Hardiness shrugs off stuns and Blood Fury adds burst threat',heal:'Orc Shatter Curse clears curses on the healer',dps:'Orc Blood Fury adds burst; Axe Specialization if you use axes'},
+ orc:{tank:'Orc Hardiness shrugs off stuns and Blood Fury adds burst threat',heal:'Orc Shatter Curse clears curses on the healer',dps:'Orc Blood Fury adds burst; Savage adds 1% crit'},
  undead:{tank:'Undead Touch of the Grave adds sustain on the tank; Will of the Forsaken breaks fear',heal:'Undead Cannibalize cuts downtime; Will of the Forsaken breaks fear on the healer',dps:'Undead Cannibalize cuts downtime between pulls'},
  tauren:{tank:'Tauren Endurance adds health for the tank; War Stomp for emergencies',heal:'Tauren War Stomp stops adds that reach the healer',dps:'Tauren Endurance and War Stomp make solo questing safer'},
  troll:{tank:'Troll Regeneration helps the tank recover between pulls',heal:'Troll Berserking speeds up casts for emergency healing',dps:'Troll Berserking adds burst; Beast Slaying on beasts'},
- skyborne:{tank:'Skyborne Wind Blessed adds a little throughput',heal:'Skyborne Walk on Air saves you from long falls',dps:'Skyborne Elemental Insight adds damage against some enemies'}};
+ skyborne:{tank:'Skyborne Wind Blessed adds 3% haste',heal:'Skyborne Walk on Air saves you from long falls',dps:'Skyborne Elemental Insight adds damage against some enemies'}};
 const PRIEST_RACE={undead:'Undead Priest Dark Sacrifice trades health for mana instead of drinking',troll:'Troll Priest Hex of Weakness cuts an enemy\'s damage and healing'};
 const NEW_COMBO={'undead-paladin':'Undead Paladin is new in Forever','troll-warlock':'Troll Warlock is new in Forever','orc-mage':'Orc Mage is new in Forever'};
 const CLASS_PRO={
@@ -3034,11 +3034,11 @@ function chainWrite(col,k,v){
 /* ---------- Tonight ---------- */
 const HUBS=[['At the dungeon entrance',/hidden cave|(by|at|near|outside) the entrance|just inside the entrance|outside\b/i],['Brill',/\bbrill\b/i],['The Sepulcher',/sepulcher/i],['Tarren Mill',/tarren mill/i],['Hammerfall',/hammerfall/i],['The Crossroads',/crossroads/i],['Ratchet',/ratchet/i],['Camp Taurajo',/taurajo/i],["Zoram'gar Outpost",/zoram/i],['Sunrock Retreat',/sunrock/i],['Shadowprey Village',/shadowprey/i],['Camp Mojache',/mojache/i],['Gadgetzan',/gadgetzan/i],['Booty Bay',/booty bay/i],['Steamwheedle Port',/steamwheedle/i],['Stonard',/stonard/i],['Kargath',/kargath/i],['Moonglade',/moonglade|nighthaven/i],['Everlook',/everlook/i],['Bloodvenom Post',/bloodvenom/i],['Splintertree Post',/splintertree/i],['Freewind Post',/freewind/i],["Grom'gol Base Camp",/grom.gol/i],['Revantusk Village',/revantusk/i],['Brackenwall Village',/brackenwall/i],['Flame Crest',/flame crest/i],["Light's Hope Chapel",/light.s hope/i],['Caer Darrow',/caer darrow/i],['Orgrimmar',/orgrimmar/i],['Undercity',/undercity/i],['Thunder Bluff',/thunder bluff/i]];
 Object.assign(RACE_ROLE,{
-  human:{tank:'Human Will to Survive breaks stuns on the tank',heal:'Human Spirit helps the healer\'s mana between pulls',dps:'Human Sword Specialization if you use swords; Perception for rogues'},
-  dwarf:{tank:'Dwarf Stoneform cuts physical damage and clears poisons and diseases',heal:'Dwarf Stoneform saves the healer from poison and bleeds',dps:'Dwarf Big Game Hunter and Mace Specialization'},
+  human:{tank:'Human Will to Survive breaks stuns on the tank',heal:'Human Spirit helps the healer\'s mana between pulls',dps:'Human Ruthless adds 2% crit; Perception for rogues'},
+  dwarf:{tank:'Dwarf Stoneform cuts physical damage and clears poisons and diseases',heal:'Dwarf Stoneform saves the healer from poison and bleeds',dps:'Dwarf Big Game Hunter and Earth Fury'},
   nightelf:{tank:'Night Elf Quickness adds dodge for the tank',heal:'Night Elf Shadowmeld drops aggro when a pull goes wrong',dps:'Night Elf Elune\'s Light adds a burst of crit'},
   gnome:{tank:'Gnome Escape Artist breaks roots and slows',heal:'Gnome Expansive Mind adds mana; Eureka! for emergency heals',dps:'Gnome Eureka! adds burst; Expansive Mind adds mana or energy'},
-  skyborneA:{tank:'Skyborne Wind Blessed adds a little throughput',heal:'Skyborne Read Ley Line adds health and mana regen',dps:'Skyborne Elemental Insight adds damage against elementals'}});
+  skyborneA:{tank:'Skyborne Wind Blessed adds 3% haste',heal:'Skyborne Read Ley Line adds health and mana regen',dps:'Skyborne Elemental Insight adds damage against elementals'}});
 Object.assign(PRIEST_RACE,{human:'Human Priest Divine Grace at 10',dwarf:'Dwarf Priest Desperate Prayer and Chastise',nightelf:'Night Elf Priest Starshards and Elune\'s Grace',gnome:'Gnome Priest Confounding Flash and Contingency Plan (new in Forever)'});
 Object.assign(NEW_COMBO,{'human-hunter':'Human Hunter is new in Forever','dwarf-shaman':'Dwarf Shaman is new in Forever','gnome-priest':'Gnome Priest is new in Forever','skyborneA-mage':'Skyborne Mage is new in Forever'});
 Object.assign(RACE_TEAMS,{
