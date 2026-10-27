@@ -709,6 +709,8 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
 .idea-head{display:flex;gap:6px;align-items:center}.idea-who{font-size:.82rem}
 .ch-empty{margin:4px 0}
 html[data-nopairs] #view-tonight > :not(.nopairs-msg),html[data-nopairs] #view-classq > :not(.nopairs-msg),html[data-nopairs] #view-route > :not(.nopairs-msg),html[data-nopairs] #view-log .lg-grid,html[data-nopairs] #view-log #lg-sync,html[data-nopairs] #view-log .tn-pick{display:none!important}
+.chart td.here{outline:2px solid var(--ok);outline-offset:-2px}
+#ch-cover{margin-top:14px}#ch-cover summary{cursor:pointer}
 .pair-more>summary{cursor:pointer;padding:8px 16px;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted)}
 .pair-more[open]>summary{color:var(--ink)}
 .nopairs-msg{display:none}
@@ -815,7 +817,6 @@ html[data-nopairs] .nopairs-msg{display:block}
     <button role="tab" data-tab="stats" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>Stats</button>
     <button role="tab" data-tab="legacy" aria-selected="false">Legacy</button>
     <button role="tab" data-tab="patch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg>Patch watch<span class="ml-count" id="pw-count"></span></button>
-    <button role="tab" data-tab="swap" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg>Swap matrix</button>
     <button role="tab" data-tab="camp" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-tent"/></svg>Camp buffs</button>
   </nav>
 
@@ -961,24 +962,13 @@ html[data-nopairs] .nopairs-msg{display:block}
       <div class="wave-head ch-pairs-head"><span class="eyebrow">Pairs</span><h2>Who levels with whom</h2></div>
       <p class="muted ch-legend">A pair is judged on <b>synergy</b> first: how the two classes cover each other through crowd control, healing, pets and buffs. Tank plus healer makes dungeons easy, but it is not required. Checks: <span class="tag ok">ok</span> fine, <span class="tag warn">warn</span> a caveat, <span class="tag bad">fix</span> worth changing (shared profession, same class), <span class="tag info">gap</span> something to plan around.</p>
       <div class="waves" id="waves"></div>
+      <div class="wave-head ch-pairs-head"><span class="eyebrow">Pair chart</span><h2>Every possible pair</h2></div>
+      <p class="muted ch-legend"><span data-pname="s">Shane</span>'s characters down the side, <span data-pname="c">Blair</span>'s across the top. Stars rate synergy: roles that cover each other, pets with a healer, and little gear overlap score higher; the same class or a shared profession score lower. Solo characters are left out.</p>
+      <div class="scroll"><table class="matrix chart" id="matrix"></table></div>
+      <div id="ch-cover"></div>
       <details class="box ch-ideas"><summary><b>Ideas:</b> the pairs from the original plan</summary><p class="muted">Each idea adds one character for each of you, already paired. Change anything afterwards.</p><div id="ch-ideas" class="ideas"></div></details>
     </section>
 
-    <section class="view" id="view-swap" hidden>
-      <div class="prose">
-        <h2>If you swap at level 20 or 30</h2>
-        <p>Rows are <span data-pname="c">Blair</span>'s tank options, columns are <span data-pname="s">Shane</span>'s healer options. Each cell shows how the two would share loot and whether they can start in the same zone. The plan levels a replacement up to the swapped pair's level, so any three-star cell is a safe swap.</p>
-      </div>
-      <div class="scroll"><table class="matrix" id="matrix"></table></div>
-      <div class="box prose">
-        <h3>Common swap paths</h3>
-        <ul>
-          <li><b>Paladin + Priest (A) to Warrior + Druid (B):</b> both are zero-overlap pairs, so you can also cross them (Paladin + Druid, Warrior + Priest) and stay clean.</li>
-          <li><b>Bear + Shaman (C):</b> if the bear stalls, Warrior + Shaman is the best rescue; Tauren, Troll, Orc and Skyborne all allow both.</li>
-          <li><b>Shaman tank (D):</b> the riskiest tank on the list. At 40 dual spec lets <span data-pname="s">Shane</span> go Protection on the Paladin while the Shaman goes Enhancement or Restoration.</li>
-        </ul>
-      </div>
-    </section>
 
     <section class="view" id="view-camp" hidden>
       <div class="prose">
@@ -2199,7 +2189,7 @@ function pairWhy(p){
   if(isOriginal(p.k)) return p.why;
   return 'Your own pair. The strengths, weaknesses and checks below are worked out from these two characters.';
 }
-function pairSwap(p){return isOriginal(p.k)?p.swap:'Check the Swap matrix tab for the best replacement on either side.';}
+function pairSwap(p){return isOriginal(p.k)?p.swap:'The pair chart on the Characters tab shows how every other character would fit.';}
 function pairPatch(p){const c=state.slots[p.k+'-c'], s=state.slots[p.k+'-s'];return [...new Set([...(PATCH_CLASS[c.cls]||[]),...(c.cls!==s.cls?(PATCH_CLASS[s.cls]||[]):[])])];}
 
 /* ---------- Pair names ---------- */
@@ -2608,29 +2598,55 @@ function refreshPair(k){
   if(focusId){const f=document.getElementById(focusId); if(f) f.focus();}
 }
 
-/* ---------- Swap matrix ---------- */
+/* ---------- Pair chart ---------- */
+function synergy(a,b){
+  const ra=roleOf(a), rb=roleOf(b), roles=[ra,rb].sort().join('+'), pets=['hunter','warlock'], ov=overlap(a,b).lvl, why=[];
+  let pts=0;
+  if(roles==='heal+tank'){pts+=2; why.push('tank and healer');} else if(ra!==rb){pts+=1; why.push('different roles');}
+  if(pets.includes(a.cls)&&pets.includes(b.cls)){pts+=1; why.push('two pets');}
+  else if((pets.includes(a.cls)||pets.includes(b.cls))&&roles.includes('heal')){pts+=1; why.push('a pet the healer keeps alive');}
+  if(ov==='None'||ov==='Low'){pts+=1; why.push(ov==='None'?'no gear overlap':'little gear overlap');} else if(ov==='High') pts-=1;
+  if(a.cls===b.cls) pts-=2;
+  const dup=[a.p1,a.p2].filter(x=>x&&[b.p1,b.p2].includes(x));
+  if(dup.length) pts-=1;
+  return {stars:pts>=3?3:pts>=2?2:1,why,ov,dup};
+}
 function renderMatrix(){
-  const tanks=[['warrior','Protection'],['paladin','Protection'],['druid','Feral (Bear)'],['shaman','Enhancement (Tank)']];
-  const heals=[['priest','Holy'],['druid','Restoration'],['shaman','Restoration'],['paladin','Holy']];
-  let h='<thead><tr><th>'+esc(pnName('c'))+' (tank) \\ '+esc(pnName('s'))+' (healer)</th>'+heals.map(x=>'<th>'+classBadge(x[0],1)+' '+CLASSES[x[0]].name+'</th>').join('')+'</tr></thead><tbody>';
-  for(const t of tanks){
-    h+='<tr><th scope="row" style="background:var(--panel)">'+classBadge(t[0],1)+' '+CLASSES[t[0]].name+(t[0]==='shaman'?' <span class="flag">unproven</span>':'')+'</th>';
-    for(const he of heals){
-      if(t[0]===he[0]){h+='<td><div class="cell"><span class="chip bad">Same class</span><span class="muted" style="font-size:.85rem">Not a valid pair</span></div></td>';continue;}
-      const ov=overlap({cls:t[0],spec:t[1]},{cls:he[0],spec:he[1]});
-      const rs=sharedRaces(t[0],he[0]);
-      let stars=1; if((ov.lvl==='None'||ov.lvl==='Low')&&rs.length) stars=3; else if(ov.lvl==='None'||ov.lvl==='Low'||rs.length) stars=2;
-      if(t[0]==='shaman') stars=Math.min(stars,2);
-      const ovCls={None:'ok',Low:'ok',Medium:'warn',High:'bad'}[ov.lvl];
-      const inPlan=PAIRS.find(p=>p.c.cls===t[0]&&p.s.cls===he[0]&&specInfo(p.c).role==='tank');
-      h+='<td><div class="cell"><span class="stars" aria-label="'+stars+' of 3">'+'★'.repeat(stars)+'☆'.repeat(3-stars)+'</span><span><span class="chip '+ovCls+'">Overlap: '+ov.lvl+'</span></span>'+
-        '<span style="font-size:.85rem">'+(rs.length?'Same start: '+rs.map(r=>RACES[r].name).join(', '):'<span class="muted">No shared race</span>')+'</span>'+
-        (inPlan?'<span class="chip brass">Pair '+inPlan.k+'</span>':'')+'</div></td>';
+  const tbl=$('#matrix'); if(!tbl) return;
+  const pool=w=>rosterOf(w).filter(id=>state.slots[id].style!=='solo');
+  const rows=pool('s'), cols=pool('c');
+  if(!rows.length||!cols.length){tbl.innerHTML='<tbody><tr><td class="muted">The chart fills in once you each have a Duo or Flexible character.</td></tr></tbody>'; renderCover(); return;}
+  const head=id=>{const sl=state.slots[id]; return classBadge(sl.cls,1)+' <b>'+esc(charName(id))+'</b><div class="muted" style="font-size:.8rem;font-weight:400">'+esc(RACES[sl.race].name+' '+specInfo(sl).name+' '+CLASSES[sl.cls].name)+' · lvl '+(+sl.level||1)+'</div>';};
+  let h='<thead><tr><th>'+esc(pnName('s'))+' \\ '+esc(pnName('c'))+'</th>'+cols.map(c=>'<th>'+head(c)+'</th>').join('')+'</tr></thead><tbody>';
+  for(const r of rows){
+    h+='<tr><th scope="row" style="background:var(--panel)">'+head(r)+'</th>';
+    for(const c of cols){
+      const a=state.slots[r], b=state.slots[c], sy=synergy(a,b), gap=Math.abs((+a.level||1)-(+b.level||1)), together=partnerOf(r)===c;
+      const flags=[];
+      if(a.cls===b.cls) flags.push('<span class="chip bad">Same class</span>');
+      if(sy.dup.length) flags.push('<span class="chip bad">Both '+esc(sy.dup.map(x=>PROFS[x].name).join(', '))+'</span>');
+      if(sy.ov==='High'||sy.ov==='Medium') flags.push('<span class="chip warn">Gear overlap: '+sy.ov+'</span>');
+      if(gap>=3) flags.push('<span class="chip warn">'+gap+' levels apart</span>');
+      h+='<td'+(together?' class="here"':'')+'><div class="cell"><span class="stars" title="'+esc(sy.why.join(', ')||'little synergy')+'" aria-label="'+sy.stars+' of 3">'+'★'.repeat(sy.stars)+'☆'.repeat(3-sy.stars)+'</span>'+
+        '<span class="muted" style="font-size:.8rem">'+esc(sy.why.join(', ')||'little synergy')+'</span>'+flags.join('')+
+        (together?'<span class="chip ok">Pair '+esc(pairOf(r))+'</span>':(canWrite?'<button type="button" class="btn mini" data-chartpair="'+r+'|'+c+'">Pair them</button>':''))+'</div></td>';
     }
     h+='</tr>';
   }
-  $('#matrix').innerHTML=h+'</tbody>';
+  tbl.innerHTML=h+'</tbody>';
+  renderCover();
 }
+function renderCover(){
+  const host=$('#ch-cover'); if(!host) return;
+  const ids=SLOT_IDS(); if(!ids.length){host.innerHTML=''; return;}
+  const who=(id)=>esc(charName(id))+' <span class="muted">('+esc(pnName(id.slice(-1)))+')</span>';
+  const row=(label,list)=>'<tr><th scope="row">'+label+'</th><td>'+(list.length?list.map(who).join(', '):'<span class="warn-t">Nobody yet</span>')+'</td></tr>';
+  host.innerHTML='<details class="box"><summary><b>Coverage:</b> professions and classes across all your characters</summary><div class="scroll"><table class="st-table"><tbody>'+
+    Object.keys(PROFS).map(p=>row(profIcon(p)+' '+esc(PROFS[p].name),ids.filter(id=>state.slots[id].p1===p||state.slots[id].p2===p))).join('')+
+    Object.keys(CLASSES).filter(c=>facRaces().some(r=>RACES[r].classes.includes(c))).map(c=>row(classBadge(c,1)+' '+esc(CLASSES[c].name),ids.filter(id=>state.slots[id].cls===c))).join('')+
+    '</tbody></table></div></details>';
+}
+$('#matrix').addEventListener('click',e=>{const b=e.target.closest('[data-chartpair]'); if(!b||!canWrite) return; const [r,c]=b.dataset.chartpair.split('|'); pairWith(c,r);});
 
 /* ---------- Camp ---------- */
 function renderCamp(){
@@ -2808,7 +2824,7 @@ function showTab(t){
 }
 document.addEventListener('click',e=>{const a=e.target.closest('[data-goto]'); if(!a) return; e.preventDefault(); showTab(a.dataset.goto); try{history.replaceState(null,'','#'+a.dataset.goto);}catch(_){} window.scrollTo(0,0);});
 document.querySelector('nav.tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]'); if(!b) return; showTab(b.dataset.tab); try{history.replaceState(null,'','#'+b.dataset.tab);}catch(_){} });
-{const h=(location.hash||'').slice(1); if(['tonight','sched','rested','wish','log','stats','mail','pairs','swap','camp','classq','profs','legacy','talents','dungeons','route','launch','patch'].includes(h)) showTab(h);}
+{const h=(location.hash||'').slice(1); if(['tonight','sched','rested','wish','log','stats','mail','pairs','camp','classq','profs','legacy','talents','dungeons','route','launch','patch'].includes(h)) showTab(h);}
 
 /* ---------- Writes ---------- */
 const timers={};
