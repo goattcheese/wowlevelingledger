@@ -17,3 +17,4 @@
 - Use the Backup tab in the old artifact to save your data, then restore it here. The Backup tab does not cover legacy, tal, launch or sched, so those need a separate copy (planned).
 - The weekly patch-check task currently writes to the artifact's database. It will need pointing at Firestore after the move.
 - Sync from game works as before (file picker). Send to game downloads LedgerData.lua as before.
+- Characters (since Oct 27, 2026): each `slots/<group>-<c|s>` doc is a seat. `made: true` means the seat holds a character; `tag` is `main` or `alt` and `style` is `duo`, `flex` or `solo`. Two made seats in the same group form a pair. Slot docs saved before this change have no `made` field and count as characters. Groups A to R come from the original plan; new groups (S, T, ...) are added when every group is in use.

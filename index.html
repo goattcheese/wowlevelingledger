@@ -684,6 +684,35 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
 .pp-steps ol{margin:4px 0;padding-left:1.4em;font-size:.84rem}
 .pp-mats td,.pp-mats th{padding:4px 8px;font-size:.84rem}
 .pp-notes p{margin:4px 0;font-size:.84rem}
+.ch-intro{max-width:780px}.ch-intro h2{margin:0 0 4px}.ch-intro p{margin:0}
+.ch-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+@media (max-width:760px){.ch-cols{grid-template-columns:1fr}}
+.ch-col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.ch-colhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:6px}
+.ch-colhead h3{margin:0;flex:1;font-size:1.05rem}
+.ch-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line);padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ch-card.main{border-left-color:var(--brass)}
+.ch-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ch-name{display:flex;flex-direction:column;flex:1;min-width:140px}
+.ch-name .muted{font-size:.85rem}
+.ch-card .chips{display:flex;flex-wrap:wrap;gap:4px}
+.ch-acts{display:flex;flex-wrap:wrap;gap:6px}
+.ch-acts .ch-del{margin-left:auto}
+.ch-edit{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.ch-edit .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ch-pairs-head{margin-top:30px}
+.ch-legend{font-size:.88rem;margin:8px 0 0}
+.ch-ideas{margin-top:28px}.ch-ideas summary{cursor:pointer}
+.ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+.idea{border:1px solid var(--line);background:var(--bg);padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.idea p{margin:0;font-size:.88rem}.idea .btn{align-self:flex-start}
+.idea-head{display:flex;gap:6px;align-items:center}.idea-who{font-size:.82rem}
+.ch-empty{margin:4px 0}
+html[data-nopairs] #view-tonight > :not(.nopairs-msg),html[data-nopairs] #view-classq > :not(.nopairs-msg),html[data-nopairs] #view-route > :not(.nopairs-msg),html[data-nopairs] #view-log .lg-grid,html[data-nopairs] #view-log #lg-sync,html[data-nopairs] #view-log .tn-pick{display:none!important}
+.pair-more>summary{cursor:pointer;padding:8px 16px;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted)}
+.pair-more[open]>summary{color:var(--ink)}
+.nopairs-msg{display:none}
+html[data-nopairs] .nopairs-msg{display:block}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><!-- Icons: Lucide (ISC license) --><defs><symbol id="i-swords" viewBox="0 0 24 24"><path d="m13 19 6-6" /> <path d="M14.5 17.5 3.586 6.586A2 2 0 013 5.172V3h2.172a2 2 0 011.414.586L17.5 14.5" /> <path d="m14.828 6.172 2.586-2.586A2 2 0 0118.828 3H21v2.172a2 2 0 01-.586 1.414l-2.586 2.586" /> <path d="m16 16 4 4" /> <path d="m19 21 2-2" /> <path d="m5 14 4 4" /> <path d="m5 21-2-2" /> <path d="M7.5 16.5 4 20" /></symbol><symbol id="i-hammer" viewBox="0 0 24 24"><path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9" /> <path d="m18 15 4-4" /> <path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5" /></symbol><symbol id="i-paw-print" viewBox="0 0 24 24"><circle cx="11" cy="4" r="2" /> <circle cx="18" cy="8" r="2" /> <circle cx="20" cy="16" r="2" /> <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" /></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol><symbol id="i-bow-arrow" viewBox="0 0 24 24"><path d="M17 3h4v4" /> <path d="M18.575 11.082a13 13 0 0 1 1.048 9.027 1.17 1.17 0 0 1-1.914.597L14 17" /> <path d="M7 10 3.29 6.29a1.17 1.17 0 0 1 .6-1.91 13 13 0 0 1 9.03 1.05" /> <path d="M7 14a1.7 1.7 0 0 0-1.207.5l-2.646 2.646A.5.5 0 0 0 3.5 18H5a1 1 0 0 1 1 1v1.5a.5.5 0 0 0 .854.354L9.5 18.207A1.7 1.7 0 0 0 10 17v-2a1 1 0 0 0-1-1z" /> <path d="M9.707 14.293 21 3" /></symbol><symbol id="i-wand-sparkles" viewBox="0 0 24 24"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" /> <path d="m14 7 3 3" /> <path d="M5 6v4" /> <path d="M19 14v4" /> <path d="M10 2v2" /> <path d="M7 8H3" /> <path d="M21 16h-4" /> <path d="M11 3H9" /></symbol><symbol id="i-pocket-knife" viewBox="0 0 24 24"><path d="M3 2v1c0 1 2 1 2 2S3 6 3 7s2 1 2 2-2 1-2 2 2 1 2 2" /> <path d="M18 6h.01" /> <path d="M6 18h.01" /> <path d="M20.83 8.83a4 4 0 0 0-5.66-5.66l-12 12a4 4 0 1 0 5.66 5.66Z" /> <path d="M18 11.66V22a4 4 0 0 0 4-4V6" /></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" /></symbol><symbol id="i-hand-fist" viewBox="0 0 24 24"><path d="M12.035 17.012a3 3 0 0 0-3-3l-.311-.002a.72.72 0 0 1-.505-1.229l1.195-1.195A2 2 0 0 1 10.828 11H12a2 2 0 0 0 0-4H9.243a3 3 0 0 0-2.122.879l-2.707 2.707A4.83 4.83 0 0 0 3 14a8 8 0 0 0 8 8h2a8 8 0 0 0 8-8V7a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0" /> <path d="M13.888 9.662A2 2 0 0 0 17 8V5A2 2 0 1 0 13 5" /> <path d="M9 5A2 2 0 1 0 5 5V10" /> <path d="M9 7V4A2 2 0 1 1 13 4V7.268" /></symbol><symbol id="i-skull" viewBox="0 0 24 24"><path d="m12.5 17-.5-1-.5 1h1z" /> <path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z" /> <circle cx="15" cy="12" r="1" /> <circle cx="9" cy="12" r="1" /></symbol><symbol id="i-feather" viewBox="0 0 24 24"><path d="M14.086 18.412A2 2 0 0112.67 19H5v-7.672a2 2 0 01.586-1.414L11.75 3.75a6 6 0 118.49 8.49z" /> <path d="M16 8 2 22" /> <path d="M17.488 15H9" /></symbol><symbol id="i-venetian-mask" viewBox="0 0 24 24"><path d="M18 11c-1.5 0-2.5.5-3 2" /> <path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z" /> <path d="M6 11c1.5 0 2.5.5 3 2" /></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /> <path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /> <path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /></symbol><symbol id="i-heart-pulse" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /> <path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" /></symbol><symbol id="i-sword" viewBox="0 0 24 24"><path d="m11 19-6-6" /> <path d="m5 21-2-2" /> <path d="m8 16-4 4" /> <path d="M9.5 17.5 20.414 6.586A2 2 0 0021 5.172V3h-2.172a2 2 0 00-1.414.586L6.5 14.5" /></symbol><symbol id="i-flask-conical" viewBox="0 0 24 24"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" /> <path d="M6.453 15h11.094" /> <path d="M8.5 2h7" /></symbol><symbol id="i-anvil" viewBox="0 0 24 24"><path d="M7 10H6a4 4 0 0 1-4-4 1 1 0 0 1 1-1h4" /> <path d="M7 5a1 1 0 0 1 1-1h13a1 1 0 0 1 1 1 7 7 0 0 1-7 7H8a1 1 0 0 1-1-1z" /> <path d="M9 12v5" /> <path d="M15 12v5" /> <path d="M5 20a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1" /></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /> <path d="M20 2v4" /> <path d="M22 4h-4" /> <circle cx="4" cy="20" r="2" /></symbol><symbol id="i-cog" viewBox="0 0 24 24"><path d="M11 10.27 7 3.34" /> <path d="m11 13.73-4 6.93" /> <path d="M12 22v-2" /> <path d="M12 2v2" /> <path d="M14 12h8" /> <path d="m17 20.66-1-1.73" /> <path d="m17 3.34-1 1.73" /> <path d="M2 12h2" /> <path d="m20.66 17-1.73-1" /> <path d="m20.66 7-1.73 1" /> <path d="m3.34 17 1.73-1" /> <path d="m3.34 7 1.73 1" /> <circle cx="12" cy="12" r="2" /> <circle cx="12" cy="12" r="8" /></symbol><symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20" /> <path d="M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13" /></symbol><symbol id="i-backpack" viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" /> <path d="M8 10h8" /> <path d="M8 18h8" /> <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6" /> <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" /></symbol><symbol id="i-pickaxe" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3L11 9.999" /> <path d="M15.973 4.027A13 13 0 0 0 5.902 2.373c-1.398.342-1.092 2.158.277 2.601a19.9 19.9 0 0 1 5.822 3.024" /> <path d="M16.001 11.999a19.9 19.9 0 0 1 3.024 5.824c.444 1.369 2.26 1.676 2.603.278A13 13 0 0 0 20 8.069" /> <path d="M18.352 3.352a1.205 1.205 0 0 0-1.704 0l-5.296 5.296a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l5.296-5.296a1.205 1.205 0 0 0 0-1.704z" /></symbol><symbol id="i-slice" viewBox="0 0 24 24"><path d="M11 16.586V19a1 1 0 0 1-1 1H2L18.37 3.63a1 1 0 1 1 3 3l-9.663 9.663a1 1 0 0 1-1.414 0L8 14" /></symbol><symbol id="i-spool" viewBox="0 0 24 24"><path d="M17 13.44 4.442 17.082A2 2 0 0 0 4.982 21H19a2 2 0 0 0 .558-3.921l-1.115-.32A2 2 0 0 1 17 14.837V7.66" /> <path d="m7 10.56 12.558-3.642A2 2 0 0 0 19.018 3H5a2 2 0 0 0-.558 3.921l1.115.32A2 2 0 0 1 7 9.163v7.178" /></symbol><symbol id="i-cooking-pot" viewBox="0 0 24 24"><path d="M2 12h20" /> <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" /> <path d="m4 8 16-4" /> <path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" /></symbol><symbol id="i-bandage" viewBox="0 0 24 24"><path d="M10 10.01h.01" /> <path d="M10 14.01h.01" /> <path d="M14 10.01h.01" /> <path d="M14 14.01h.01" /> <path d="M18 6v12" /> <path d="M6 6v12" /> <rect x="2" y="6" width="20" height="12" rx="2" /></symbol><symbol id="i-fish" viewBox="0 0 24 24"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z" /> <path d="M18 12v.5" /> <path d="M16 17.93a9.77 9.77 0 0 1 0-11.86" /> <path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33" /> <path d="M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4" /> <path d="m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98" /></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" /></symbol><symbol id="i-tower-control" viewBox="0 0 24 24"><path d="M18.2 12.27 20 6H4l1.8 6.27a1 1 0 0 0 .95.73h10.5a1 1 0 0 0 .96-.73Z" /> <path d="M8 13v9" /> <path d="M16 22v-9" /> <path d="m9 6 1 7" /> <path d="m15 6-1 7" /> <path d="M12 6V2" /> <path d="M13 2h-2" /></symbol><symbol id="i-footprints" viewBox="0 0 24 24"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z" /> <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z" /> <path d="M16 17h4" /> <path d="M4 13h4" /></symbol><symbol id="i-flask-round" viewBox="0 0 24 24"><path d="M10 2v6.292a7 7 0 1 0 4 0V2" /> <path d="M5 15h14" /> <path d="M8.5 2h7" /></symbol><symbol id="i-gem" viewBox="0 0 24 24"><path d="M10.5 3 8 9l4 13 4-13-2.5-6" /> <path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z" /> <path d="M2 9h20" /></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16" /> <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" /></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <path d="M16 3.128a4 4 0 0 1 0 7.744" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <circle cx="9" cy="7" r="4" /></symbol><symbol id="i-shuffle" viewBox="0 0 24 24"><path d="m18 14 4 4-4 4" /> <path d="m18 2 4 4-4 4" /> <path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" /> <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" /> <path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" /></symbol><symbol id="i-tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3" /> <path d="M20.5 21 10 3" /> <path d="M15.5 21 12 15l-3.5 6" /> <path d="M2 21h20" /></symbol><symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5" /> <path d="M15 8h-5" /> <path d="M19 17V5a2 2 0 0 0-2-2H4" /> <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" /></symbol><symbol id="i-castle" viewBox="0 0 24 24"><path d="M10 5V3" /> <path d="M14 5V3" /> <path d="M15 21v-3a3 3 0 0 0-6 0v3" /> <path d="M18 3v8" /> <path d="M18 5H6" /> <path d="M22 11H2" /> <path d="M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9" /> <path d="M6 3v8" /></symbol><symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /> <path d="M15 5.764v15" /> <path d="M9 3.236v15" /></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol><symbol id="i-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2" /> <path d="M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715" /> <path d="M16 12a4 4 0 0 0-4-4" /> <path d="m19 5-1.256 1.256" /> <path d="M20 12h2" /></symbol><symbol id="i-arrow-left-right" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4" /> <path d="M4 7h16" /> <path d="m16 21 4-4-4-4" /> <path d="M20 17H4" /></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></symbol><symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3" /> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /> <circle cx="18" cy="5" r="3" /></symbol><symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></symbol><symbol id="i-lock-open" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 9.9-1" /></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /> <path d="m17 8-5-5-5 5" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> <path d="M12 7v5l4 2" /></symbol><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1" /> <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" /> <path d="M10 12h4" /></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></symbol><symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /> <circle cx="12" cy="12" r="10" /></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></symbol><symbol id="i-share-2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /> <circle cx="6" cy="12" r="3" /> <circle cx="18" cy="19" r="3" /> <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /> <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></symbol><symbol id="i-user-round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" /> <path d="M20 21a8 8 0 0 0-16 0" /></symbol><symbol id="i-split" viewBox="0 0 24 24"><path d="M16 3h5v5" /> <path d="M8 3H3v5" /> <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" /> <path d="m15 9 6-6" /></symbol><symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5" /> <path d="M15 8V2" /> <path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" /> <path d="M9 8V2" /></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6" /> <path d="M14 11v6" /> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /> <path d="M3 6h18" /> <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" /></symbol><symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" /> <path d="M5 21h14" /></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol><symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol><symbol id="i-gamepad-2" viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol><symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol><symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></symbol></defs></svg>
@@ -721,7 +750,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <div>
       <div class="eyebrow">WoW: Forever · <span id="fac-eyebrow">Horde</span> · launch Nov 4, 2026</div>
       <h1>Forever Duo Ledger</h1>
-      <p class="lede">Nine tank-and-healer style pairs (one of every class for each of you), with professions, campsite objects, racials, dungeon checklists and a leveling map. Every field is editable and saves for both of you.</p>
+      <p class="lede">Your characters and the pairs you level them in, with professions, campsite objects, racials, dungeon checklists and a leveling map. Everything saves for both of you.</p>
     </div>
     <div class="players">
       <div class="themes fac-switch" role="group" aria-label="Faction"><button type="button" data-fac-set="h" aria-pressed="true">Horde</button><button type="button" data-fac-set="a" aria-pressed="false">Alliance</button></div>
@@ -770,7 +799,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <div class="s-results" id="s-results" hidden></div>
   </div>
   <nav class="tabs" role="tablist" aria-label="Sections">
-    <button role="tab" data-tab="pairs" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Pairs</button>
+    <button role="tab" data-tab="pairs" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Characters</button>
     <button role="tab" data-tab="tonight" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Tonight</button>
     <button role="tab" data-tab="sched" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Schedule</button>
     <button role="tab" data-tab="launch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-rocket"/></svg>Launch prep</button>
@@ -788,11 +817,11 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     <button role="tab" data-tab="patch" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg>Patch watch<span class="ml-count" id="pw-count"></span></button>
     <button role="tab" data-tab="swap" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg>Swap matrix</button>
     <button role="tab" data-tab="camp" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-tent"/></svg>Camp buffs</button>
-    <button role="tab" data-tab="rules" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-book-open"/></svg>Ground rules</button>
   </nav>
 
   <main>
     <section class="view" id="view-tonight" hidden>
+      <p class="notice nopairs-msg">No pairs yet. Pair one of your characters with one of your partner's on the <a href="#pairs" data-goto="pairs">Characters</a> tab first.</p>
       <div class="tn-top">
         <div class="prose"><h2>Tonight</h2><p class="muted">Everything one pair needs for a session: the next dungeons, what to pick up and where, what you are carrying, class quests coming due and the next profession milestone. Tap a name once when that character picks a quest up and again when it is turned in.</p></div>
         <label for="tn-pair" class="tn-pick">Pair <select id="tn-pair"></select></label>
@@ -846,6 +875,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     </section>
 
     <section class="view" id="view-log" hidden>
+      <p class="notice nopairs-msg">No pairs yet. Pair one of your characters with one of your partner's on the <a href="#pairs" data-goto="pairs">Characters</a> tab first.</p>
       <div class="tn-top">
         <div class="prose"><h2>Session log</h2><p class="muted">Log each session to track pace and see when each pair should reach 40 and 60. Levels and dungeon clears you log here update the rest of the ledger. Pace uses the Classic XP table until Forever's is known.</p></div>
         <label for="lg-pair" class="tn-pick">Pair <select id="lg-pair"></select></label>
@@ -876,7 +906,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
       </section>
       <details class="tn-card lg-addon" style="margin-top:14px">
         <summary><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>Sync with the Duo Ledger addon</summary>
-        <p class="muted"><b>From the game:</b> after a /reload or logout, press <b>Sync from game</b> and pick <span class="mono">DuoLedger.lua</span> in <span class="mono">WTF\Account\&lt;account&gt;\SavedVariables</span>. You can also paste the addon's Export text below. Characters are matched by name, so name them on the Pairs tab exactly as in game. Syncing the same data twice is safe, and a session that grew since last time is updated. The import also raises levels, sets hearths, marks dungeon quests turned in and wishlist items obtained.</p>
+        <p class="muted"><b>From the game:</b> after a /reload or logout, press <b>Sync from game</b> and pick <span class="mono">DuoLedger.lua</span> in <span class="mono">WTF\Account\&lt;account&gt;\SavedVariables</span>. You can also paste the addon's Export text below. Characters are matched by name, so name them on the Characters tab exactly as in game. Syncing the same data twice is safe, and a session that grew since last time is updated. The import also raises levels, sets hearths, marks dungeon quests turned in and wishlist items obtained.</p>
         <p class="muted"><b>To the game:</b> press <b>Send to game</b> and save <span class="mono">LedgerData.lua</span> into <span class="mono">Interface\AddOns\DuoLedger</span>, replacing the old one. Then type /reload in game. This works while you're playing, because the Ledger and the game never write the same file.</p>
         <textarea id="lg-imp-text" rows="5" aria-label="Addon export" placeholder='{"app":"ForeverDuoLedger","v":1, ...}'></textarea>
         <div class="bk-acts"><button type="button" class="btn" id="lg-imp-check">Check import</button><label class="btn" for="lg-imp-file"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Sync from game</label><input type="file" id="lg-imp-file" accept=".lua,.json,.txt,application/json,text/plain" class="vh"><button type="button" class="btn primary" id="lg-imp-go" hidden>Import</button><button type="button" class="btn" id="lg-send-game"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Send to game</button></div>
@@ -925,23 +955,13 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     </section>
 
     <section class="view" id="view-pairs">
-      <div class="intro">
-        <div class="prose">
-          <p>Each pair puts one character from each of you together, and a pair is judged first on <b>synergy</b>: how well the two classes cover each other while you level, through crowd control, self-healing, pets, buffs and how you split the pulls. One tank plus one healer is a good default because it makes dungeons easy, but it is a guideline, not a requirement. A Demonology Warlock's pet can hold mobs in the open world while a healer keeps it alive, and two pet classes can duo almost anything outside dungeons.</p>
-          <p><span data-pname="c">Blair</span> favours Warrior, Paladin, Druid, Warlock and Shaman early and saves Priest for last. <span data-pname="s">Shane</span> leads with the four healing classes, then tanking on Warrior. A pair without a tank or healer simply finds that role in the guild or Group Finder for dungeons.</p>
-          <p>Within a pair no primary profession repeats, each character places one campsite object that is not cancelled by a class buff in the pair, and armor or stat priorities differ so drops are rarely contested. The checks under each pair recompute when you change anything.</p>
-        </div>
-        <div class="legend">
-          <div class="eyebrow">Reading the checks</div>
-          <div class="row"><span class="tag ok">ok</span> Works as planned</div>
-          <div class="row"><span class="tag warn">warn</span> Works with a caveat (often a buff that will not stack)</div>
-          <div class="row"><span class="tag bad">fix</span> Breaks a ground rule (shared profession, same class)</div>
-          <div class="row"><span class="tag info">gap</span> Something the pair lacks; plan around it</div>
-          <div class="row"><span class="chip">Gear overlap: None / Low / Medium / High</span></div>
-        </div>
-      </div>
+      <div class="prose ch-intro"><h2>Characters</h2><p>Build your characters one at a time, then pair one of <span data-pname="c">Blair</span>'s with one of <span data-pname="s">Shane</span>'s. A character with no pair waits on the bench until you slot it in, and pairs can swap partners as you level at different speeds.</p></div>
       <div id="pair-notice"></div>
+      <div class="ch-cols" id="ch-cols"></div>
+      <div class="wave-head ch-pairs-head"><span class="eyebrow">Pairs</span><h2>Who levels with whom</h2></div>
+      <p class="muted ch-legend">A pair is judged on <b>synergy</b> first: how the two classes cover each other through crowd control, healing, pets and buffs. Tank plus healer makes dungeons easy, but it is not required. Checks: <span class="tag ok">ok</span> fine, <span class="tag warn">warn</span> a caveat, <span class="tag bad">fix</span> worth changing (shared profession, same class), <span class="tag info">gap</span> something to plan around.</p>
       <div class="waves" id="waves"></div>
+      <details class="box ch-ideas"><summary><b>Ideas:</b> the pairs from the original plan</summary><p class="muted">Each idea adds one character for each of you, already paired. Change anything afterwards.</p><div id="ch-ideas" class="ideas"></div></details>
     </section>
 
     <section class="view" id="view-swap" hidden>
@@ -980,11 +1000,12 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     </section>
 
     <section class="view" id="view-classq" hidden>
+      <p class="notice nopairs-msg">No pairs yet. Pair one of your characters with one of your partner's on the <a href="#pairs" data-goto="pairs">Characters</a> tab first.</p>
       <div class="intro">
         <div class="prose">
           <h2>Class quests</h2>
           <p>Class quests give some of the best rewards while leveling: stances, forms, totems, pets and weapons. Pick a pair to see both characters' class quests on one level line, tick them off per character, and see which ones line up so you can do them on the same trip.</p>
-          <p class="muted" style="font-size:.9rem">The level line and the "due" and "soon" tags use each character's level from the Pairs tab.</p>
+          <p class="muted" style="font-size:.9rem">The level line and the "due" and "soon" tags use each character's level from the Characters tab.</p>
         </div>
         <div class="legend">
           <div class="eyebrow">Labels</div>
@@ -1019,7 +1040,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <div class="prose">
           <h2>Professions</h2>
           <p>Enter each character's skill levels and the recipes or blueprints they have picked up. The funnel shows who should get each material, and the gap fills show which of your characters can already craft something that covers a pair's weak spot.</p>
-          <p class="muted" style="font-size:.9rem">Skill ticks mark recipe and camp object milestones. Characters and their skills move with them when you use Swap on the Pairs tab.</p>
+          <p class="muted" style="font-size:.9rem">Skill ticks mark recipe and camp object milestones. Characters and their skills move with them when you swap them between pairs on the Characters tab.</p>
         </div>
         <div class="legend">
           <div class="eyebrow">Labels</div>
@@ -1066,6 +1087,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
     </section>
 
     <section class="view" id="view-route" hidden>
+      <p class="notice nopairs-msg">No pairs yet. Pair one of your characters with one of your partner's on the <a href="#pairs" data-goto="pairs">Characters</a> tab first.</p>
       <div class="prose">
         <h2>Leveling map</h2>
         <p class="fac-only-h">Each pair follows one of two questing routes. The <b>Eastern Kingdoms Route</b> quests mostly on the eastern continent (Silverpine, Hillsbrad, Arathi, Stranglethorn, Badlands, the Plaguelands). The <b>Kalimdor Route</b> quests mostly on the western continent (Barrens, Ashenvale, Desolace, Feralas, Tanaris, Un'Goro). Both include the new Riverglades zone, and the Kalimdor Route also covers Shen'dralas. Pairs alternate routes so back-to-back pairs see different quests; dungeons stay on the shared checklist either way. Pick a pair to see its starting zone and route numbered in order.</p><p class="fac-only-a">Each Alliance pair follows one of two questing routes. The <b>Eastern Kingdoms Route (Alliance)</b> runs Westfall, Redridge, Duskwood, the Wetlands, Hillsbrad, Arathi, Stranglethorn and on through the Badlands and Hinterlands to the Plaguelands. The <b>Kalimdor Route (Alliance)</b> runs Darkshore, Ashenvale and Stonetalon, a Wetlands stop, then Desolace, Dustwallow, Feralas, Tanaris, Azshara and Un'Goro. Both include the new Riverglades zone, and the Kalimdor Route also covers Shen'dralas. Boats link Menethil Harbor with Auberdine and Theramore, and the tram links Stormwind and Ironforge. Pick a pair to see its starting zone and route numbered in order.</p>
@@ -1090,53 +1112,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
         <div class="prose"><h2>Patch watch</h2><p class="muted">A scheduled Claude check reads the WoW: Forever patch notes, beta development notes and hotfix posts, and lists anything that changes what this ledger says. Nothing here edits the ledger on its own: approve the changes you want, then ask Claude in chat to apply them.</p></div>
         <div class="themes" role="group" aria-label="Check schedule"><button type="button" data-pwmode="beta" aria-pressed="true">Beta</button><button type="button" data-pwmode="live" aria-pressed="false">Launched</button></div>
       </div>
-      <section class="tn-card"><div id="pw-status"></div><div class="bk-acts"><button type="button" class="btn" id="pw-req">Request a check</button></div></section>
-      <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approved, waiting to be applied</h3><div id="pw-appr"></div></section>
-      <h3 style="margin:18px 0 8px">Reports</h3><div id="pw-list" class="pw-list"></div>
-    </section>
-
-    <section class="view" id="view-launch" hidden>
-      <div class="prose"><h2>Launch prep</h2><p class="muted">Everything to settle before November 4: names, realm, addons, the launch night plan and who to invite. All of it is shared, so tick things off as either of you finishes them.</p></div>
-      <div class="ln-count" id="ln-count" role="timer" aria-live="off"></div>
-      <div class="lg-grid">
-        <section class="tn-card"><div class="bk-head"><h3><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Checklist</h3><span class="chip" id="ln-progress"></span></div><ul class="ln-list" id="ln-checks"></ul>
-          <form class="ln-add" id="ln-add-check"><label class="vh" for="ln-new-check">New checklist item</label><input id="ln-new-check" maxlength="140" placeholder="Add an item"><button type="submit" class="btn">Add</button></form></section>
-        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-rocket"/></svg>Realm and launch night</h3><form class="ln-form" id="ln-form" onsubmit="return false">
-          <div class="lg-row"><label style="flex:2 1 10rem">Realm <input id="ln-realm" maxlength="60" placeholder="Not picked yet"></label><label style="flex:1 1 6rem">Type <select id="ln-rtype"><option>PvE</option><option>PvP</option><option>RP</option><option>Hardcore</option></select></label></div>
-          <div class="lg-row"><label style="flex:2 1 10rem">Launch pair <select id="ln-first"></select></label><label style="flex:1 1 6rem">Night one goal <input id="ln-goal" type="number" min="1" max="60"></label></div>
-          <label>Meet at <input id="ln-meet" type="datetime-local"></label>
-          <label>Guild <input id="ln-guild" maxlength="60" placeholder="Name, or the guild you are joining"></label>
-          <label>Notes <textarea id="ln-notes" rows="2" maxlength="1500"></textarea></label></form>
-          <div id="ln-plan"></div></section>
-      </div>
-      <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Names</h3><p class="muted tn-sub">Names here are the same character names used across the ledger. The in-game addon will mark a name as reserved once it sees that character.</p><div class="scroll" id="ln-names"></div></section>
-      <div class="lg-grid" style="margin-top:14px">
-        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>Addons</h3><p class="muted tn-sub">Check that each one supports WoW: Forever before launch.</p><div class="scroll" id="ln-addons"></div>
-          <form class="ln-add" id="ln-add-addon"><label class="vh" for="ln-new-addon">New addon</label><input id="ln-new-addon" maxlength="80" placeholder="Add an addon"><button type="submit" class="btn">Add</button></form></section>
-        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Guild invites</h3><ul class="ln-list" id="ln-guildlist"></ul>
-          <form class="ln-add" id="ln-add-guild"><label class="vh" for="ln-new-guild">Person to invite</label><input id="ln-new-guild" maxlength="40" placeholder="Name or BattleTag"><button type="submit" class="btn">Add</button></form></section>
-      </div>
-    </section>
-
-    <section class="view" id="view-rules" hidden>
-      <div class="cols2">
-        <div class="prose">
-          <h2>Suggested ground rules</h2>
-          <ol>
-            <li><b>Synergy first, roles second.</b> Pick pairs whose classes cover each other: one controls or tanks while the other heals or burns, and both enjoy playing them. One tank plus one healer is the easy default for dungeons, not a rule. A damage pair is fine when it duos well, such as a Demonology Warlock whose pet holds mobs; it just finds a tank or healer in the guild or Group Finder for dungeons.</li>
-            <li><b>Paired characters only earn XP together.</b> Solo time goes to professions, auction house, fishing or travel. If one of you slips a level ahead, the other catches up before the next session.</li>
-            <li><b>Swap checkpoints at 20 and 30.</b> At each, spend five minutes asking whether both of you still enjoy the pair. If not, pick a three-star cell from the swap matrix and level the replacement to match while the other benches.</li>
-            <li><b>Level 40 is the lock.</b> Train riding, set up dual spec (open world plus dungeon), and commit to 60.</li>
-            <li><b>Quests before dungeons.</b> Check the dungeon card a level early and grab every pickup; most <span class="fac-n">Horde</span> dungeon quests start in a capital or a nearby outpost.</li>
-            <li><b>Queue when the lower level hits the quest level, not the Group Finder minimum.</b> Many dungeon quests need a level or more above it (<span class="fac-only-h">Ruins of Lordaeron wants 16, Razorfen Kraul wants 30 for all its quests</span><span class="fac-only-a">the Deadmines wants 16, Gnomeregan wants 28 for all its quests</span>). The Quest-ready check on the Dungeons tab does the math from your levels.</li>
-            <li><b>Split the pickups.</b> When a dungeon's quests start in different cities, each of you collects the shareable ones in one city and you share them when you meet. The Tonight tab writes the split for you; quests marked Not shareable or Own drop still need both of you.</li>
-            <li><b>Loot funnel.</b> In your own runs, anything neither current character can use goes to the right alt. In group finder runs with other players, roll greed for alts rather than need.</li>
-            <li><b>Camp at every logout.</b> Whoever has a Camp Tent drops it before you log; that is free rested XP. Rotate who hosts so the other's object can fill the third slot.</li>
-            <li><b>One crafter per material early.</b> Until each side has several characters past 40, mail bars, leather and cloth to whichever character holds the matching crafting profession.</li>
-            <li><b>Mark new findings here.</b> Notes under each pair are shared, so record quest pickups and drops that the guides missed.</li>
-          </ol>
-        </div>
-        <div class="prose">
+      <section class="tn-card"><div id="pw-status"></div><div class="bk-acts"><button type="button" class="btn" id="pw-req">Request a check</button></div>        <details class="box prose pw-older" style="margin-top:14px"><summary><b>Earlier beta changes</b> already in the ledger</summary>
           <h2>What the Oct 8 build changed</h2>
           <ul>
             <li>Creature XP in dungeons is up about 20%.</li>
@@ -1167,9 +1143,35 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
             <li><a href="https://kami-labs.fr/en/donjons-raids-wow-forever/" target="_blank" rel="noopener">Beta client dungeon list (Group Finder levels)</a></li>
             <li><a href="https://www.icy-veins.com/wow-forever/zones-and-maps" target="_blank" rel="noopener">Icy Veins: zones and maps</a></li>
           </ul>
-        </div>
+        </details>
+    </section>
+      <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approved, waiting to be applied</h3><div id="pw-appr"></div></section>
+      <h3 style="margin:18px 0 8px">Reports</h3><div id="pw-list" class="pw-list"></div>
+    </section>
+
+    <section class="view" id="view-launch" hidden>
+      <div class="prose"><h2>Launch prep</h2><p class="muted">Everything to settle before November 4: names, realm, addons, the launch night plan and who to invite. All of it is shared, so tick things off as either of you finishes them.</p></div>
+      <div class="ln-count" id="ln-count" role="timer" aria-live="off"></div>
+      <div class="lg-grid">
+        <section class="tn-card"><div class="bk-head"><h3><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Checklist</h3><span class="chip" id="ln-progress"></span></div><ul class="ln-list" id="ln-checks"></ul>
+          <form class="ln-add" id="ln-add-check"><label class="vh" for="ln-new-check">New checklist item</label><input id="ln-new-check" maxlength="140" placeholder="Add an item"><button type="submit" class="btn">Add</button></form></section>
+        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-rocket"/></svg>Realm and launch night</h3><form class="ln-form" id="ln-form" onsubmit="return false">
+          <div class="lg-row"><label style="flex:2 1 10rem">Realm <input id="ln-realm" maxlength="60" placeholder="Not picked yet"></label><label style="flex:1 1 6rem">Type <select id="ln-rtype"><option>PvE</option><option>PvP</option><option>RP</option><option>Hardcore</option></select></label></div>
+          <div class="lg-row"><label style="flex:2 1 10rem">Launch pair <select id="ln-first"></select></label><label style="flex:1 1 6rem">Night one goal <input id="ln-goal" type="number" min="1" max="60"></label></div>
+          <label>Meet at <input id="ln-meet" type="datetime-local"></label>
+          <label>Guild <input id="ln-guild" maxlength="60" placeholder="Name, or the guild you are joining"></label>
+          <label>Notes <textarea id="ln-notes" rows="2" maxlength="1500"></textarea></label></form>
+          <div id="ln-plan"></div></section>
+      </div>
+      <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Names</h3><p class="muted tn-sub">Names here are the same character names used across the ledger. The in-game addon will mark a name as reserved once it sees that character.</p><div class="scroll" id="ln-names"></div></section>
+      <div class="lg-grid" style="margin-top:14px">
+        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>Addons</h3><p class="muted tn-sub">Check that each one supports WoW: Forever before launch.</p><div class="scroll" id="ln-addons"></div>
+          <form class="ln-add" id="ln-add-addon"><label class="vh" for="ln-new-addon">New addon</label><input id="ln-new-addon" maxlength="80" placeholder="Add an addon"><button type="submit" class="btn">Add</button></form></section>
+        <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Guild invites</h3><ul class="ln-list" id="ln-guildlist"></ul>
+          <form class="ln-add" id="ln-add-guild"><label class="vh" for="ln-new-guild">Person to invite</label><input id="ln-new-guild" maxlength="40" placeholder="Name or BattleTag"><button type="submit" class="btn">Add</button></form></section>
       </div>
     </section>
+
   </main>
 </div>
 
@@ -1712,7 +1714,7 @@ function runTitle(p,d){const lo=pairLow(p.k), hold=dgHold(d);
 function renderDgReady(){
   const el=$('#dg-ready'); if(!el) return;
   const act=PAIRS.filter(p=>['c','s'].some(w=>state.slots[p.k+'-'+w].status==='Leveling'));
-  if(!act.length){el.innerHTML='<p class="muted">Set a pair to Leveling on the Pairs tab to see which dungeons are quest-ready.</p>';return;}
+  if(!act.length){el.innerHTML='<p class="muted">Set a character in a pair to Leveling on the Characters tab to see which dungeons are quest-ready.</p>';return;}
   el.innerHTML=act.map(p=>{
     const lo=pairLow(p.k), hi=pairHigh(p.k);
     const next=DG.filter(d=>!d.ally&&!state.runs[runKey(p.k,d.id)]&&d.hi>=lo).sort((a,b)=>a.lo-b.lo).slice(0,4);
@@ -1789,7 +1791,7 @@ let ZONE_BY_ID=null;
 function zoneById(){return ZONE_BY_ID||(ZONE_BY_ID=Object.fromEntries(ZONES.map(z=>[z[0],z])));}
 function contOf(id){const z=zoneById()[id];return z?z[2]:'';}
 function renderMap(){
-  const svg=$('#world-map'); if(!svg) return;
+  const svg=$('#world-map'); if(!svg||!PAIRS.length) return;
   const p=PAIRS.find(x=>x.k===$('#route-pair').value)||PAIRS[0];
   const c=state.slots[p.k+'-c'], s=state.slots[p.k+'-s'];
   const starts=[...new Set([RACES[c.race].zone,RACES[s.race].zone])];
@@ -2025,6 +2027,37 @@ for (const p of PAIRS_ALL){
   state.slots[p.k+'-s'] = Object.assign({skill:{},crafts:'',name:'',level:1,status:p.fac==='a'?'Planned':(p.wave===1?(p.k==='A'?'Leveling':'Benched'):'Planned')}, p.s);
   state.pairs[p.k] = {notes:'',route:p.route,title:''};
 }
+/* ---------- Characters and groups ----------
+   Each group k has two seats, k-c and k-s. A seat holds a character when made is true.
+   A group with both seats made is a pair; a character alone in its group has no pair.
+   The plan's pairs (A to R) start empty and work as spare groups; more groups (S, T...) are added as needed. */
+for(const id of Object.keys(state.slots)) Object.assign(state.slots[id],{made:false,tag:'alt',style:'flex'});
+const STYLES={duo:'Duo only',flex:'Flexible',solo:'Solo'}, TAGS={main:'Main',alt:'Alt'};
+function seatDefault(id){const k=id.split('-')[0], w=id.slice(-1), p=PAIRS_ALL.find(x=>x.k===k);
+  return Object.assign({skill:{},crafts:'',name:'',level:1,status:'Planned',made:false,tag:'alt',style:'flex'},p?p[w]:{});}
+function facGroups(f){return (f||FAC)==='a'?PAIRS_A:PAIRS_H;}
+function isMade(id){const sl=state.slots[id]; return !!(sl&&sl.made);}
+function partnerOf(id){const o=id.split('-')[0]+'-'+(id.slice(-1)==='c'?'s':'c'); return isMade(o)?o:null;}
+function pairOf(id){return partnerOf(id)?id.split('-')[0]:null;}
+function pairTag(id){const k=pairOf(id); return k?'pair '+k:'no pair';}
+function groupKeyNext(){const used=new Set(PAIRS_ALL.map(p=>p.k)); for(let i=0;;i++){const k=i<26?String.fromCharCode(65+i):String.fromCharCode(64+Math.floor(i/26))+String.fromCharCode(65+i%26); if(!used.has(k)) return k;}}
+function ensureGroup(k,fac){
+  if(!/^[A-Z0-9]{1,6}$/.test(k)||PAIRS_ALL.some(p=>p.k===k)) return;
+  const f=fac==='a'?'a':'h', base=facGroups(f)[0];
+  const p={k,name:'',wave:0,extra:true,fac:f,route:base.route,c:Object.assign({},base.c),s:Object.assign({},base.s),why:'',pros:[],cons:[],patch:[],swap:''};
+  PAIRS_ALL.push(p); facGroups(f).push(p);
+  ORIG[k]={c:{race:p.c.race,cls:p.c.cls,spec:p.c.spec},s:{race:p.s.race,cls:p.s.cls,spec:p.s.spec}};
+  for(const w of ['c','s']) state.slots[k+'-'+w]=seatDefault(k+'-'+w);
+  state.pairs[k]={notes:'',route:p.route,title:''};
+}
+/* A group with no characters, preferring one with no history */
+function emptyGroup(){
+  const free=facGroups().filter(p=>!isMade(p.k+'-c')&&!isMade(p.k+'-s'));
+  const used=k=>Object.keys(state.runs).some(x=>x.startsWith(k+'__'))||Object.values(state.sessions).some(s=>s&&s.pair===k);
+  const g=free.find(p=>!used(p.k)); if(g) return g.k;
+  const k=groupKeyNext(); ensureGroup(k,FAC); return k;
+}
+function syncPairs(){PAIRS.splice(0,PAIRS.length,...facGroups().filter(p=>isMade(p.k+'-c')&&isMade(p.k+'-s'))); if(PAIRS.length) delete document.documentElement.dataset.nopairs; else document.documentElement.dataset.nopairs='1';}
 let db=null, canWrite=true, synced=false;
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2088,7 +2121,7 @@ function checks(k){
 
 /* ---------- Dynamic pair analysis ---------- */
 const ORIG={}; PAIRS_ALL.forEach(p=>{ORIG[p.k]={c:{race:p.c.race,cls:p.c.cls,spec:p.c.spec},s:{race:p.s.race,cls:p.s.cls,spec:p.s.spec}};});
-function isOriginal(k){const o=ORIG[k];return ['c','s'].every(w=>{const sl=state.slots[k+'-'+w];return sl.race===o[w].race&&sl.cls===o[w].cls&&sl.spec===o[w].spec;});}
+function isOriginal(k){const o=ORIG[k]; if(!o||PAIRS_ALL.find(x=>x.k===k).extra) return false; return ['c','s'].every(w=>{const sl=state.slots[k+'-'+w];return sl.race===o[w].race&&sl.cls===o[w].cls&&sl.spec===o[w].spec;});}
 const RACE_ROLE={
  orc:{tank:'Orc Hardiness shrugs off stuns and Blood Fury adds burst threat',heal:'Orc Shatter Curse clears curses on the healer',dps:'Orc Blood Fury adds burst; Savage adds 1% crit'},
  undead:{tank:'Undead Touch of the Grave adds sustain on the tank; Will of the Forsaken breaks fear',heal:'Undead Cannibalize cuts downtime; Will of the Forsaken breaks fear on the healer',dps:'Undead Cannibalize cuts downtime between pulls'},
@@ -2164,10 +2197,7 @@ function pairAnalysis(k){
 }
 function pairWhy(p){
   if(isOriginal(p.k)) return p.why;
-  const o=ORIG[p.k], diffs=[];
-  for(const w of ['c','s']){const sl=state.slots[p.k+'-'+w], og=o[w];
-    if(sl.race!==og.race||sl.cls!==og.cls||sl.spec!==og.spec) diffs.push(RACES[og.race].name+' '+og.spec+' '+CLASSES[og.cls].name+' is now '+RACES[sl.race].name+' '+specInfo(sl).name+' '+CLASSES[sl.cls].name);}
-  return 'Changed from the original plan: '+diffs.join('; ')+'. The strengths, weaknesses and checks below reflect the new setup.';
+  return 'Your own pair. The strengths, weaknesses and checks below are worked out from these two characters.';
 }
 function pairSwap(p){return isOriginal(p.k)?p.swap:'Check the Swap matrix tab for the best replacement on either side.';}
 function pairPatch(p){const c=state.slots[p.k+'-c'], s=state.slots[p.k+'-s'];return [...new Set([...(PATCH_CLASS[c.cls]||[]),...(c.cls!==s.cls?(PATCH_CLASS[s.cls]||[]):[])])];}
@@ -2238,9 +2268,9 @@ const GAP_CRAFTS={
  heal:[['firstaid',null,'Bandages and healing potions (First Aid in Forever)',2]],
  tank:[['firstaid',null,'Bandages and healing potions to stretch fights',2],['leatherworking',100,'Medium Armor Kit',0]]};
 const ACTIVE=['Leveling','Locked at 40','Level 60'];
-const SLOT_IDS=()=>PAIRS.flatMap(p=>[p.k+'-c',p.k+'-s']);
+const SLOT_IDS=()=>facGroups().flatMap(p=>[p.k+'-c',p.k+'-s']).filter(isMade);
 function skillOf(sl,prof){return Math.max(0,Math.min(300,+((sl.skill||{})[prof])||0));}
-function slotLabel(id){const sl=state.slots[id];return (sl.name||'Unnamed')+' ('+RACES[sl.race].name+' '+CLASSES[sl.cls].name+', pair '+id.split('-')[0]+')';}
+function slotLabel(id){const sl=state.slots[id];return (sl.name||'Unnamed')+' ('+RACES[sl.race].name+' '+CLASSES[sl.cls].name+', '+pairTag(id)+')';}
 function profsOf(sl){return [sl.p1,sl.p2].filter((p,i,a)=>p&&a.indexOf(p)===i).concat(Object.keys(SEC_PROFS));}
 function hasProf(sl,prof){return sl.p1===prof||sl.p2===prof||!!SEC_PROFS[prof];}
 function missingUtils(k){
@@ -2280,13 +2310,13 @@ function profCard(id){
       '<input id="sk-'+id+'-'+prof+'" class="num" type="number" min="0" max="300" data-skill="'+id+'|'+prof+'" value="'+v+'"'+ro+'>'+
       '<div class="pinfo" id="pi-'+id+'-'+prof+'">'+profInfo(prof,v)+'</div>'+(PROF_PLAN[prof]?(()=>{const k=id+'|'+prof, o=ppOpen.has(k); return '<details class="pp" data-pp="'+k+'"'+(o?' open':'')+'><summary>Materials planner</summary><div class="pp-body"'+(o?' data-done="1">'+ppHTML(id,prof):'>')+'</div></details>';})():'')+'</div>';
   }).join('');
-  return '<article class="pcard" data-pcard="'+id+'"><header><span class="who '+who+'">'+esc(pnName(who))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(sl.name||'Unnamed')+'</span><span class="muted" style="font-size:.88rem">'+esc(RACES[sl.race].name+' '+C.name+' · pair '+id.split('-')[0]+' · lvl '+(+sl.level||1))+'</span><span class="chip">'+esc(sl.status)+'</span></header>'+
+  return '<article class="pcard" data-pcard="'+id+'"><header><span class="who '+who+'">'+esc(pnName(who))+'</span>'+raceBadge(sl.race,1)+classBadge(sl.cls,1)+'<span class="cls-name">'+esc(sl.name||'Unnamed')+'</span><span class="muted" style="font-size:.88rem">'+esc(RACES[sl.race].name+' '+C.name+' · '+pairTag(id)+' · lvl '+(+sl.level||1))+'</span><span class="chip">'+esc(sl.status)+'</span></header>'+
    rows+
    '<label class="crafts" for="cr-'+id+'">Recipes, blueprints and key crafts learned<textarea id="cr-'+id+'" data-crafts="'+id+'" placeholder="e.g. Blueprint: Anvil; Heavy Armor Kit; Strong Anti-Venom"'+ro+'>'+esc(sl.crafts||'')+'</textarea></label></article>';
 }
 function renderProfCards(){
   const ids=profFilterIds();
-  $('#pf-cards').innerHTML=ids.length?ids.map(profCard).join(''):'<p class="muted">No characters match this filter. Set a character\'s status to Leveling on the Pairs tab, or show all.</p>';
+  $('#pf-cards').innerHTML=ids.length?ids.map(profCard).join(''):'<p class="muted">No characters match this filter. Set a character\'s status to Leveling on the Characters tab, or show all.</p>';
 }
 function renderProfDerived(){
   const ids=profFilterIds();
@@ -2298,11 +2328,11 @@ function renderProfDerived(){
     const best={};rec.forEach(r=>{if(!best[r[0]]||best[r[0]][2]<r[2])best[r[0]]=r;});
     const list=Object.values(best).sort((a,b)=>b[2]-a[2]).slice(0,5);
     return '<tr><td>'+ic(m.ic,'pi')+' <b>'+esc(m.name)+'</b>'+(m.note?'<div class="muted" style="font-size:.84rem">'+esc(m.note)+'</div>':'')+'</td>'+
-      '<td>'+(gat.length?gat.map(id=>esc(charName(id))+' <span class="muted">· pair '+id.split('-')[0]+'</span>').join('<br>'):'<span class="muted">Nobody in view</span>')+'</td>'+
-      '<td>'+(list.length?list.map(r=>esc(charName(r[0]))+' <span class="muted">'+esc((PROFS[r[1]]?PROFS[r[1]].name:SEC_PROFS[r[1]])+' '+r[2])+' · pair '+r[0].split('-')[0]+'</span>').join('<br>'):'<span class="muted">Nobody in view uses it; sell or bank it</span>')+'</td></tr>';
+      '<td>'+(gat.length?gat.map(id=>esc(charName(id))+' <span class="muted">· '+pairTag(id)+'</span>').join('<br>'):'<span class="muted">Nobody in view</span>')+'</td>'+
+      '<td>'+(list.length?list.map(r=>esc(charName(r[0]))+' <span class="muted">'+esc((PROFS[r[1]]?PROFS[r[1]].name:SEC_PROFS[r[1]])+' '+r[2])+' · '+pairTag(r[0])+'</span>').join('<br>'):'<span class="muted">Nobody in view uses it; sell or bank it</span>')+'</td></tr>';
   }).join('')+'</tbody>';
   /* gap fills */
-  const pairsIn=[...new Set(ids.map(id=>id.split('-')[0]))];
+  const pairsIn=[...new Set(ids.map(pairOf).filter(Boolean))];
   const all=SLOT_IDS();
   $('#pf-gaps').innerHTML=pairsIn.length?pairsIn.map(k=>{
     const gaps=missingUtils(k);
@@ -2315,7 +2345,7 @@ function renderProfDerived(){
         if(SEC_PROFS[prof]&&req===null) return '<div class="gopt">'+profIcon(prof)+' '+esc(item)+flagHTML(f)+' <span class="muted">'+esc(pn)+', low skill</span><br><span class="ok-t">Either of you can make it</span></div>';
         const own=[k+'-c',k+'-s'], order=[...own,...all.filter(id=>!own.includes(id)&&ACTIVE.includes(state.slots[id].status)),...all.filter(id=>!own.includes(id)&&!ACTIVE.includes(state.slots[id].status))];
         const makers=order.filter(id=>hasProf(state.slots[id],prof)&&skillOf(state.slots[id],prof)>=(req||1));
-        return '<div class="gopt">'+esc(item)+flagHTML(f)+' <span class="muted">'+esc(pn)+' '+req+'</span><br>'+(makers.length?'<span class="ok-t">Can make now: '+esc(makers.slice(0,3).map(id=>charName(id)+(own.includes(id)?'':' (pair '+id.split('-')[0]+')')).join(', '))+'</span>':'<span class="warn-t">Nobody yet: needs '+esc(pn)+' '+req+'</span>')+'</div>';
+        return '<div class="gopt">'+esc(item)+flagHTML(f)+' <span class="muted">'+esc(pn)+' '+req+'</span><br>'+(makers.length?'<span class="ok-t">Can make now: '+esc(makers.slice(0,3).map(id=>charName(id)+(own.includes(id)?'':' ('+pairTag(id)+')')).join(', '))+'</span>':'<span class="warn-t">Nobody yet: needs '+esc(pn)+' '+req+'</span>')+'</div>';
       }).join('');
       return '<li><b>'+esc(GAP_NAMES[g])+'</b>'+opts+'</li>';
     }).join('')+'</ul></div>';
@@ -2324,7 +2354,7 @@ function renderProfDerived(){
 function renderProfs(){renderProfCards(); renderProfDerived();}
 
 /* ---------- Swapping characters between pairs ---------- */
-const ui={moving:null};
+const ui={moving:null,editing:new Set(),pairing:null,del:null,pairOpen:new Set()};
 function swapSlots(a,b){
   if(a===b) return;
   const tmp=state.slots[a]; state.slots[a]=state.slots[b]; state.slots[b]=tmp;
@@ -2369,45 +2399,164 @@ function swapSlots(a,b){
     const adds=Object.keys(next).filter(k=>touched(k)&&!before[k]);
     (async()=>{try{for(const k of dels) await db.collection('cq').doc(k).delete(); for(const k of adds) await db.collection('cq').doc(k).set({done:true}); setSync('Saved','on');}catch(e){setSync('Save failed','off');}})();
   }
+  {const ta=state.tal[a], tb=state.tal[b]; if(ta||tb){if(tb) state.tal[a]=tb; else delete state.tal[a]; if(ta) state.tal[b]=ta; else delete state.tal[b]; talWrite(a); talWrite(b);}}
   ui.moving=null;
-  refreshPair(a.split('-')[0]); refreshPair(b.split('-')[0]);
-  renderCamp(); renderMatrix(); renderRoute(); renderCQ(); renderDgList(); renderProfs(); renderTonight(); renderWishlist(); renderMail();
+  syncPairs(); renderAll(true);
+}
+/* Characters: create, pair, unpair, delete. Moving a character between groups uses swapSlots, so its quest ticks, wishlist and sessions move with it. */
+function clearCharData(id){
+  const pre=id+'__';
+  for(const [col,obj] of [['cq',state.cq],['qp',state.qp],['wl',state.wl]]) for(const k of Object.keys(obj)) if(k.startsWith(pre)){delete obj[k]; if(db&&canWrite) db.collection(col).doc(k).delete().catch(()=>{});}
+  if(state.tal[id]){delete state.tal[id]; talWrite(id);}
+}
+function newChar(side,from,gk){
+  if(!canWrite) return null;
+  const k=gk||emptyGroup(), id=k+'-'+side, first=!SLOT_IDS().some(x=>x.endsWith('-'+side));
+  clearCharData(id);
+  const cls=from?from.cls:(side==='c'?'warrior':'priest'), race=from?from.race:facRaces().find(r=>RACES[r].classes.includes(cls));
+  const sl=Object.assign(seatDefault(id),{cls,race,spec:from?from.spec:CLASSES[cls].specs[0][0],made:true,tag:first?'main':'alt',style:'flex',status:'Planned',name:'',level:1,skill:{},crafts:'',reserved:false,alt:'',hearth:'',leg:{}},from?{p1:from.p1,p2:from.p2,camp:from.camp}:{});
+  delete sl.rest; delete sl.inv;
+  if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl)[0];
+  state.slots[id]=sl;
+  if(!partnerOf(id)&&!from){state.pairs[k]={notes:'',route:(PAIRS_ALL.find(p=>p.k===k)||{}).route||state.pairs[k].route,title:''}; savePair(k);}
+  saveSlot(id); syncPairs();
+  return id;
+}
+function pairWith(a,b){
+  if(!canWrite||!isMade(a)||!isMade(b)||a.slice(-1)===b.slice(-1)) return;
+  if(partnerOf(a)===b) return;
+  if(partnerOf(a)) unpairChar(a,true);
+  const seat=b.split('-')[0]+'-'+a.slice(-1);
+  swapSlots(a,seat);
+}
+function unpairChar(id,quiet){
+  if(!canWrite||!partnerOf(id)) return id;
+  const k=emptyGroup(), to=k+'-'+id.slice(-1);
+  clearCharData(to);
+  if(!quiet){state.pairs[k]={notes:'',route:(PAIRS_ALL.find(p=>p.k===k)||{}).route||state.pairs[k].route,title:''}; savePair(k);}
+  swapSlots(id,to);
+  return to;
+}
+function deleteChar(id){
+  if(!canWrite||!isMade(id)) return;
+  clearCharData(id);
+  state.slots[id]=seatDefault(id);
+  writeDoc('slots',id,Object.assign({},state.slots[id]));
+  ui.editing.delete(id);
+  syncPairs(); renderAll(true);
 }
 function moveBoxHTML(id){
   if(ui.moving!==id) return '';
-  const side=id.slice(-1), k=id.split('-')[0];
-  const opts=PAIRS.filter(p=>p.k!==k).map(p=>{const t=p.k+'-'+side, sl=state.slots[t];return opt(t,p.k+' · '+pairName(p.k)+': '+(sl.name||'Unnamed')+', '+RACES[sl.race].name+' '+CLASSES[sl.cls].name+', lvl '+(+sl.level||1)+', '+sl.status,'');}).join('');
+  const side=id.slice(-1);
+  const others=SLOT_IDS().filter(x=>x!==id&&x.endsWith('-'+side)&&state.slots[x].style!=='solo');
+  if(!others.length) return '<div class="movebox"><p class="muted">'+esc(pnName(side))+' has no other characters to swap in yet. Add one under Characters above.</p><div class="mvbtns"><button type="button" class="btn" data-move-cancel="'+id+'">Close</button></div></div>';
+  const opts=others.map(t=>{const sl=state.slots[t];return opt(t,charName(t)+': '+RACES[sl.race].name+' '+CLASSES[sl.cls].name+', lvl '+(+sl.level||1)+(pairOf(t)?', in pair '+pairOf(t)+' with '+charName(partnerOf(t)):', no pair'),'');}).join('');
   return '<div class="movebox"><label for="move-to-'+id+'">Swap this character with</label><select id="move-to-'+id+'">'+opts+'</select>'+
     '<div class="mvbtns"><button type="button" class="btn primary" data-move-go="'+id+'">Swap characters</button><button type="button" class="btn" data-move-cancel="'+id+'">Cancel</button></div>'+
-    '<p class="muted">Each character keeps its name, level, status, class, race, spec, professions, skill levels, recipes and class quest checks. Pair notes, routes and dungeon clears stay with the pair.</p></div>';
+    '<p class="muted">Each character keeps its name, level, class, professions, skill levels, recipes, quest ticks and wishlist. Pair notes, routes and dungeon clears stay with the pair. A character with no pair takes this one\'s place, and this one goes back to having no pair.</p></div>';
 }
 
 /* ---------- Rendering: pairs ---------- */
 function opt(v,label,sel){return '<option value="'+esc(v)+'"'+(v===sel?' selected':'')+'>'+esc(label)+'</option>';}
-function sideHTML(k,who){
-  const sl=state.slots[k+'-'+who], C=CLASSES[sl.cls], R=RACES[sl.race], id=k+'-'+who, ro=canWrite?'':' disabled';
+function charFieldsHTML(id){
+  const sl=state.slots[id], C=CLASSES[sl.cls], ro=canWrite?'':' disabled';
   const races=facRaces().filter(r=>RACES[r].classes.includes(sl.cls));
-  const camp=CAMP[sl.camp];
-  const priestR=(sl.cls==='priest'&&R.priest)?'<div><b>Priest racials:</b> '+esc(R.priest.join('; '))+'</div>':'';
-  return '<div class="side" data-slot="'+id+'">'+
-   '<div class="side-head"><span class="who '+who+'">'+esc(pnName(who))+'</span>'+
-   raceBadge(sl.race)+classBadge(sl.cls)+'<span class="cls-name">'+esc(R.name+' '+specInfo(sl).name+' '+C.name)+'</span>'+roleTag(specInfo(sl).role)+
-   (canWrite?'<button type="button" class="btn mini" data-move="'+id+'" aria-expanded="'+(ui.moving===id)+'">Swap…</button>':'')+'</div>'+moveBoxHTML(id)+
-   '<div class="fields">'+
-    '<label for="'+id+'-name">Character name<input id="'+id+'-name" data-f="name" value="'+esc(sl.name)+'" placeholder="Unnamed"'+(canWrite?'':' readonly')+'></label>'+
-    '<label for="'+id+'-cls">Class<select id="'+id+'-cls" data-f="cls"'+ro+'>'+Object.keys(CLASSES).map(c=>opt(c,CLASSES[c].name,sl.cls)).join('')+'</select></label>'+
+  return '<div class="fields">'+
+    '<label for="'+id+'-name">Character name<input id="'+id+'-name" data-f="name" value="'+esc(sl.name)+'" placeholder="Unnamed" maxlength="24" autocomplete="off"'+(canWrite?'':' readonly')+'></label>'+
+    '<label for="'+id+'-cls">Class<select id="'+id+'-cls" data-f="cls"'+ro+'>'+Object.keys(CLASSES).filter(c=>facRaces().some(r=>RACES[r].classes.includes(c))).map(c=>opt(c,CLASSES[c].name,sl.cls)).join('')+'</select></label>'+
     '<label for="'+id+'-race">Race<select id="'+id+'-race" data-f="race"'+ro+'>'+races.map(r=>opt(r,RACES[r].name,sl.race)).join('')+'</select></label>'+
     '<label for="'+id+'-spec">Spec<select id="'+id+'-spec" data-f="spec"'+ro+'>'+C.specs.map(s=>opt(s[0],s[0]+' ('+s[1]+')',sl.spec)).join('')+'</select></label>'+
-    '<label for="'+id+'-level">Level<input id="'+id+'-level" class="num" type="number" min="1" max="60" data-f="level" value="'+esc(sl.level)+'"'+(canWrite?'':' readonly')+'></label>'+
-    '<label for="'+id+'-status">Status<select id="'+id+'-status" data-f="status"'+ro+'>'+STATUS.map(s=>opt(s,s,sl.status)).join('')+'</select></label>'+
     '<label for="'+id+'-p1">Profession 1<select id="'+id+'-p1" data-f="p1"'+ro+'>'+Object.keys(PROFS).map(p=>opt(p,PROFS[p].name,sl.p1)).join('')+'</select></label>'+
     '<label for="'+id+'-p2">Profession 2<select id="'+id+'-p2" data-f="p2"'+ro+'>'+Object.keys(PROFS).map(p=>opt(p,PROFS[p].name,sl.p2)).join('')+'</select></label>'+
+    '<label for="'+id+'-tag">Main or alt<select id="'+id+'-tag" data-f="tag"'+ro+'>'+Object.keys(TAGS).map(x=>opt(x,TAGS[x],sl.tag)).join('')+'</select></label>'+
+    '<label for="'+id+'-style">Plays<select id="'+id+'-style" data-f="style"'+ro+'>'+Object.keys(STYLES).map(x=>opt(x,STYLES[x],sl.style)).join('')+'</select></label>'+
+    '<label for="'+id+'-status">Status<select id="'+id+'-status" data-f="status"'+ro+'>'+STATUS.map(s=>opt(s,s,sl.status)).join('')+'</select></label>'+
+    '<label for="'+id+'-level">Level<input id="'+id+'-level" class="num" type="number" min="1" max="60" data-f="level" value="'+esc(sl.level)+'"'+(canWrite?'':' readonly')+'></label>'+
     '<label for="'+id+'-camp">Camp object<select id="'+id+'-camp" data-f="camp"'+ro+'>'+campOptions(sl).map(o=>opt(o,CAMP[o].name,sl.camp)).join('')+'</select></label>'+
-   '</div>'+
-   '<div class="campline">'+ic('tent','pi')+'<span class="eyebrow">Camp</span>'+(camp?esc(camp.name+': '+camp.does)+(camp.buff?' <span class="muted">(clashes with '+esc(BUFFS[camp.buff])+')</span>':''):'none')+'</div>'+
-   '<div class="campline">'+profIcon(sl.p1)+'<b>'+esc(PROFS[sl.p1].name)+'</b> '+esc(PROFS[sl.p1].makes)+'</div><div class="campline">'+profIcon(sl.p2)+'<b>'+esc(PROFS[sl.p2].name)+'</b> '+esc(PROFS[sl.p2].makes)+'</div>'+
-   '<div class="racials"><div><b>'+esc(R.name)+':</b> '+esc(R.racials.join('; '))+'</div>'+priestR+'<div><b>Starts:</b> '+esc(R.start)+'</div></div>'+
+   '</div>';
+}
+function charInfoHTML(id){
+  const sl=state.slots[id], R=RACES[sl.race], camp=CAMP[sl.camp];
+  const priestR=(sl.cls==='priest'&&R.priest)?'<div><b>Priest racials:</b> '+esc(R.priest.join('; '))+'</div>':'';
+  return '<div class="campline">'+ic('tent','pi')+'<span class="eyebrow">Camp</span>'+(camp?esc(camp.name+': '+camp.does)+(camp.buff?' <span class="muted">(clashes with '+esc(BUFFS[camp.buff])+')</span>':''):'none')+'</div>'+
+   [sl.p1,sl.p2].filter(p=>PROFS[p]).map(p=>'<div class="campline">'+profIcon(p)+'<b>'+esc(PROFS[p].name)+'</b> '+esc(PROFS[p].makes)+'</div>').join('')+
+   '<div class="racials"><div><b>'+esc(R.name)+':</b> '+esc(R.racials.join('; '))+'</div>'+priestR+'<div><b>Starts:</b> '+esc(R.start)+'</div></div>';
+}
+function sideHTML(k,who){
+  const id=k+'-'+who, sl=state.slots[id], C=CLASSES[sl.cls], R=RACES[sl.race];
+  return '<div class="side" data-side-of="'+id+'">'+
+   '<div class="side-head"><span class="who '+who+'">'+esc(pnName(who))+'</span>'+
+   raceBadge(sl.race)+classBadge(sl.cls)+'<span class="cls-name">'+esc((sl.name?sl.name+' · ':'')+R.name+' '+specInfo(sl).name+' '+C.name)+'</span>'+roleTag(specInfo(sl).role)+
+   '<span class="chip">lvl '+(+sl.level||1)+'</span>'+
+   (canWrite?'<button type="button" class="btn mini" data-move="'+id+'" aria-expanded="'+(ui.moving===id)+'">Swap…</button>':'')+'</div>'+moveBoxHTML(id)+
+   charInfoHTML(id)+
   '</div>';
+}
+/* ---------- Rendering: characters ---------- */
+function charCardHTML(id){
+  const sl=state.slots[id], who=id.slice(-1), C=CLASSES[sl.cls], R=RACES[sl.race], pk=pairOf(id), pt=partnerOf(id), ed=ui.editing.has(id);
+  const other=who==='c'?'s':'c', w=canWrite;
+  let acts='';
+  if(w){
+    acts='<button type="button" class="btn" data-edit="'+id+'" aria-expanded="'+ed+'">'+(ed?'Done':'Edit')+'</button>';
+    if(sl.style!=='solo') acts+='<button type="button" class="btn" data-pairopen="'+id+'" aria-expanded="'+(ui.pairing===id)+'">'+(pt?'Change partner…':'Pair with…')+'</button>';
+    if(pt) acts+='<button type="button" class="btn" data-unpair="'+id+'">Leave pair</button>';
+    acts+='<button type="button" class="btn ch-del" data-delask="'+id+'">Delete</button>';
+  }
+  let box='';
+  if(ui.pairing===id){
+    const cands=SLOT_IDS().filter(x=>x.endsWith('-'+other)&&x!==pt&&state.slots[x].style!=='solo');
+    box=cands.length?'<div class="movebox"><label for="pairto-'+id+'">Pair '+esc(charName(id))+' with</label><select id="pairto-'+id+'">'+cands.map(x=>{const o=state.slots[x];return opt(x,charName(x)+': '+RACES[o.race].name+' '+CLASSES[o.cls].name+', lvl '+(+o.level||1)+(partnerOf(x)?' (now with '+charName(partnerOf(x))+')':''),'');}).join('')+'</select>'+
+      '<div class="mvbtns"><button type="button" class="btn primary" data-pairgo="'+id+'">Pair them</button><button type="button" class="btn" data-pairx="'+id+'">Cancel</button></div>'+
+      '<p class="muted">If the other character already has a partner, that partner goes back to having no pair.</p></div>'
+      :'<div class="movebox"><p class="muted">'+esc(pnName(other))+' has no Duo or Flexible characters yet.</p><div class="mvbtns"><button type="button" class="btn" data-pairx="'+id+'">Close</button></div></div>';
+  }
+  if(ui.del===id) box+='<div class="movebox"><p><b>Delete '+esc(charName(id))+'?</b> Its quest ticks, wishlist and talent picks go with it. Logged sessions stay in the log.</p><div class="mvbtns"><button type="button" class="btn primary" data-delgo="'+id+'">Delete</button><button type="button" class="btn" data-delx="'+id+'">Keep it</button></div></div>';
+  return '<article class="ch-card'+(sl.tag==='main'?' main':'')+'" id="char-'+id+'" data-char="'+id+'">'+
+   '<div class="ch-top">'+raceBadge(sl.race)+classBadge(sl.cls)+'<div class="ch-name"><b>'+esc(sl.name||'Unnamed')+'</b><span class="muted">'+esc(R.name+' '+specInfo(sl).name+' '+C.name+' · lvl '+(+sl.level||1))+'</span></div>'+roleTag(specInfo(sl).role)+'</div>'+
+   '<div class="chips"><span class="chip'+(sl.tag==='main'?' brass':'')+'">'+esc(TAGS[sl.tag]||'Alt')+'</span><span class="chip">'+esc(STYLES[sl.style]||'Flexible')+'</span><span class="chip">'+esc(sl.status)+'</span>'+
+    (pt?'<span class="chip ok">Pair '+esc(pk)+' with '+esc(charName(pt))+'</span>':(sl.style==='solo'?'':'<span class="chip warn">No pair yet</span>'))+
+    [sl.p1,sl.p2].filter(p=>PROFS[p]).map(p=>'<span class="chip">'+profIcon(p)+esc(PROFS[p].name)+'</span>').join('')+'</div>'+
+   (acts?'<div class="ch-acts">'+acts+'</div>':'')+box+
+   (ed?'<div class="ch-edit" data-slot="'+id+'">'+charFieldsHTML(id)+charInfoHTML(id)+'</div>':'')+
+  '</article>';
+}
+function rosterOf(side){return SLOT_IDS().filter(id=>id.endsWith('-'+side)).sort((a,b)=>(state.slots[a].tag==='main'?0:1)-(state.slots[b].tag==='main'?0:1));}
+function rosterColHTML(side){
+  const ids=rosterOf(side), nm=pnName(side);
+  return '<section class="ch-col" data-side="'+side+'"><header class="ch-colhead"><span class="who '+side+'">'+esc(nm)+'</span><h3>'+esc(nm)+'\'s characters</h3>'+
+   (canWrite?'<button type="button" class="btn primary" data-newchar="'+side+'">'+ic('plus','pi')+'New character</button>':'')+'</header>'+
+   (ids.length?ids.map(charCardHTML).join(''):'<p class="muted ch-empty">No characters yet. Add one, then pair it with one of '+esc(pnName(side==='c'?'s':'c'))+'\'s.</p>')+
+  '</section>';
+}
+let chBusy=false;
+function refreshChar(id){
+  const el=document.getElementById('char-'+id); if(!el||!isMade(id)||chBusy) return;
+  const focusId=document.activeElement&&document.activeElement.id;
+  /* replacing a focused field fires blur and change; ignore those nested calls */
+  chBusy=true;
+  try{const tmp=document.createElement('div'); tmp.innerHTML=charCardHTML(id); if(el.parentNode) el.replaceWith(tmp.firstElementChild);}
+  finally{chBusy=false;}
+  if(focusId){const f=document.getElementById(focusId); if(f) f.focus();}
+}
+function renderRoster(force){
+  const host=$('#ch-cols'); if(!host) return;
+  const sig=SLOT_IDS().map(id=>id+(state.slots[id].tag||'')).join()+'|'+pnName('c')+'|'+pnName('s')+'|'+canWrite;
+  if(force||host.dataset.sig!==sig){
+    const focusId=document.activeElement&&host.contains(document.activeElement)&&document.activeElement.id;
+    host.dataset.sig=sig; chBusy=true; try{host.innerHTML=rosterColHTML('c')+rosterColHTML('s');}finally{chBusy=false;}
+    if(focusId){const f=document.getElementById(focusId); if(f) f.focus();}
+    return;
+  }
+  for(const id of SLOT_IDS()){const el=document.getElementById('char-'+id); if(el&&!el.contains(document.activeElement)) refreshChar(id);}
+}
+function renderIdeas(){
+  const host=$('#ch-ideas'); if(!host) return;
+  const ideas=facGroups().filter(p=>!p.extra);
+  const sig=FAC+'|'+canWrite; if(host.dataset.sig===sig) return; host.dataset.sig=sig;
+  host.innerHTML=ideas.map(p=>'<div class="idea"><div class="idea-head">'+classBadge(p.c.cls,1)+classBadge(p.s.cls,1)+'<b>'+esc(p.name)+'</b></div>'+
+    '<div class="muted idea-who"><span data-pname="c">'+esc(pnName('c'))+'</span>: '+esc(RACES[p.c.race].name+' '+p.c.spec+' '+CLASSES[p.c.cls].name)+' · <span data-pname="s">'+esc(pnName('s'))+'</span>: '+esc(RACES[p.s.race].name+' '+p.s.spec+' '+CLASSES[p.s.cls].name)+'</div>'+
+    '<p>'+esc(p.why)+'</p>'+(canWrite?'<button type="button" class="btn" data-idea="'+p.k+'">Add both as a new pair</button>':'')+'</div>').join('');
 }
 function pairHTML(p){
   const c=state.slots[p.k+'-c'], s=state.slots[p.k+'-s'], ov=overlap(c,s), ck=checks(p.k);
@@ -2420,8 +2569,9 @@ function pairHTML(p){
    '<div class="pair-head"><span class="pair-letter">'+p.k+'</span><span class="pbadges">'+classBadge(c.cls)+classBadge(s.cls)+'</span><div class="pair-title"><h3>'+esc(pairName(p.k))+'</h3>'+
    '<div class="chips"><span class="chip '+ovCls+'" title="'+esc(ov.txt)+'">Gear overlap: '+ov.lvl+'</span>'+
    '<span class="chip '+(same?'ok':'warn')+'">'+(same?'Same start':'Separate starts')+'</span>'+
-   '<span class="chip brass">'+esc(route.name)+'</span>'+(isOriginal(p.k)?'':'<span class="chip new">Customized</span>')+'</div></div>'+
+   '<span class="chip brass">'+esc(route.name)+'</span>'+['bad','warn','info'].map(x=>{const n=ck.filter(y=>y[0]===x).length; return n?'<span class="chip '+(x==='info'?'':x)+'">'+n+' '+{bad:'to fix',warn:'caveat'+(n>1?'s':''),info:'gap'+(n>1?'s':'')}[x]+'</span>':'';}).join('')+'</div></div>'+
    '<label class="namepick" for="pname-'+p.k+'">Pair name<select id="pname-'+p.k+'" data-pname="'+p.k+'"'+(canWrite?'':' disabled')+'>'+nameOptions(p.k).map(n=>opt(n,n,pairName(p.k))).join('')+'</select></label></div>'+
+   '<details class="pair-more" data-pmore="'+p.k+'"'+(ui.pairOpen.has(p.k)?' open':'')+'><summary>Characters, strengths and checks</summary>'+
    '<div class="sides">'+sideHTML(p.k,'c')+sideHTML(p.k,'s')+'</div>'+
    '<div class="pair-body"><div><p class="why">'+esc(pairWhy(p))+'</p>'+
     '<div class="pc"><div class="pros"><h4>Strengths</h4><ul>'+an.pros.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>'+
@@ -2431,15 +2581,18 @@ function pairHTML(p){
     ck.map(x=>'<div class="check"><span class="tag '+x[0]+'">'+tagMap[x[0]]+'</span><span>'+esc(x[1])+(x[2]?'<span class="fix"><b>Fill it:</b> '+esc(x[2])+'</span>':'')+'</span></div>').join('')+'</div>'+
     '<div class="cq-mile"><h4>Class quests to plan</h4>'+[c,s].map(sl=>'<div><b>'+esc(CLASSES[sl.cls].name)+':</b> '+esc(cqOf(sl.cls).filter(q=>q.core).map(q=>q.lvl+' '+q.short).join(' · ')||'none')+'</div>').join('')+'</div>'+
     '<div class="patch"><h4>Recent beta changes that matter</h4><ul>'+pairPatch(p).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div>'+
+   '</details>'+
    '<div class="notes"><label for="notes-'+p.k+'">Shared notes<textarea id="notes-'+p.k+'" data-notes="'+p.k+'" placeholder="Quest pickups, drops to funnel, who is ahead…"'+(canWrite?'':' readonly')+'>'+esc(state.pairs[p.k].notes)+'</textarea></label>'+
    '<label for="route-'+p.k+'">Questing route<select id="route-'+p.k+'" data-route="'+p.k+'"'+(canWrite?'':' disabled')+'>'+Object.keys(ROUTES).filter(r=>ROUTES[r].fac===FAC||r===state.pairs[p.k].route).map(r=>opt(r,ROUTES[r].name,state.pairs[p.k].route)).join('')+'</select></label></div>'+
   '</article>';
 }
 function renderPairs(force){
   plSchedule();
-  const host=$('#waves');
-  if(!host.children.length||force){
-    host.innerHTML=[1,2,3,4].map(w=>'<div><div class="wave-head"><span class="eyebrow">Wave '+w+'</span><h2>'+esc(WAVES[w].split(': ')[1])+'</h2></div><div class="wave-body" style="margin-top:14px">'+PAIRS.filter(p=>p.wave===w).map(pairHTML).join('')+'</div></div>').join('');
+  renderRoster(force); renderIdeas();
+  const host=$('#waves'), sig=PAIRS.map(p=>p.k).join()+'|'+canWrite;
+  if(force||host.dataset.sig!==sig){
+    host.dataset.sig=sig;
+    host.innerHTML=PAIRS.length?PAIRS.map(pairHTML).join(''):'<p class="muted">No pairs yet. Use <b>Pair with…</b> on a character above, or add one of the ideas below.</p>';
     return;
   }
   for(const p of PAIRS){
@@ -2566,6 +2719,7 @@ function cqRow(q,slotId,sl,idx){
    (q.tip?'<div class="tip">'+esc(q.tip)+'</div>':'')+'</div></div>';
 }
 function renderCQ(){
+  if(!PAIRS.length) return;
   const sel=$('#cq-pair');
   {const v=sel.value||'A'; sel.innerHTML=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),v)).join('');}
   const p=PAIRS.find(x=>x.k===sel.value)||PAIRS[0];
@@ -2619,6 +2773,7 @@ function renderCQ(){
 
 /* ---------- Route map ---------- */
 function renderRoute(){
+  if(!PAIRS.length) return;
   setTimeout(renderMap,0);
   const sel=$('#route-pair');
   {const v=sel.value||'A'; sel.innerHTML=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),v)).join('');}
@@ -2651,8 +2806,9 @@ function showTab(t){
   document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));
   document.querySelectorAll('section.view').forEach(v=>v.hidden=v.id!=='view-'+t);
 }
+document.addEventListener('click',e=>{const a=e.target.closest('[data-goto]'); if(!a) return; e.preventDefault(); showTab(a.dataset.goto); try{history.replaceState(null,'','#'+a.dataset.goto);}catch(_){} window.scrollTo(0,0);});
 document.querySelector('nav.tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]'); if(!b) return; showTab(b.dataset.tab); try{history.replaceState(null,'','#'+b.dataset.tab);}catch(_){} });
-{const h=(location.hash||'').slice(1); if(['tonight','sched','rested','wish','log','stats','mail','pairs','swap','camp','classq','profs','legacy','talents','dungeons','route','launch','rules','patch'].includes(h)) showTab(h);}
+{const h=(location.hash||'').slice(1); if(['tonight','sched','rested','wish','log','stats','mail','pairs','swap','camp','classq','profs','legacy','talents','dungeons','route','launch','patch'].includes(h)) showTab(h);}
 
 /* ---------- Writes ---------- */
 const timers={};
@@ -2682,33 +2838,61 @@ const localDirty=new Set(), dirtyAt={};
 function saveSlot(id){localDirty.add('slots/'+id); dirtyAt['slots/'+id]=Date.now(); setSync('Saving…'); queue('slot'+id,()=>writeDoc('slots',id,Object.assign({},state.slots[id])),500);}
 function savePair(k){localDirty.add('pairs/'+k); dirtyAt['pairs/'+k]=Date.now(); setSync('Saving…'); queue('pair'+k,()=>writeDoc('pairs',k,Object.assign({},state.pairs[k])),700);}
 
-$('#waves').addEventListener('input',e=>{
+function slotInput(e){
   const t=e.target;
   if(t.dataset.notes){state.pairs[t.dataset.notes].notes=t.value; savePair(t.dataset.notes); return;}
   const side=t.closest('[data-slot]'); if(!side||!t.dataset.f) return;
   if(t.dataset.f==='name'){state.slots[side.dataset.slot].name=t.value.slice(0,24); saveSlot(side.dataset.slot); queue('profs',renderProfs,600);}
   if(t.dataset.f==='level'){const v=Math.max(1,Math.min(60,parseInt(t.value,10)||1)); state.slots[side.dataset.slot].level=v; saveSlot(side.dataset.slot); renderCQ();}
-});
-$('#waves').addEventListener('change',e=>{
+}
+function slotChange(e){
   const t=e.target;
   if(t.dataset.route){state.pairs[t.dataset.route].route=t.value; savePair(t.dataset.route); refreshPair(t.dataset.route); renderRoute(); return;}
   if(t.dataset.pname){state.pairs[t.dataset.pname].title=t.value; savePair(t.dataset.pname); refreshPair(t.dataset.pname); renderCamp(); renderRoute(); renderCQ(); renderDgList(); return;}
-  const side=t.closest('[data-slot]'); if(!side||!t.dataset.f||t.dataset.f==='name'||t.dataset.f==='level') return;
+  const side=t.closest('[data-slot]'); if(!side||!t.dataset.f) return;
   const id=side.dataset.slot, sl=state.slots[id];
+  if(t.dataset.f==='name'||t.dataset.f==='level'){refreshChar(id); refreshPair(id.split('-')[0]); return;}
   sl[t.dataset.f]=t.value;
   if(t.dataset.f==='cls'){
     const C=CLASSES[sl.cls];
     if(!RACES[sl.race].classes.includes(sl.cls)) sl.race=facRaces().find(r=>RACES[r].classes.includes(sl.cls))||sl.race;
     sl.spec=C.specs[0][0];
   }
+  /* one main per player */
+  if(t.dataset.f==='tag'&&sl.tag==='main') for(const x of SLOT_IDS()) if(x!==id&&x.slice(-1)===id.slice(-1)&&state.slots[x].tag==='main'){state.slots[x].tag='alt'; saveSlot(x);}
   if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl).find(k=>k!=='first_aid_kit')||'first_aid_kit';
-  saveSlot(id); refreshPair(id.split('-')[0]); renderCamp(); renderMatrix(); renderRoute(); renderCQ(); renderDgList(); renderProfs();
-});
+  saveSlot(id); renderRoster(); refreshChar(id); refreshPair(id.split('-')[0]); renderCamp(); renderMatrix(); renderRoute(); renderCQ(); renderDgList(); renderProfs();
+}
+for(const h of ['#waves','#ch-cols']){$(h).addEventListener('input',slotInput); $(h).addEventListener('change',slotChange);}
+$('#waves').addEventListener('toggle',e=>{const d=e.target; if(!d.dataset||!d.dataset.pmore) return; if(d.open) ui.pairOpen.add(d.dataset.pmore); else ui.pairOpen.delete(d.dataset.pmore);},true);
 $('#waves').addEventListener('click',e=>{
   const m=e.target.closest('[data-move]'), go=e.target.closest('[data-move-go]'), cn=e.target.closest('[data-move-cancel]');
   if(m){const id=m.dataset.move; ui.moving=ui.moving===id?null:id; refreshPair(id.split('-')[0]); const f=document.getElementById('move-to-'+id); if(f) f.focus(); return;}
   if(cn){const id=cn.dataset.moveCancel; ui.moving=null; refreshPair(id.split('-')[0]); return;}
   if(go){const id=go.dataset.moveGo, sel=document.getElementById('move-to-'+id); if(sel&&sel.value) swapSlots(id,sel.value);}
+});
+function focusSoon(sel){const f=document.querySelector(sel); if(f) f.focus();}
+$('#ch-cols').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b||!canWrite) return; const d=b.dataset;
+  if(d.newchar){const id=newChar(d.newchar); if(!id) return; ui.editing.add(id); renderAll(true); const c=document.getElementById('char-'+id); if(c) c.scrollIntoView({block:'nearest'}); focusSoon('#'+CSS.escape(id+'-name')); return;}
+  if(d.edit){const id=d.edit; if(ui.editing.has(id)) ui.editing.delete(id); else ui.editing.add(id); refreshChar(id); focusSoon(ui.editing.has(id)?'#'+CSS.escape(id+'-name'):'[data-edit="'+id+'"]'); return;}
+  if(d.pairopen){const id=d.pairopen; ui.pairing=ui.pairing===id?null:id; ui.del=null; refreshChar(id); focusSoon('#pairto-'+CSS.escape(id)); return;}
+  if(d.pairx){const id=d.pairx; ui.pairing=null; refreshChar(id); focusSoon('[data-pairopen="'+id+'"]'); return;}
+  if(d.pairgo){const id=d.pairgo, sel=document.getElementById('pairto-'+id); ui.pairing=null; if(sel&&sel.value){const to=sel.value; pairWith(id,to); const k=to.split('-')[0]; const el=document.getElementById('pair-'+k); if(el) el.scrollIntoView({block:'nearest'});} return;}
+  if(d.unpair){const nid=unpairChar(d.unpair); focusSoon('#char-'+CSS.escape(nid)+' [data-pairopen]'); return;}
+  if(d.delask){ui.del=ui.del===d.delask?null:d.delask; ui.pairing=null; refreshChar(d.delask); focusSoon('[data-delgo="'+d.delask+'"]'); return;}
+  if(d.delx){ui.del=null; refreshChar(d.delx); return;}
+  if(d.delgo){ui.del=null; deleteChar(d.delgo); return;}
+});
+$('#ch-ideas').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-idea]'); if(!b||!canWrite) return;
+  const p=PAIRS_ALL.find(x=>x.k===b.dataset.idea); if(!p) return;
+  const own=!isMade(p.k+'-c')&&!isMade(p.k+'-s')&&!Object.keys(state.runs).some(x=>x.startsWith(p.k+'__'));
+  const g=own?p.k:emptyGroup();
+  const c=newChar('c',p.c,g), s=newChar('s',p.s,g); if(!c||!s) return;
+  state.pairs[g]={notes:'',route:p.route,title:own?'':p.name}; savePair(g);
+  syncPairs(); renderAll(true);
+  const el=document.getElementById('pair-'+g); if(el) el.scrollIntoView({block:'start'});
 });
 $('#dg-list').addEventListener('click',e=>{
   const b=e.target.closest('button[data-run]'); if(!b) return;
@@ -2764,11 +2948,11 @@ function renderAll(force){
 
 /* ---------- Search ---------- */
 const sNorm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[’'`]/g,'').replace(/[^a-z0-9+]+/g,' ').trim();
-const S_TYPES=[['char','Characters'],['pair','Pairs'],['dg','Dungeons'],['quest','Dungeon quests'],['cq','Class quests'],['wish','Wishlist items'],['mail','Mailbox'],['chain','Quest chains'],['prof','Professions'],['camp','Camp objects'],['zone','Zones'],['rule','Ground rules and notes']];
+const S_TYPES=[['char','Characters'],['pair','Pairs'],['dg','Dungeons'],['quest','Dungeon quests'],['cq','Class quests'],['wish','Wishlist items'],['mail','Mailbox'],['chain','Quest chains'],['prof','Professions'],['camp','Camp objects'],['zone','Zones']];
 function sIndex(){
   const out=[], add=(type,title,sub,fields,go)=>out.push({type,title,sub,fields:fields.filter(Boolean).map(String),hay:sNorm([title,...fields].join(' | ')),go});
   for(const id of SLOT_IDS()){const sl=state.slots[id]; if(!sl.name) continue; const p=id.split('-')[0];
-    add('char',sl.name,RACES[sl.race].name+' '+CLASSES[sl.cls].name+', level '+(sl.level||1)+', pair '+p,[sl.status],{tab:'pairs',sel:'[data-slot="'+id+'"]'});}
+    add('char',sl.name,RACES[sl.race].name+' '+CLASSES[sl.cls].name+', level '+(sl.level||1)+', '+pairTag(id),[sl.status],{tab:'pairs',sel:'#char-'+id});}
   for(const p of PAIRS){const c=state.slots[p.k+'-c'], s=state.slots[p.k+'-s'];
     add('pair',pairName(p.k),'Pair '+p.k+': '+RACES[c.race].name+' '+CLASSES[c.cls].name+' and '+RACES[s.race].name+' '+CLASSES[s.cls].name,['pair '+p.k,state.pairs[p.k].notes,c.name,s.name],{tab:'pairs',sel:'#pair-'+p.k});}
   for(const d of DG){
@@ -2785,7 +2969,6 @@ function sIndex(){
   for(const [k,cr] of Object.entries(GAP_CRAFTS)) cr.forEach(g=>add('prof',g[2],'Fixes '+k+' ('+(PROFS[g[0]]?PROFS[g[0]].name:g[0])+(g[1]?' '+g[1]:'')+')',[k],{tab:'profs',sel:'#pf-gaps'}));
   for(const o of Object.values(CAMP)) add('camp',o.name,(o.prof==='firstaid'?'First Aid':o.prof==='fishing'?'Fishing':PROFS[o.prof].name)+': '+o.does,[o.does],{tab:'camp',text:o.name});
   ZONES.forEach(z=>add('zone',z[1],z[2]+', levels '+z[3]+' to '+z[4],[z[2]],{tab:'route',text:z[1]}));
-  document.querySelectorAll('#view-rules li').forEach((li,i)=>{const t=li.textContent.trim(); const b=li.querySelector('b'); add('rule',b?b.textContent.replace(/\.$/,''):t.slice(0,70)+(t.length>70?'…':''),'Ground rules',[t],{tab:'rules',rule:i});});
   return out;
 }
 function sSearch(q){
@@ -2867,7 +3050,7 @@ function sGo(r){
       const sel=$('#cq-pair'), pick=PAIRS.find(p=>['c','s'].some(w=>state.slots[p.k+'-'+w].cls===g.cls&&state.slots[p.k+'-'+w].status==='Leveling'))||PAIRS.find(p=>['c','s'].some(w=>state.slots[p.k+'-'+w].cls===g.cls));
       if(pick&&sel.value!==pick.k){sel.value=pick.k; renderCQ();}
       el=document.querySelector('#cq-cols [data-cqid="'+g.cq+'"]')||$('#cq-cols');
-    } else if(g.rule!==undefined){el=document.querySelectorAll('#view-rules li')[g.rule];}
+    }
     else if(g.sel){el=document.querySelector(g.sel);}
     else if(g.text){el=sFindText($('#view-'+g.tab),g.text);}
     sFlash(el||$('#view-'+g.tab));
@@ -2998,7 +3181,7 @@ function splitHTML(p){
   const any=p.c.length||p.s.length||p.both.length||p.meetItems.length||p.entrance.length||p.shareNow.length||p.alt.length;
   if(!any) return '';
   if(p.shareNow.length) lines.push('<li><b>Share now:</b> '+p.shareNow.map(x=>esc(p.who(x.from))+' shares '+esc(x.g.q[0])+' with '+esc(p.who(x.to))).join('; ')+'.</li>');
-  p.alt.forEach(x=>lines.push('<li class="sh-alt"><b>Alt shortcut, '+esc(x.g.q[0])+':</b> '+esc(p.who(x.src))+' logs '+esc(charName(x.src))+' (pair '+x.src.split('-')[0]+'), who is carrying it, and shares it with '+esc(p.who(x.partner))+'\'s '+esc(charName(x.partner))+(x.back?'. Then '+esc(p.who(x.src))+' logs back to '+esc(charName(x.own))+' and '+esc(p.who(x.partner))+' shares it back':'')+'. Skips the trip to '+esc(hubOf(x.g.q[1]))+'.</li>'));
+  p.alt.forEach(x=>lines.push('<li class="sh-alt"><b>Alt shortcut, '+esc(x.g.q[0])+':</b> '+esc(p.who(x.src))+' logs '+esc(charName(x.src))+' ('+pairTag(x.src)+'), who is carrying it, and shares it with '+esc(p.who(x.partner))+'\'s '+esc(charName(x.partner))+(x.back?'. Then '+esc(p.who(x.src))+' logs back to '+esc(charName(x.own))+' and '+esc(p.who(x.partner))+' shares it back':'')+'. Skips the trip to '+esc(hubOf(x.g.q[1]))+'.</li>'));
   for(const w of ['c','s']) if(p[w].length) lines.push('<li><b>'+esc(p.who(p.ids[w==='c'?0:1]))+':</b> '+p[w].map(t=>'<span class="sh-hub">'+esc(t.h)+'</span>'+why(t.why)+' ('+nm(t)+')').join(', then ')+'.</li>');
   if(p.both.length) lines.push('<li><b>Both of you:</b> '+p.both.map(t=>'<span class="sh-hub">'+esc(t.h)+'</span> ('+nm(t)+')').join(', ')+'. These cannot be shared, or only one of you can take them.</li>');
   const shared=[...p.c,...p.s].flatMap(t=>t.items).filter(g=>qShare(g.d,g.q)==='y').length+p.alt.length;
@@ -3106,7 +3289,7 @@ function facOther(){return FAC==='a'?'Horde':'Alliance';}
 function facGet(){try{return localStorage.getItem('fdl-faction')==='a'?'a':'h';}catch(_){return 'h';}}
 var FAC=facGet();
 function facApply(){
-  PAIRS.splice(0,PAIRS.length,...(FAC==='a'?PAIRS_A:PAIRS_H));
+  syncPairs();
   for(const d of DG){d.q=FAC==='a'?d.qA:d.qH; d.ally=FAC==='a'?d.offA:d.offH; d.note=FAC==='a'?d.noteA:d.noteH; d.otherQ=FAC==='a'?d.qH.filter(q=>qSide(d,q)==='h'):d.allyQ;}
   for(const k of Object.keys(STAGE)) delete STAGE[k]; Object.assign(STAGE,FAC==='a'?STAGE_A:STAGE_H);
   TP_CITIES.splice(0,TP_CITIES.length,...(FAC==='a'?TP_A:TP_H));
@@ -3138,6 +3321,7 @@ function hubOf(pick){
 }
 function tnStoredPair(){try{return localStorage.getItem('fdl-tonight')||'';}catch(_){return '';}}
 function tnPair(){
+  if(!PAIRS.length) return '';
   const sel=$('#tn-pair'); let k=sel.value||tnStoredPair();
   if(!PAIRS.some(p=>p.k===k)) k=(PAIRS.find(p=>['c','s'].some(w=>state.slots[p.k+'-'+w].status==='Leveling'))||PAIRS[0]).k;
   return k;
@@ -3158,7 +3342,7 @@ function renderTonight(){ if(typeof renderLegNear==='function') renderLegNear();
 }
 function renderTonightInner(){
   const sel=$('#tn-pair'); if(!sel) return;
-  const k=tnPair();
+  const k=tnPair(); if(!k) return;
   const opts=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),k)).join('');
   if(sel.dataset.sig!==opts){sel.innerHTML=opts; sel.dataset.sig=opts;} sel.value=k;
   const ids=[k+'-c',k+'-s'], lo=pairLow(k), hi=pairHigh(k);
@@ -3408,7 +3592,7 @@ function wlWants(slotId,it){
   return wlAuto(state.slots[slotId],it);
 }
 function wlGot(slotId,it){ if(it.c===-2) return !!state.cq[cqKey(slotId,it.cqid)]; return wlGet(slotId,it.key)==='got'; }
-function wlScopeIds(){const v=$('#wl-for').value||'all'; if(v==='all') return SLOT_IDS(); if(v.startsWith('p:')){const k=v.slice(2); return [k+'-c',k+'-s'];} return [v];}
+function wlScopeIds(){const v=$('#wl-for').value||'all'; if(v==='all') return SLOT_IDS(); if(v.startsWith('p:')){const k=v.slice(2); return PAIRS.some(p=>p.k===k)?[k+'-c',k+'-s']:SLOT_IDS();} return isMade(v)?[v]:SLOT_IDS();}
 function wlLevelOk(it,ids){
   const mode=$('#wl-lvl').value; if(mode==='all') return true;
   const req=it.req||0;
@@ -3419,7 +3603,7 @@ function wlLevelOk(it,ids){
 }
 function wlRenderFilters(){
   const sel=$('#wl-for'), v=sel.value||('p:'+tnPair());
-  const o='<option value="all">All characters</option>'+PAIRS.map(p=>opt('p:'+p.k,'Pair '+p.k+' · '+pairName(p.k),v)).join('')+SLOT_IDS().filter(id=>state.slots[id].name).map(id=>opt(id,charName(id)+' ('+id.split('-')[0]+')',v)).join('');
+  const o='<option value="all">All characters</option>'+PAIRS.map(p=>opt('p:'+p.k,'Pair '+p.k+' · '+pairName(p.k),v)).join('')+SLOT_IDS().filter(id=>state.slots[id].name).map(id=>opt(id,charName(id)+' ('+pairTag(id)+')',v)).join('');
   if(sel.dataset.sig!==o){sel.innerHTML=o; sel.dataset.sig=o;}
   sel.value=[...sel.options].some(x=>x.value===v)?v:'all';
   const cats=$('#wl-cats');
@@ -3537,7 +3721,7 @@ function lgFmtH(h){return h<1?Math.round(h*60)+' min':(Math.round(h*10)/10)+' h'
 function lgFmtDate(d){try{return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}catch(_){return '';}}
 function lgPairSel(){const sel=$('#lg-pair'); const v=sel.value||tnPair(); const o=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),v)).join(''); if(sel.dataset.sig!==o){sel.innerHTML=o; sel.dataset.sig=o;} sel.value=v; return v;}
 function renderLog(){
-  if(!$('#view-log')) return;
+  if(!$('#view-log')||!PAIRS.length) return;
   const k=lgPairSel(), ids=[k+'-c',k+'-s'];
   /* form defaults (only when the pair changes or the form is empty) */
   const f=$('#lg-form');
@@ -3558,7 +3742,7 @@ function renderLog(){
     return '<tr><td>'+classBadge(state.slots[id].cls,1)+' '+esc(charName(id))+' <span class="mono muted">lvl '+(state.slots[id].level||1)+'</span></td><td>'+st.n+'</td><td>'+lgFmtH(st.min/60)+'</td><td>'+st.lv+'</td><td>'+(st.perHour?Math.round(st.perHour).toLocaleString():'–')+'</td><td>'+cell(e40)+'</td><td>'+cell(e60)+'</td></tr>';
   }).join('')+'</tbody></table>';
   const lv=ids.map(id=>+state.slots[id].level||1);
-  $('#lg-sync').innerHTML=Math.abs(lv[0]-lv[1])>=2?'<p class="notice">'+esc(charName(lv[0]>lv[1]?ids[0]:ids[1]))+' is '+Math.abs(lv[0]-lv[1])+' levels ahead. Ground rule: paired characters only earn XP together.</p>':'';
+  $('#lg-sync').innerHTML=Math.abs(lv[0]-lv[1])>=2?'<p class="notice">'+esc(charName(lv[0]>lv[1]?ids[0]:ids[1]))+' is '+Math.abs(lv[0]-lv[1])+' levels ahead. Catch up before your next session together.</p>':'';
   /* chart: level against hours played */
   const svg=$('#lg-chart'), W=640,H=200,L=36,R=12,T=12,B=26, series=ids.map(id=>lgCharStats(id).pts), maxH=Math.max(1,...series.flat().map(p=>p.min/60)), lvls=series.flat().map(p=>p.lvl).concat(lv), minL=Math.max(1,Math.min(...lvls)-1), maxL=Math.min(60,Math.max(...lvls)+1);
   const x=h=>L+(h/maxH)*(W-L-R), y=l=>T+(1-(l-minL)/Math.max(1,maxL-minL))*(H-T-B);
@@ -3621,7 +3805,7 @@ $('#lg-csv').addEventListener('click',()=>{
   bkSave(csv,'forever-duo-session-log-'+bkLocalDate()+'.csv');
 });
 /* ---------- Addon import (future live connection uses the same function) ---------- */
-function slotByName(n){const t=String(n||'').trim().toLowerCase(); return Object.keys(state.slots).find(id=>(state.slots[id].name||'').toLowerCase()===t)||null;}
+function slotByName(n){const t=String(n||'').trim().toLowerCase(); return Object.keys(state.slots).find(id=>state.slots[id].made&&(state.slots[id].name||'').toLowerCase()===t)||null;}
 function ingestAddon(obj){
   if(!obj||obj.app!=='ForeverDuoLedger'||!(obj.v>=1)) throw 'This is not a Forever Duo Ledger addon export.';
   const plan={sessions:[],updates:[],levels:{},hearths:{},rest:{},skills:{},inv:{},qp:{},wl:{},runs:[],mail:[],seen:[],addons:{},unmatched:new Set(),skipped:0};
@@ -3663,7 +3847,7 @@ function lgQueue(plan,prev,doc){
 let lgPlan=null;
 function lgPlanText(p){
   const pl=(n,w)=>n+' '+w+(n===1?'':'s');
-  return [pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger; name the character on the Pairs tab to match.':'');
+  return [pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger; name the character on the Characters tab to match.':'');
 }
 /* The addon's SavedVariables file (DuoLedger.lua) is Lua, not JSON. It keeps the latest export as a Lua string under ["lastExport"]. */
 function lgFromLua(text){
@@ -3727,11 +3911,11 @@ function luaVal(v,ind){
 function lgGameData(){
   const chars=[], all=wlBuild();
   for(const id of Object.keys(state.slots)){
-    const sl=state.slots[id]; if(!sl||!sl.name) continue;
-    const [k,side]=id.split('-'), ps=state.slots[k+'-'+(side==='c'?'s':'c')];
+    const sl=state.slots[id]; if(!sl||!sl.made||!sl.name) continue;
+    const side=id.slice(-1), ps=partnerOf(id)?state.slots[partnerOf(id)]:null;
     let wl=[]; try{wl=all.filter(it=>it.c!==-2&&it.id&&wlWants(id,it)&&!wlGot(id,it)).sort((a,b)=>(a.req||0)-(b.req||0)).slice(0,60).map(it=>({id:it.id,name:it.name,level:it.req||0}));}catch(_){}
     const mail=mlToSend(id).slice(0,40).map(m=>({to:m.to&&state.slots[m.to]?charName(m.to):'',item:m.item,qty:m.qty||1,standing:!!m.standing,note:m.note||''}));
-    chars.push({name:sl.name,level:+sl.level||1,class:(CLASSES[sl.cls]||{}).name||'',hearth:sl.hearth||'',player:state.players[side]||'',partner:ps&&ps.name?ps.name:'',partnerLevel:ps&&ps.name?(+ps.level||1):0,wishlist:wl,mail});
+    chars.push({name:sl.name,level:+sl.level||1,class:(CLASSES[sl.cls]||{}).name||'',hearth:sl.hearth||'',player:state.players[side]||'',partner:ps&&ps.name?ps.name:'',partnerLevel:ps&&ps.name?(+ps.level||1):0,tag:sl.tag||'alt',style:sl.style||'flex',wishlist:wl,mail});
   }
   return {app:'ForeverDuoLedger',v:1,at:new Date().toISOString().replace(/\.\d+Z$/,'Z'),characters:chars};
 }
@@ -3741,7 +3925,7 @@ function lgGameFile(){
 $('#lg-send-game').addEventListener('click',async()=>{
   const msg=$('#lg-game-msg'), text=lgGameFile(), filename='LedgerData.lua';
   const n=lgGameData().characters.length;
-  if(!n){msg.textContent='Name your characters on the Pairs tab first, so the addon knows who is who.'; return;}
+  if(!n){msg.textContent='Name your characters on the Characters tab first, so the addon knows who is who.'; return;}
   if(downloads){
     try{await downloads.save({filename,data:text}); msg.textContent='Saved '+filename+' with '+n+' character'+(n===1?'':'s')+'. Put it in Interface\\AddOns\\DuoLedger, then /reload in game.'; return;}
     catch(e){const c=e&&e.code; if(c==='declined'){msg.textContent='Save cancelled.'; return;} if(c==='rate_limited'){msg.textContent='A save prompt is already open.'; return;}}
@@ -3772,6 +3956,7 @@ function bkClean(obj){
   if(!obj||typeof obj!=='object'||obj.app!=='forever-duo-ledger'||!obj.data||typeof obj.data!=='object') throw 'This file is not a Forever Duo Ledger backup.';
   const d=obj.data, out={slots:{},pairs:{},runs:[],cq:[],qp:{},wl:{},sessions:{},mail:{},players:bkClone(state.players)};
   const str=(v,n)=>typeof v==='string'?v.slice(0,n):null;
+  if(d.slots&&typeof d.slots==='object') for(const id of Object.keys(d.slots)) if(/^[A-Z0-9]{1,6}-[cs]$/.test(id)&&!state.slots[id]&&d.slots[id]&&d.slots[id].made) ensureGroup(id.split('-')[0],RACES[d.slots[id].race]?RACES[d.slots[id].race].fac:'h');
   for(const id of Object.keys(state.slots)){
     const src=d.slots&&d.slots[id]; const sl=bkClone(state.slots[id]);
     if(src&&typeof src==='object'){
@@ -3789,6 +3974,8 @@ function bkClean(obj){
       if(src.rest&&typeof src.rest==='object'&&REST_PLACE[src.rest.place]&&!isNaN(new Date(src.rest.at))) sl.rest={place:src.rest.place,at:String(src.rest.at).slice(0,40),pct:Math.max(0,Math.min(150,+src.rest.pct||0))};
       if(src.leg&&typeof src.leg==='object'){const lg={}; for(const k of Object.keys(src.leg)){const pk=LEG_PERKS.find(x=>x[0]===k); const n=parseInt(src.leg[k],10); if(pk&&n>0) lg[k]=Math.min(pk[3],n);} sl.leg=lg;}
       const al=str(src.alt,24); if(al!==null) sl.alt=al; if(typeof src.reserved==='boolean') sl.reserved=src.reserved;
+      /* backups from before characters existed have no made flag; keep who is a character now */
+      if(typeof src.made==='boolean') sl.made=src.made; if(TAGS[src.tag]) sl.tag=src.tag; if(STYLES[src.style]) sl.style=src.style;
     }
     out.slots[id]=sl;
   }
@@ -3898,7 +4085,7 @@ async function bkApply(data){
     state.mail=bkClone(data.mail||{});
     state.players=Object.assign({},data.players);
     bkPending=null; bkMsg('Restored. The previous ledger is saved in the snapshot list.','ok'); setSync('Saved','on');
-    renderAll(true);
+    syncPairs(); renderAll(true);
   }catch(e){
     const c=e&&e.code;
     bkMsg(c==='quota_exceeded'?'Storage is full, so the restore stopped part way. Delete old snapshots and try again.':c==='resource_exhausted'?'Too many saves at once; wait a minute and restore again.':'The restore stopped part way. Restore the "Before a restore" snapshot to go back, or try again.','bad');
@@ -3979,10 +4166,10 @@ function renderRested(){
   const rank=restRank();
   $('#rs-best').innerHTML=rank.length?(()=>{const t=rank[0]; return t.min===null?'<p class="muted">Set where each character logged out to see who is most rested.</p>':
     '<p class="rs-pick"><b>Play pair '+t.k+' · '+esc(pairName(t.k))+'</b>: both have at least '+Math.round(t.min)+'% of a level rested'+(t.gap>=2?', but they are '+t.gap+' levels apart':'')+'.</p>'+
-    '<ol class="rs-rank">'+rank.slice(0,5).map(x=>'<li><b>'+x.k+'</b> '+esc(pairName(x.k))+' <span class="muted">'+(x.min===null?'not set':Math.round(x.min)+'% for the less rested')+'</span></li>').join('')+'</ol>';})():'<p class="muted">No pair is set to playing yet. Mark a pair Leveling or Benched on the Pairs tab.</p>';
+    '<ol class="rs-rank">'+rank.slice(0,5).map(x=>'<li><b>'+x.k+'</b> '+esc(pairName(x.k))+' <span class="muted">'+(x.min===null?'not set':Math.round(x.min)+'% for the less rested')+'</span></li>').join('')+'</ol>';})():'<p class="muted">No pair is set to playing yet. Mark a pair Leveling or Benched on the Characters tab.</p>';
   const ids=SLOT_IDS().filter(id=>showAll||state.slots[id].status!=='Planned');
   $('#rs-list').innerHTML=ids.length?ids.map(id=>{const sl=state.slots[id], r=restOf(id), p=restNow(id), full=restFullAt(id);
-    return '<li class="rs-row"><div class="rs-who">'+classBadge(sl.cls,1)+'<div><b>'+esc(charName(id))+'</b> <span class="mono muted">lvl '+(sl.level||1)+' · '+id.split('-')[0]+'</span>'+
+    return '<li class="rs-row"><div class="rs-who">'+classBadge(sl.cls,1)+'<div><b>'+esc(charName(id))+'</b> <span class="mono muted">lvl '+(sl.level||1)+' · '+pairTag(id)+'</span>'+
       '<div class="rs-now">'+restBar(p,id)+'<span>'+restLabel(p)+'</span></div>'+
       '<div class="muted tn-sub">'+(r?REST_PLACE[r.place]+', logged out '+restAgo(r.at)+(p>=REST_CAP*legRestMult(id)-0.01?' · full':full?' · full '+esc(full.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})):''):'Logout spot not set')+'</div></div></div>'+
       '<div class="rs-set"><label>Logged out at <select data-rs="place|'+id+'"'+dis+'>'+Object.keys(REST_PLACE).map(k=>opt(k,REST_PLACE[k],r?r.place:'inn')).join('')+'</select></label>'+
@@ -4199,22 +4386,23 @@ function mlRow(m,mode){
 let mlDelArm=null;
 function mlMe(){
   const sel=$('#ml-me'); let v=sel.value; if(!v){try{v=localStorage.getItem('fdl-mailchar')||'';}catch(_){}}
-  if(!state.slots[v]||!SLOT_IDS().includes(v)){const k=tnPair(); v=[k+'-c',k+'-s'].find(mlPlaying)||k+'-s';}
+  if(!state.slots[v]||!SLOT_IDS().includes(v)){const k=tnPair(); v=k?([k+'-c',k+'-s'].find(mlPlaying)||k+'-s'):(SLOT_IDS()[0]||'');}
   return v;
 }
 function mlCharOptions(sel,withAny){
   const ids=SLOT_IDS(), play=ids.filter(mlPlaying), plan=ids.filter(id=>!mlPlaying(id));
-  const o=id=>'<option value="'+id+'"'+(id===sel?' selected':'')+'>'+esc(charName(id))+' · '+id.split('-')[0]+' · lvl '+(state.slots[id].level||1)+'</option>';
+  const o=id=>'<option value="'+id+'"'+(id===sel?' selected':'')+'>'+esc(charName(id))+' · '+pairTag(id)+' · lvl '+(state.slots[id].level||1)+'</option>';
   return (withAny?'<option value=""'+(sel===''?' selected':'')+'>Whoever has it</option>':'')+(play.length?'<optgroup label="Playing">'+play.map(o).join('')+'</optgroup>':'')+(plan.length?'<optgroup label="Planned">'+plan.map(o).join('')+'</optgroup>':'');
 }
 function renderMail(){
   if(!$('#view-mail')) return;
   const ae=document.activeElement; let keep=null; if(ae&&ae.closest&&ae.closest('#view-mail')){const at=[...ae.attributes].find(x=>/^data-ml/.test(x.name)); if(at) keep=[at.name.slice(5),at.value];}
-  const me=mlMe(), sel=$('#ml-me'), so=mlCharOptions(me,false);
+  const me=mlMe(), sel=$('#ml-me'); if(!me){$('#ml-count').textContent=''; return;}
+  const so=mlCharOptions(me,false);
   if(sel.dataset.sig!==so){sel.innerHTML=so; sel.dataset.sig=so;} sel.value=me;
   /* form selects keep their choice */
   for(const [id,any,def] of [['#ml-from',true,me],['#ml-to',false,'']]){const s=$(id), cur=s.dataset.init?s.value:def, h=mlCharOptions(cur,any); if(s.dataset.sig!==h){s.innerHTML=h; s.dataset.sig=h; s.value=cur; s.dataset.init='1';}}
-  if(!$('#ml-to').value){const k=me.split('-')[0], other=me.endsWith('-c')?k+'-s':k+'-c'; $('#ml-to').value=other;}
+  if(!$('#ml-to').value&&partnerOf(me)) $('#ml-to').value=partnerOf(me);
   $('#ml-me-name').textContent=charName(me);
   const send=mlToSend(me), get=mlToGet(me);
   $('#ml-send').innerHTML=send.length?'<ul class="tn-list">'+send.map(m=>mlRow(m,'send')).join('')+'</ul>':'<p class="muted">Nothing to send from this character.</p>';
@@ -4350,10 +4538,9 @@ function askContext(k){
   const pace=ids.map(id=>{const st=lgCharStats(id), e=lgEta(id,40); return charName(id)+': '+st.n+' sessions, '+Math.round(st.min/60*10)/10+' h logged'+(st.perHour?', '+Math.round(st.perHour)+' XP/h':'')+(e&&e.h?', about '+Math.round(e.h)+' h to 40':'');});
   const mail=[]; ids.forEach(id=>{mlToSend(id).forEach(m=>mail.push('send '+m.item+' from '+mlWho(m.from)+' to '+charName(m.to))); mlToGet(id).forEach(m=>mail.push('collect '+m.item+' on '+charName(id)));});
   const others=PAIRS.filter(p=>p.k!==k).map(p=>p.k+' '+pairName(p.k)+': '+[p.k+'-c',p.k+'-s'].map(id=>charName(id)+' lvl '+(state.slots[id].level||1)+' '+state.slots[id].status).join(' + '));
-  const rules=[...document.querySelectorAll('#view-rules li')].map(li=>li.textContent.trim().replace(/\s+/g,' ')).join('\n').slice(0,3500);
   const patch=pwReports()[0];
   return {pair:k, pairName:pairName(k), notes:(state.pairs[k].notes||'').slice(0,1500), route:state.pairs[k].route, characters:ids.map(askCharInfo), levelGap:pairHigh(k)-lo,
-    nextDungeons:next, carrying, classQuestsDue:cq, pace, mailbox:mail, otherPairs:others, groundRules:rules,
+    nextDungeons:next, carrying, classQuestsDue:cq, pace, mailbox:mail, otherPairs:others,
     latestPatchReport:patch?{at:patch.at,summary:patch.summary}:null, today:new Date().toDateString(), launch:'WoW: Forever launches Nov 4, 2026'};
 }
 const ASK_TOOLS=[
@@ -4568,7 +4755,7 @@ function renderLaunch(){
   /* names: current faction's launch-relevant pairs (waves 1 and 2 first) */
   const ids=SLOT_IDS();
   if(!typing) $('#ln-names').innerHTML='<table class="st-table"><thead><tr><th>Character</th><th>Name</th><th>Backup</th><th>Reserved</th></tr></thead><tbody>'+ids.map(id=>{const sl=state.slots[id], p=PAIRS_ALL.find(x=>x.k===id.split('-')[0]);
-    return '<tr><td>'+classBadge(sl.cls,1)+' <span class="mono muted">'+id.split('-')[0]+'</span> '+esc(RACES[sl.race].name+' '+CLASSES[sl.cls].name)+'<div class="muted tn-sub">'+esc(state.players[id.slice(-1)])+(p&&p.wave<=1?' · launch wave':'')+'</div></td>'+
+    return '<tr><td>'+classBadge(sl.cls,1)+' <span class="mono muted">'+pairTag(id)+'</span> '+esc(RACES[sl.race].name+' '+CLASSES[sl.cls].name)+'<div class="muted tn-sub">'+esc(state.players[id.slice(-1)])+(p&&p.wave===1&&isOriginal(p.k)?' · launch wave':'')+'</div></td>'+
       '<td><input data-lnname="'+id+'" value="'+esc(sl.name||'')+'" maxlength="12" placeholder="Name" aria-label="Name for '+esc(slotLabel(id))+'"'+(canWrite?'':' readonly')+'></td>'+
       '<td><input data-lnalt="'+id+'" value="'+esc(sl.alt||'')+'" maxlength="12" placeholder="Backup" aria-label="Backup name for '+esc(slotLabel(id))+'"'+(canWrite?'':' readonly')+'></td>'+
       '<td><input type="checkbox" data-lnres="'+id+'"'+(sl.reserved?' checked':'')+dis+' aria-label="'+esc((sl.name||'Name')+' reserved')+'"></td></tr>';}).join('')+'</tbody></table>';
@@ -4579,8 +4766,9 @@ function renderLaunch(){
     $('#ln-meet').value=cfg.meet?(()=>{const d=new Date(cfg.meet), z=n=>String(n).padStart(2,'0'); return isNaN(d)?'':d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'T'+z(d.getHours())+':'+z(d.getMinutes());})():'';
     const fk=FAC==='a'?'firstA':'firstH'; $('#ln-first').innerHTML=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),cfg[fk])).join('');}
   const fp=FAC==='a'?cfg.firstA:cfg.firstH, pr=PAIRS.find(p=>p.k===fp)||PAIRS[0];
-  const starts=[...new Set([pr.k+'-c',pr.k+'-s'].map(id=>RACES[state.slots[id].race].start))];
-  $('#ln-plan').innerHTML='<p><b>'+esc(pairName(pr.k))+'</b>: '+[pr.k+'-c',pr.k+'-s'].map(id=>esc((state.slots[id].name||'Unnamed')+' the '+RACES[state.slots[id].race].name+' '+specInfo(state.slots[id]).name+' '+CLASSES[state.slots[id].cls].name)).join(' and ')+'. '+(starts.length===1?'You both start in '+esc(starts[0])+'.':'You start apart: '+starts.map(esc).join(' and ')+'.')+(cfg.meet?' Meet '+esc(new Date(cfg.meet).toLocaleString(undefined,{weekday:'long',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))+'.':'')+(cfg.goal?' Goal for night one: level '+cfg.goal+'.':'')+'</p>';
+  if(!pr) $('#ln-plan').innerHTML='<p class="muted">Pair two characters on the Characters tab to plan launch night.</p>';
+  else{const starts=[...new Set([pr.k+'-c',pr.k+'-s'].map(id=>RACES[state.slots[id].race].start))];
+  $('#ln-plan').innerHTML='<p><b>'+esc(pairName(pr.k))+'</b>: '+[pr.k+'-c',pr.k+'-s'].map(id=>esc((state.slots[id].name||'Unnamed')+' the '+RACES[state.slots[id].race].name+' '+specInfo(state.slots[id]).name+' '+CLASSES[state.slots[id].cls].name)).join(' and ')+'. '+(starts.length===1?'You both start in '+esc(starts[0])+'.':'You start apart: '+starts.map(esc).join(' and ')+'.')+(cfg.meet?' Meet '+esc(new Date(cfg.meet).toLocaleString(undefined,{weekday:'long',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))+'.':'')+(cfg.goal?' Goal for night one: level '+cfg.goal+'.':'')+'</p>';}
   /* addons */
   $('#ln-addons').innerHTML='<table class="st-table"><thead><tr><th>Addon</th><th>'+esc(state.players.c)+'</th><th>'+esc(state.players.s)+'</th><th></th></tr></thead><tbody>'+addons.map(a=>'<tr><td><b>'+esc(a.t)+'</b>'+(a.why?'<div class="muted tn-sub">'+esc(a.why)+'</div>':'')+'</td>'+['c','s'].map(w=>'<td><input type="checkbox" data-lnadd="'+esc(a.id+'|'+w)+'"'+(a[w]?' checked':'')+dis+' aria-label="'+esc(state.players[w]+' installed '+a.t)+'"></td>').join('')+'<td>'+(canWrite?'<button type="button" class="btn mini" data-lndel="'+esc(a.id)+'" aria-label="Remove '+esc(a.t)+'">Remove</button>':'')+'</td></tr>').join('')+'</tbody></table>';
   /* guild invites */
@@ -4964,7 +5152,7 @@ function renderPlay(){
   if(keep){const el=keep[0]==='id'?document.getElementById(keep[1]):document.querySelector('#play ['+keep[0]+'="'+CSS.escape(keep[1])+'"]'); if(el&&!el.disabled) el.focus();}
 }
 function renderPlayInner(){
-  const sel=$('#pl-pair'), k=plPair();
+  const sel=$('#pl-pair'), k=plPair(); if(!k) return;
   const opts=PAIRS.map(p=>opt(p.k,p.k+' · '+pairName(p.k),k)).join('');
   if(sel.dataset.sig!==opts){sel.innerHTML=opts; sel.dataset.sig=opts;} sel.value=k;
   const ids=[k+'-c',k+'-s'], L=plLive(k), lo=pairLow(k), hi=pairHigh(k), dis=canWrite?'':' disabled';
@@ -5120,11 +5308,18 @@ renderAll(true);
     const onErr=()=>setSync('Sync stopped; reload','off');
     db.collection('slots').onSnapshot(snap=>{
       const changed=new Set();
-      snap.docs.forEach(d=>{const v=d.data(); if(!v||!state.slots[d.id]||localDirty.has('slots/'+d.id)) return; const base=state.slots[d.id]; for(const f of ['name','race','cls','spec','level','status','p1','p2','camp','skill','crafts','hearth','alt','reserved','rest','inv','leg']) if(v[f]!==undefined) base[f]=v[f]; changed.add(d.id.split('-')[0]);});
-      if(changed.size){renderPairs(); renderMatrix(); renderCamp(); renderRoute(); renderCQ(); const ae=document.activeElement; if(!(ae&&ae.closest&&ae.closest('#pf-cards'))) renderProfCards(); renderProfDerived();}
+      const was=SLOT_IDS().join()+'|'+PAIRS.map(p=>p.k).join();
+      snap.docs.forEach(d=>{const v=d.data(); if(!v||!/^[A-Z0-9]{1,6}-[cs]$/.test(d.id)) return;
+        if(!state.slots[d.id]) ensureGroup(d.id.split('-')[0],RACES[v.race]?RACES[v.race].fac:'h');
+        if(!state.slots[d.id]||localDirty.has('slots/'+d.id)) return; const base=state.slots[d.id]; for(const f of ['name','race','cls','spec','level','status','p1','p2','camp','skill','crafts','hearth','alt','reserved','rest','inv','leg','tag','style']) if(v[f]!==undefined) base[f]=v[f];
+        /* slots saved before characters existed have no made flag: anything saved back then is a character */
+        base.made=v.made===undefined?true:!!v.made; changed.add(d.id.split('-')[0]);});
+      syncPairs();
+      if(was!==SLOT_IDS().join()+'|'+PAIRS.map(p=>p.k).join()) renderAll(true);
+      else if(changed.size){renderPairs(); renderMatrix(); renderCamp(); renderRoute(); renderCQ(); const ae=document.activeElement; if(!(ae&&ae.closest&&ae.closest('#pf-cards'))) renderProfCards(); renderProfDerived();}
     bkSeen('slots');},onErr);
     db.collection('pairs').onSnapshot(snap=>{
-      snap.docs.forEach(d=>{const v=d.data(); if(v&&state.pairs[d.id]&&!localDirty.has('pairs/'+d.id)){if(typeof v.notes==='string')state.pairs[d.id].notes=v.notes; if(ROUTES[v.route])state.pairs[d.id].route=v.route; if(typeof v.title==='string')state.pairs[d.id].title=v.title;}});
+      snap.docs.forEach(d=>{const v=d.data(); if(v&&!state.pairs[d.id]) ensureGroup(d.id,ROUTES[v.route]?ROUTES[v.route].fac:'h'); if(v&&state.pairs[d.id]&&!localDirty.has('pairs/'+d.id)){if(typeof v.notes==='string')state.pairs[d.id].notes=v.notes; if(ROUTES[v.route])state.pairs[d.id].route=v.route; if(typeof v.title==='string')state.pairs[d.id].title=v.title;}});
       renderPairs(); renderRoute(); renderCQ(); renderCamp();
     bkSeen('pairs');},onErr);
     db.collection('runs').onSnapshot(snap=>{
@@ -5151,7 +5346,7 @@ renderAll(true);
       const v=d.exists?d.data():null; if(!v){bkSeen('players'); return;}
       if(typeof v.c==='string') state.players.c=v.c; if(typeof v.s==='string') state.players.s=v.s;
       document.querySelectorAll('[data-player]').forEach(i=>{if(document.activeElement!==i) i.value=state.players[i.dataset.player];});
-      renderPairs();
+      renderPairs(); pnFill();
     bkSeen('players');},onErr);
     db.collection('mail').onSnapshot(snap=>{
       const next={}; snap.docs.forEach(d=>{const v=d.data(); if(v&&(v.item||v.hide)) next[d.id]=v;});
