@@ -1118,6 +1118,7 @@ html[data-nopairs] .nopairs-msg{display:block}
       <div class="prose"><h3>Zone level ranges</h3></div>
       <div class="scroll"><svg id="route-chart" role="img" aria-label="Zones by level with the selected pair's route"></svg></div>
       <p class="swapline" id="route-note" style="margin-top:10px"><b>Desolace.</b> The Gelkis and Magram centaur chain (starting with Valley of Bones) needs level 35. Do Desolace late or come back at 35. The zone range stays 30 to 40.</p>
+      <p class="swapline fac-only-h" style="margin-top:10px"><b>Mulgore and Stonetalon.</b> Forever adds a new Mulgore quest, Kyle's Gone Missing!. Blizzard hasn't published its level or quest giver, so look out for it while you're in Mulgore. In Stonetalon, Jin'Zil at Malaka'jin only accepts turn-ins once Jin'Zil's Forest Magic has been completed.</p>
       <p class="muted" style="font-size:.88rem">Zone ranges are the classic ones. Forever adds over 1000 quests and may shift them; Shen'dralas has no published range yet, so it is drawn as an estimate.</p>
     </section>
 
@@ -1269,7 +1270,7 @@ const CLASSES = {
 };
 const UTIL_NAMES = {rez:'Resurrection',magic:'Magic dispel',poison:'Poison cure',disease:'Disease cure',curse:'Curse removal',cc:'Crowd control',interrupt:'Interrupt'};
 const RACES = {
-  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window','Shatter Curse: dispels curses and banes, 5% less magic damage','Savage: 1% more crit chance','Hardiness: stun resistance']},
+  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window','Shatter Curse: dispels curses and banes, 5% less magic damage','Savage: 1% more crit chance','Hardiness: stun resistance','Command: Warlock and Hunter pets deal 5% more damage']},
   undead:{name:'Undead',start:'Deathknell, Tirisfal Glades',zone:'tirisfal',classes:['warrior','mage','rogue','priest','warlock','paladin'],racials:['Will of the Forsaken: break fear and charm','Cannibalize: out of combat sustain','Underwater Breathing','Touch of the Grave: sustain plus a little damage; good on tanks'],priest:['Dark Sacrifice: trade health for mana instead of drinking','Touch of Weakness']},
   tauren:{name:'Tauren',start:'Red Cloud Mesa, Mulgore',zone:'mulgore',classes:['warrior','hunter','druid','shaman'],racials:['War Stomp: area stun','Cultivation: bonus herbs, pairs with Alchemy','Plainsrunning: speed boost that stacks up to 60% while you keep moving, no mounted speed bonus','Endurance: 5% more health, 2% more crit damage and healing']},
   troll:{name:'Troll',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','priest','warlock','shaman'],racials:['Berserking: burst window','Rapid Regeneration: sustain','Beast Slaying','Regeneration: helps tanking and open world'],priest:['Hex of Weakness: cuts enemy damage and healing','Shadowguard: damage to attackers']},
@@ -2158,7 +2159,7 @@ function checks(k){
 const ORIG={}; PAIRS_ALL.forEach(p=>{ORIG[p.k]={c:{race:p.c.race,cls:p.c.cls,spec:p.c.spec},s:{race:p.s.race,cls:p.s.cls,spec:p.s.spec}};});
 function isOriginal(k){const o=ORIG[k]; if(!o||PAIRS_ALL.find(x=>x.k===k).extra) return false; return ['c','s'].every(w=>{const sl=state.slots[k+'-'+w];return sl.race===o[w].race&&sl.cls===o[w].cls&&sl.spec===o[w].spec;});}
 const RACE_ROLE={
- orc:{tank:'Orc Hardiness shrugs off stuns and Blood Fury adds burst threat',heal:'Orc Shatter Curse clears curses on the healer',dps:'Orc Blood Fury adds burst; Savage adds 1% crit'},
+ orc:{tank:'Orc Hardiness shrugs off stuns and Blood Fury adds burst threat',heal:'Orc Shatter Curse clears curses on the healer',dps:'Orc Blood Fury adds burst; Savage adds 1% crit; Command gives Warlock and Hunter pets 5% more damage'},
  undead:{tank:'Undead Touch of the Grave adds sustain on the tank; Will of the Forsaken breaks fear',heal:'Undead Cannibalize cuts downtime; Will of the Forsaken breaks fear on the healer',dps:'Undead Cannibalize cuts downtime between pulls'},
  tauren:{tank:'Tauren Endurance adds health for the tank; War Stomp for emergencies',heal:'Tauren War Stomp stops adds that reach the healer',dps:'Tauren Endurance and War Stomp make solo questing safer'},
  troll:{tank:'Troll Regeneration helps the tank recover between pulls',heal:'Troll Berserking speeds up casts for emergency healing',dps:'Troll Berserking adds burst; Beast Slaying on beasts'},
