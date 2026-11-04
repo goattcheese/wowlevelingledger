@@ -1270,10 +1270,10 @@ const CLASSES = {
 };
 const UTIL_NAMES = {rez:'Resurrection',magic:'Magic dispel',poison:'Poison cure',disease:'Disease cure',curse:'Curse removal',cc:'Crowd control',interrupt:'Interrupt'};
 const RACES = {
-  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window','Shatter Curse: dispels curses and banes, 5% less magic damage','Savage: 1% more crit chance','Hardiness: stun resistance','Command: Warlock and Hunter pets deal 5% more damage']},
-  undead:{name:'Undead',start:'Deathknell, Tirisfal Glades',zone:'tirisfal',classes:['warrior','mage','rogue','priest','warlock','paladin'],racials:['Will of the Forsaken: break fear and charm','Cannibalize: out of combat sustain','Underwater Breathing','Touch of the Grave: sustain plus a little damage; good on tanks'],priest:['Dark Sacrifice: trade health for mana instead of drinking','Touch of Weakness']},
+  orc:{name:'Orc',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','warlock','shaman'],racials:['Blood Fury: burst window, 2 minute cooldown','Shatter Curse: dispels curses and banes, 5% less magic damage','Savage: 1% more crit chance','Hardiness: stun resistance','Command: Warlock and Hunter pets deal 5% more damage']},
+  undead:{name:'Undead',start:'Deathknell, Tirisfal Glades',zone:'tirisfal',classes:['warrior','mage','rogue','priest','warlock','paladin'],racials:['Will of the Forsaken: break fear and charm','Cannibalize: out of combat sustain','Underwater Breathing','Touch of the Grave: sustain plus a little damage, 15 second internal cooldown; good on tanks'],priest:['Dark Sacrifice: trade health for mana instead of drinking','Touch of Weakness']},
   tauren:{name:'Tauren',start:'Red Cloud Mesa, Mulgore',zone:'mulgore',classes:['warrior','hunter','druid','shaman'],racials:['War Stomp: area stun','Cultivation: bonus herbs, pairs with Alchemy','Plainsrunning: speed boost that stacks up to 60% while you keep moving, no mounted speed bonus','Endurance: 5% more health, 2% more crit damage and healing']},
-  troll:{name:'Troll',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','priest','warlock','shaman'],racials:['Berserking: burst window','Rapid Regeneration: sustain','Beast Slaying','Regeneration: helps tanking and open world'],priest:['Hex of Weakness: cuts enemy damage and healing','Shadowguard: damage to attackers']},
+  troll:{name:'Troll',start:'Valley of Trials, Durotar',zone:'durotar',classes:['warrior','hunter','mage','rogue','priest','warlock','shaman'],racials:['Berserking: 15 second burst window','Rapid Regeneration: sustain','Beast Slaying','Regeneration: helps tanking and open world'],priest:['Hex of Weakness: cuts enemy damage and healing','Shadowguard: damage to attackers']},
   skyborne:{name:'Skyborne',start:'Zephras Isle (1 to 12)',zone:'zephras',classes:['warrior','hunter','rogue','druid','shaman'],racials:['Walk on Air: slow fall','Skysight: speed boost minigame','Wind Blessed: 3% haste','Elemental Insight: bonus damage on some enemies']}
 };
 const PROFS = {
@@ -1399,7 +1399,7 @@ const DG = [
   ['The Wrath of Rath\'mael','Deathguard Kristof, tents between Undercity and Brill','Kill the final boss',2],
   ['A Frightened Request','Tabitha Heartweaver, Sepulcher graveyard, Silverpine','Easy to miss',2],
   ['Unending Torment','Abominable Head drop from The Baron','Multi-step XP chain in Undercity',2],
-  ['Crest of Lordaeron','Crest found in one of five random spots inside','Turn in to Oran Snakewrithe, Magic Quarter',2]],note:'Fermenter blueprint (Alchemy camp object) drops here. Go in at 16: Wowhead lists three of these quests at 15 and three at 16, and in the beta a level 15 run could only pick up one of them.'},
+  ['Crest of Lordaeron','Crest found in one of five random spots inside','Turn in to Oran Snakewrithe, Magic Quarter',2]],note:'Fermenter blueprint (Alchemy camp object) drops here. Since the Nov 3 patch every quest here starts at level 15, so you can pick them all up at 15.'},
  {id:'dm',name:'The Deadmines',zone:'Westfall',lo:16,hi:23,ally:1,q:[],note:'No Horde quests in the classic version. Worth one trip for the Journeyman Campfire blueprint and Cookie\'s Feast blueprint (from Cookie) for your cooks.'},
  {id:'wc',name:'Wailing Caverns',zone:'The Barrens',lo:17,hi:24,q:[
   ['Serpentbloom','Apothecary Zamah, Spirit Rise, Thunder Bluff','',1],
@@ -1581,11 +1581,11 @@ const QREQ_RAW = [
  ['rfc|The Power to Destroy…',9,16,'f','h',0],
  ['rfc|Hidden Enemies',9,16,'f','h',0],
  ['rol|Light\'s Justice',15,22,'f','h',0],
- ['rol|The New Plague',16,22,'f','h',0],
+ ['rol|The New Plague',15,22,'f','h',0],
  ['rol|The Wrath of Rath\'mael',15,22,'f','h',0],
  ['rol|A Frightened Request',15,22,'f','h',0],
- ['rol|Unending Torment',16,21,'f','h',0],
- ['rol|Crest of Lordaeron',16,22,'f','h',0],
+ ['rol|Unending Torment',15,21,'f','h',0],
+ ['rol|Crest of Lordaeron',15,22,'f','h',0],
  ['wc|Serpentbloom',14,18,'f','h',0],
  ['wc|Leaders of the Fang',10,22,'f','h',0],
  ['wc|Deviate Eradication',15,21,'f','b',0],
