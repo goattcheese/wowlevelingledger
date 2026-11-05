@@ -1133,10 +1133,11 @@ html[data-nopairs] .nopairs-msg{display:block}
       </div></section>
       <details class="tn-card lg-addon" open>
         <summary><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>Sync with the Duo Ledger addon</summary>
-        <p class="muted"><b>From the game:</b> after a /reload or logout, press <b>Sync from game</b> and pick <span class="mono">DuoLedger.lua</span> in <span class="mono">WTF\Account\&lt;account&gt;\SavedVariables</span>. You can also paste the addon's Export text below. Characters are matched by name, so name them on the Characters tab exactly as in game. Syncing the same data twice is safe, and a session that grew since last time is updated. The import also raises levels, sets hearths, marks dungeon quests turned in and wishlist items obtained.</p>
+        <p class="muted"><b>From the game:</b> after a /reload or logout, press <b>Sync from game</b> and pick <span class="mono">DuoLedger.lua</span> in <span class="mono">WTF\Account\&lt;account&gt;\SavedVariables</span>. You can also paste the addon's Export text below. One sync brings in every character on that WoW account that has played with the addon on. Characters are matched by name, and the first name is enough. A character the Ledger doesn't have yet is added for you: pick whose it is before you press Import. Syncing the same data twice is safe, and a session that grew since last time is updated. The import also raises levels, sets hearths, marks dungeon quests turned in and wishlist items obtained.</p>
         <p class="muted"><b>To the game:</b> press <b>Send to game</b> and save <span class="mono">LedgerData.lua</span> into <span class="mono">Interface\AddOns\DuoLedger</span>, replacing the old one. Then type /reload in game. This works while you're playing, because the Ledger and the game never write the same file.</p>
         <textarea id="lg-imp-text" rows="5" aria-label="Addon export" placeholder='{"app":"ForeverDuoLedger","v":1, ...}'></textarea>
         <div class="bk-acts"><button type="button" class="btn" id="lg-imp-check">Check import</button><label class="btn" for="lg-imp-file"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Sync from game</label><input type="file" id="lg-imp-file" accept=".lua,.json,.txt,application/json,text/plain" class="vh"><button type="button" class="btn primary" id="lg-imp-go" hidden>Import</button><button type="button" class="btn" id="lg-send-game"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Send to game</button></div>
+        <p id="lg-imp-who" hidden><label for="lg-imp-side">New characters belong to <select id="lg-imp-side"></select></label></p>
         <p id="lg-imp-msg" role="status"></p>
         <p id="lg-game-msg" role="status"></p>
         <details><summary>Export format for addon authors (version 1)</summary><p class="muted">JSON with app "ForeverDuoLedger" and v 1. "characters" is optional; restXP, xpMax, resting and logout there fill the Rested tab; professions (skill by name) and inventory (bags plus bank, item name to count) fill the materials planner; "sessions" holds one entry per character per session. Times are ISO 8601. Quests are matched by name and items by item id. "mail" lists what that character mailed; entries that match the Mailbox queue by recipient name and item name are marked sent. Optional "kills", "moneyGained" (copper) and "deathLog" feed the Stats tab. A top-level "addons" list ticks installed addons on the Launch prep tab, and every character found by name is marked as reserved.</p><pre id="lg-spec" class="lg-spec"></pre></details>
@@ -3904,12 +3905,25 @@ $('#lg-csv').addEventListener('click',()=>{
   bkSave(csv,'forever-duo-session-log-'+bkLocalDate()+'.csv');
 });
 /* ---------- Addon import (future live connection uses the same function) ---------- */
-function slotByName(n){const t=String(n||'').trim().toLowerCase(); return Object.keys(state.slots).find(id=>state.slots[id].made&&(state.slots[id].name||'').toLowerCase()===t)||null;}
+/* Forever characters have a first and a last name. A full match wins; otherwise the first names are compared, if only one character has that first name. */
+function slotByName(n){const t=String(n||'').trim().toLowerCase(); if(!t) return null;
+  const made=Object.keys(state.slots).filter(id=>state.slots[id].made&&(state.slots[id].name||'').trim());
+  const full=made.find(id=>state.slots[id].name.trim().toLowerCase()===t); if(full) return full;
+  const first=x=>x.trim().toLowerCase().split(/\s+/)[0], f=first(t), hits=made.filter(id=>first(state.slots[id].name)===f);
+  return hits.length===1?hits[0]:null;}
+/* The game's class and race codes (PALADIN, Scourge) as the Ledger's keys, or null if this faction view has no such race. */
+function lgRaceKey(r){const t=String(r||'').toLowerCase().replace(/[^a-z]/g,''); const k=t==='scourge'?'undead':t==='skyborne'&&FAC==='a'?'skyborneA':t; return RACES[k]&&RACES[k].fac===FAC?k:null;}
+function lgClassKey(c){const k=String(c||'').toLowerCase(); return CLASSES[k]?k:null;}
 function ingestAddon(obj){
   if(!obj||obj.app!=='ForeverDuoLedger'||!(obj.v>=1)) throw 'This is not a Forever Duo Ledger addon export.';
   const plan={sessions:[],updates:[],levels:{},hearths:{},rest:{},skills:{},inv:{},qp:{},wl:{},runs:[],mail:[],seen:[],addons:{},unmatched:new Set(),skipped:0};
   const known=new Map(lgSessions().filter(s=>s.akey).map(s=>[s.akey,s]));
-  for(const c of (obj.characters||[])){const id=slotByName(c.name); if(!id){plan.unmatched.add(c.name); continue;}
+  plan.create=[];
+  for(const c of (obj.characters||[])){const id=slotByName(c.name);
+    if(!id){const race=lgRaceKey(c.race), cls=lgClassKey(c.class), nm=String(c.name||'').trim().slice(0,40);
+      if(nm&&race&&cls&&!plan.create.some(x=>x.name.toLowerCase()===nm.toLowerCase())) plan.create.push({name:nm,cls,race,level:Math.max(1,Math.min(60,parseInt(c.level,10)||1))});
+      else plan.unmatched.add(c.name);
+      continue;}
     if(!state.slots[id].reserved) plan.seen.push(id);
     if(Array.isArray(obj.addons)) plan.addons[id.slice(-1)]=obj.addons.slice(0,80).map(a=>String(a).slice(0,60));
     const lv=parseInt(c.level,10); if(lv>=1&&lv<=60) plan.levels[id]=Math.max(plan.levels[id]||0,lv);
@@ -3918,7 +3932,7 @@ function ingestAddon(obj){
     if(c.inventory&&typeof c.inventory==='object'){const it={}; Object.entries(c.inventory).slice(0,400).forEach(([k,v])=>{const x=parseInt(v,10); if(x>0) it[String(k).slice(0,80)]=x;}); plan.inv[id]={at:new Date().toISOString(),items:it};}
     if(c.restXP!==undefined&&+c.xpMax>0){const lo=c.logout&&!isNaN(new Date(c.logout))?new Date(c.logout).toISOString():new Date().toISOString(); plan.rest[id]={place:c.resting?'inn':'out',at:lo,pct:Math.max(0,Math.min(150,(+c.restXP||0)/(+c.xpMax)*100))};}}
   for(const s of (obj.sessions||[]).slice(0,500)){
-    const id=slotByName(s.character); if(!id){plan.unmatched.add(s.character); continue;}
+    const id=slotByName(s.character); if(!id){if(!plan.create.some(x=>x.name.toLowerCase()===String(s.character||'').trim().toLowerCase())) plan.unmatched.add(s.character); continue;}
     const akey=(String(s.character)+'|'+String(s.start)).slice(0,120); const prev=known.get(akey);
     const start=new Date(s.start), end=s.end?new Date(s.end):null; if(isNaN(start)) continue;
     const from=parseInt(s.levelFrom,10)||(+state.slots[id].level||1), to=parseInt(s.levelTo,10)||from, k=id.split('-')[0];
@@ -3943,10 +3957,29 @@ function lgQueue(plan,prev,doc){
   if(sig(prev)===sig(doc)||(doc.min||0)<(prev.min||0)){plan.skipped++; return;}
   plan.updates.push([prev.id,Object.assign({},doc,{notes:prev.notes||''})]);
 }
-let lgPlan=null;
+let lgPlan=null, lgObj=null;
+/* New characters need an owner. Default to whoever owns the characters this file already matched. */
+function lgOwnerUI(){
+  const box=$('#lg-imp-who'), sel=$('#lg-imp-side'); if(!box) return;
+  const need=!!(lgPlan&&lgPlan.create.length&&canWrite); box.hidden=!need; if(!need) return;
+  const sides=[...new Set(lgPlan.seen.concat(Object.keys(lgPlan.levels)).map(id=>id.slice(-1)))];
+  sel.innerHTML='<option value="">Choose a player</option>'+['s','c'].map(w=>'<option value="'+w+'">'+esc(state.players[w]||w)+'</option>').join('');
+  sel.value=sides.length===1?sides[0]:'';
+}
+/* Make the characters the game knows and the Ledger doesn't, then read the file again so their sessions match. */
+function lgCreateChars(p,side){
+  for(const c of p.create){
+    const id=newChar(side); if(!id) continue; const sl=state.slots[id];
+    Object.assign(sl,{name:c.name,cls:c.cls,race:c.race,spec:CLASSES[c.cls].specs[0][0],level:c.level,status:'Leveling'});
+    if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl)[0];
+    saveSlot(id);
+  }
+  syncPairs();
+}
 function lgPlanText(p){
   const pl=(n,w)=>n+' '+w+(n===1?'':'s');
-  return [pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger; name the character on the Characters tab to match.':'');
+  const add=(p.create||[]).length?'Adds '+pl(p.create.length,'new character')+': '+p.create.map(c=>c.name+' ('+RACES[c.race].name+' '+CLASSES[c.cls].name+', level '+c.level+')').join(', ')+'. Their sessions come in with them. ':'';
+  return add+[pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger, and the file doesn\'t say its class and race (or it belongs to the other faction), so it was left out.':'');
 }
 /* The addon's SavedVariables file (DuoLedger.lua) is Lua, not JSON. It keeps the latest export as a Lua string under ["lastExport"]. */
 function lgFromLua(text){
@@ -3971,13 +4004,16 @@ function lgFromLua(text){
   throw 'That file looks cut off. Log out of the game fully, then try again.';
 }
 async function lgCheck(text){
-  try{lgPlan=ingestAddon(JSON.parse(lgFromLua(text))); $('#lg-imp-msg').textContent=lgPlanText(lgPlan); $('#lg-imp-go').hidden=!(canWrite&&(lgPlan.sessions.length||lgPlan.updates.length||Object.keys(lgPlan.levels).length||lgPlan.mail.length||lgPlan.seen.length||Object.keys(lgPlan.addons).length));}
-  catch(err){lgPlan=null; $('#lg-imp-go').hidden=true; $('#lg-imp-msg').textContent=typeof err==='string'?err:'That text is not valid JSON.';}
+  try{lgObj=JSON.parse(lgFromLua(text)); lgPlan=ingestAddon(lgObj); $('#lg-imp-msg').textContent=lgPlanText(lgPlan); $('#lg-imp-go').hidden=!(canWrite&&(lgPlan.create.length||lgPlan.sessions.length||lgPlan.updates.length||Object.keys(lgPlan.levels).length||lgPlan.mail.length||lgPlan.seen.length||Object.keys(lgPlan.addons).length)); lgOwnerUI();}
+  catch(err){lgPlan=null; lgObj=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true; $('#lg-imp-msg').textContent=typeof err==='string'?err:'That text is not valid JSON.';}
 }
 $('#lg-imp-check').addEventListener('click',()=>lgCheck($('#lg-imp-text').value));
 $('#lg-imp-file').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return; if(f.size>2e6){$('#lg-imp-msg').textContent='That file is too large.'; return;} const t=await f.text(); $('#lg-imp-text').value=t; lgCheck(t);});
 $('#lg-imp-go').addEventListener('click',async()=>{
-  if(!lgPlan||!canWrite) return; const p=lgPlan; lgPlan=null; $('#lg-imp-go').hidden=true;
+  if(!lgPlan||!canWrite) return; let p=lgPlan;
+  if(p.create.length){const side=$('#lg-imp-side').value; if(side!=='c'&&side!=='s'){$('#lg-imp-msg').textContent='Choose whose characters these are first, then press Import.'; $('#lg-imp-side').focus(); return;}
+    const made=p.create.length; lgCreateChars(p,side); p=ingestAddon(lgObj); p.created=made;}
+  lgPlan=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true;
   for(const s of p.sessions) await lgSave(s);
   for(const [id,doc] of (p.updates||[])){state.sessions[id]=doc; if(db&&canWrite){bkBeforeEdit(); setSync('Saving…'); try{await db.collection('sessions').doc(id).set(doc); setSync('Saved','on');}catch(e){setSync('Save failed','off');}}}
   for(const [id,lv] of Object.entries(p.levels)){const sl=state.slots[id]; if(lv>(+sl.level||1)){sl.level=lv; saveSlot(id);}}
@@ -3991,7 +4027,7 @@ $('#lg-imp-go').addEventListener('click',async()=>{
   for(const [w,names] of Object.entries(p.addons)){const {addons}=lnSeed(); for(const a of addons){const hit=names.some(n=>{const nn=sNorm(n), at=sNorm(a.t); return nn&&(at.includes(nn)||nn.includes(at.split(' (')[0]));}); if(hit&&!a[w]){const d=Object.assign({},a,{[w]:true}); delete d.id; state.launch[a.id]=d; lnWrite(a.id);}}}
   for(const [mid,t] of p.mail){const m=state.mail[mid]; if(m){m.sentAt=t; mlWrite(mid);}}
   const byPair={}; p.runs.forEach(([k,r])=>(byPair[k]=byPair[k]||[]).push(r)); for(const [k,r] of Object.entries(byPair)) lgApplyRuns(k,r);
-  $('#lg-imp-msg').textContent='Imported. '+lgPlanText(p);
+  $('#lg-imp-msg').textContent='Imported. '+(p.created?(p.created===1?'1 character':p.created+' characters')+' added on the Characters tab. ':'')+lgPlanText(p);
   renderAll(true);
 });
 $('#lg-spec').textContent=JSON.stringify(ADDON_FORMAT,null,2);
