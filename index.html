@@ -12,6 +12,7 @@
   --tank:#52A8FF; --tank-soft:#0B2742; --heal:#66FFBF; --heal-soft:#0B3A30;
   --bad:#FF522C; --bad-soft:#3A1508; --warn:#FFDD99; --warn-soft:#3A2E14; --ok:#66FFBF; --ok-soft:#0B3A30;
   --new:#C99BFF; --new-soft:#2A1D3E;
+  --xq:#3987e5; --xk:#d95926; --xe:#199e70;
   --water:#001417; --water-line:#0A2E31; --land:#0D3A3A; --coast:#957349;
   color-scheme:dark;
   --f-display:"Cinzel","Trajan Pro",Georgia,serif;
@@ -25,6 +26,7 @@
   --tank:#2A4B71; --tank-soft:#D9E1EA; --heal:#0F6064; --heal-soft:#D2E6E3;
   --bad:#AA2409; --bad-soft:#F3D3C6; --warn:#884700; --warn-soft:#F5E3BD; --ok:#1B7A3A; --ok-soft:#D5E8D2;
   --new:#6B3AA8; --new-soft:#E6DAF2;
+  --xq:#2a78d6; --xk:#eb6834; --xe:#1baf7a;
   --water:#C9DCD6; --water-line:#B4CCC5; --land:#EFE4CC; --coast:#957349;
   color-scheme:light }}
 :root[data-theme="light"]{
@@ -34,6 +36,7 @@
   --tank:#2A4B71; --tank-soft:#D9E1EA; --heal:#0F6064; --heal-soft:#D2E6E3;
   --bad:#AA2409; --bad-soft:#F3D3C6; --warn:#884700; --warn-soft:#F5E3BD; --ok:#1B7A3A; --ok-soft:#D5E8D2;
   --new:#6B3AA8; --new-soft:#E6DAF2;
+  --xq:#2a78d6; --xk:#eb6834; --xe:#1baf7a;
   --water:#C9DCD6; --water-line:#B4CCC5; --land:#EFE4CC; --coast:#957349;
   color-scheme:light }
 *{box-sizing:border-box}
@@ -613,6 +616,14 @@ body.playing .wrap{display:none}
 .st-chart{width:100%;height:auto;display:block}
 .st-bar:focus{outline:none}
 .st-bar:focus path,.st-bar:hover path{opacity:.8}
+.jr-stack{display:flex;gap:2px;height:14px;margin:4px 0 2px}
+.jr-stack i{display:block;height:100%;min-width:2px}
+.jr-stack i:first-child{border-radius:4px 0 0 4px}.jr-stack i:last-child{border-radius:0 4px 4px 0}
+.jr-row{margin:8px 0}
+#jr-body h4{margin:0 0 6px;font-size:.95rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#jr-body h4 select{font-size:.85rem}
+.jr-key{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.82rem;color:var(--muted)}
+.jr-key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .st-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.78rem;padding:4px 8px;border-radius:3px;white-space:nowrap}
 .ln-count{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;padding:12px 14px;border:1px solid var(--brass);background:var(--panel);margin-bottom:14px}
 .ln-big{font-family:var(--f-display);font-size:2rem;color:var(--title)}
@@ -962,6 +973,20 @@ html[data-nopairs] .nopairs-msg{display:block}
         <section class="tn-card"><h3><svg class="ic" aria-hidden="true"><use href="#i-flag"/></svg>Milestones</h3><div id="st-miles"></div></section>
       </div>
       <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Every pair</h3><div class="scroll" id="st-pairs"></div></section>
+      <section class="tn-card" style="margin-top:14px"><h3><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg>Leveling journey</h3>
+        <p class="muted" id="jr-empty">Fills in from the in-game addon (version 0.3 or later): time together, where your XP comes from, how long each level took, gear upgrades and firsts. Sync from game after a session to see it.</p>
+        <div id="jr-body" hidden>
+          <div class="st-tiles" id="jr-tiles"></div>
+          <div class="lg-grid">
+            <section><h4>Where the XP came from</h4><div id="jr-xp"></div><details><summary class="muted" style="font-size:.85rem">Show as a table</summary><table class="st-table" id="jr-xp-table"></table></details></section>
+            <section><h4>Time at each level <select id="jr-char" aria-label="Character"></select></h4><div class="st-chart-wrap" id="jr-lv-wrap"><svg id="jr-lv" class="st-chart" role="img" aria-label="Hours played at each level"></svg><div class="st-tip" id="jr-tip" hidden></div></div><p class="muted" id="jr-lv-empty"></p><details><summary class="muted" style="font-size:.85rem">Show as a table</summary><table class="st-table" id="jr-lv-table"></table></details></section>
+          </div>
+          <div class="lg-grid" style="margin-top:14px">
+            <section><h4>Gear upgrades</h4><div id="jr-gear"></div></section>
+            <section><h4>Firsts</h4><div id="jr-firsts"></div></section>
+          </div>
+        </div>
+      </section>
     </section>
 
     <section class="view" id="view-mail" hidden>
@@ -1148,7 +1173,7 @@ html[data-nopairs] .nopairs-msg{display:block}
         <div id="lg-imp-remake" hidden></div>
         <p id="lg-imp-msg" role="status"></p>
         <p id="lg-game-msg" role="status"></p>
-        <details><summary>Export format for addon authors (version 1)</summary><p class="muted">JSON with app "ForeverDuoLedger" and v 1. "characters" is optional; restXP, xpMax, resting and logout there fill the Rested tab; professions (skill by name) and inventory (bags plus bank, item name to count) fill the materials planner; "sessions" holds one entry per character per session. Times are ISO 8601. Quests are matched by name and items by item id. "mail" lists what that character mailed; entries that match the Mailbox queue by recipient name and item name are marked sent. Optional "kills", "moneyGained" (copper) and "deathLog" feed the Stats tab. A top-level "addons" list ticks installed addons on the Launch prep tab, and every character found by name is marked as reserved.</p><pre id="lg-spec" class="lg-spec"></pre></details>
+        <details><summary>Export format for addon authors (version 1)</summary><p class="muted">JSON with app "ForeverDuoLedger" and v 1. "characters" is optional; restXP, xpMax, resting and logout there fill the Rested tab; professions (skill by name) and inventory (bags plus bank, item name to count) fill the materials planner; "sessions" holds one entry per character per session. Times are ISO 8601. Quests are matched by name and items by item id. "mail" lists what that character mailed; entries that match the Mailbox queue by recipient name and item name are marked sent. Optional "kills", "moneyGained" (copper) and "deathLog" feed the Stats tab, and so do the leveling journey fields: "dings" [{at, level, zone, played, levelTime}] (seconds of /played), "grouped" (seconds) with "groupedWith" {name: seconds}, "xpFrom" {quest, kill, explore, other}, "gear" [{at, slot, id, name, ilvl, was, wasIlvl, from, where}] and "firsts" [{at, kind, name, level, zone}] where kind is zone, flight, spell or mount. A top-level "addons" list ticks installed addons on the Launch prep tab, and every character found by name is marked as reserved.</p><pre id="lg-spec" class="lg-spec"></pre></details>
       </details>
     </section>
 
@@ -3907,7 +3932,9 @@ function wlForDungeon(k,dgId){
 const XP_TO_NEXT=[0,400,900,1400,2100,2800,3600,4500,5400,6500,7600,8800,10100,11400,12900,14400,16000,17700,19400,21300,23200,25200,27300,29400,31700,34000,36400,38900,41400,44300,47400,50800,54500,58600,62800,67100,71600,76100,80800,85700,90700,95800,101000,106300,111800,117500,123200,129100,135100,141200,147500,153900,160400,167100,173900,180800,187900,195000,202300,209800];
 function xpBetween(a,b){a=Math.max(1,Math.min(60,a|0)); b=Math.max(1,Math.min(60,b|0)); let s=0; for(let l=a;l<b;l++) s+=XP_TO_NEXT[l]||0; return s;}
 const ADDON_FORMAT={app:'ForeverDuoLedger',v:1,addons:['Questie','Details'],characters:[{name:'Grumtusk',guid:'Player-1234-0A1B2C3D',realm:'CamwowUS1',class:'PALADIN',race:'Scourge',level:15,xp:3200,xpMax:14400,restXP:5200,resting:true,logout:'2026-11-05T21:31:00Z',professions:{Blacksmithing:82,Mining:95,'First Aid':60},inventory:{'Copper Bar':24,'Rough Stone':18},zone:'Tirisfal Glades',hearth:'Undercity'}],
-  sessions:[{character:'Grumtusk',start:'2026-11-05T19:00:00Z',end:'2026-11-05T21:30:00Z',levelFrom:12,levelTo:15,xpGained:24000,deaths:0,quests:[{id:5761,name:'Slaying the Beast'}],items:[{id:14148,name:'Crystalline Cuffs'}],dungeons:['Ragefire Chasm'],mail:[{to:'Mendra',item:'Copper Bar',qty:20}],kills:212,moneyGained:4350,deathLog:[{at:'2026-11-05T20:14:00Z',zone:'Ragefire Chasm',killer:'Taragaman the Hungerer'}]}]};
+  sessions:[{character:'Grumtusk',start:'2026-11-05T19:00:00Z',end:'2026-11-05T21:30:00Z',levelFrom:12,levelTo:15,xpGained:24000,deaths:0,quests:[{id:5761,name:'Slaying the Beast'}],items:[{id:14148,name:'Crystalline Cuffs'}],dungeons:['Ragefire Chasm'],mail:[{to:'Mendra',item:'Copper Bar',qty:20}],kills:212,moneyGained:4350,deathLog:[{at:'2026-11-05T20:14:00Z',zone:'Ragefire Chasm',killer:'Taragaman the Hungerer'}],
+    xpFrom:{quest:12400,kill:9800,explore:600,other:1200},grouped:7800,groupedWith:{Mendra:7200},dings:[{at:'2026-11-05T19:40:00Z',level:13,zone:'The Barrens',played:61200,levelTime:4100}],
+    gear:[{at:'2026-11-05T20:30:00Z',slot:'Wrist',id:14148,name:'Crystalline Cuffs',ilvl:16,was:'Worn Bracers',wasIlvl:8,from:'dungeon',where:'Ragefire Chasm',level:14}],firsts:[{at:'2026-11-05T19:05:00Z',kind:'flight',name:'Crossroads',level:12,zone:'The Barrens'}]}]};
 function lgSessions(){return Object.entries(state.sessions).map(([id,s])=>Object.assign({id},s)).sort((a,b)=>String(b.at).localeCompare(String(a.at)));}
 function lgCharStats(id){
   let min=0,xp=0,lv=0,n=0; const pts=[];
@@ -3962,9 +3989,23 @@ function renderLog(){
   const all=$('#lg-all').checked, list=lgSessions().filter(s=>all||ids.some(id=>s.chars&&s.chars[id]));
   $('#lg-list').innerHTML=list.length?list.map(s=>'<li><div class="lg-h"><b>'+esc(lgFmtDate(new Date(s.at)))+'</b> <span class="chip">'+lgFmtH((+s.min||0)/60)+'</span> <span class="chip'+(s.src==='addon'?' new':'')+'">'+(s.src==='addon'?'Addon':'Typed')+'</span> <span class="muted">pair '+esc(s.pair||'')+'</span></div>'+
     '<div class="lg-c">'+Object.entries(s.chars||{}).map(([id,c])=>esc(c.name||id)+' '+c.from+' → '+c.to+(c.deaths?' · '+c.deaths+' death'+(c.deaths>1?'s':''):'')).join(' · ')+'</div>'+
+    lgJourneyLine(s)+
     ((s.runs||[]).length?'<div class="lg-c">'+ic('castle')+' '+s.runs.map(r=>esc((DG.find(d=>d.id===r)||{name:r}).name)).join(', ')+'</div>':'')+
     (s.loot?'<div class="lg-c">'+ic('gem')+' '+esc(s.loot)+'</div>':'')+(s.notes?'<div class="lg-c muted">'+esc(s.notes)+'</div>':'')+
     (canWrite?'<button type="button" class="btn mini" data-lgdel="'+esc(s.id)+'">'+(lgDelArm===s.id?'Tap again to delete':'Delete')+'</button>':'')+'</li>').join(''):'<li class="muted">No sessions logged yet.</li>';
+}
+/* One line per session for the addon's journey data: time together, upgrades and firsts. */
+function lgJourneyLine(s){
+  const bits=[];
+  for(const [id,c] of Object.entries(s.chars||{})){
+    if(c.duo) bits.push(esc(c.name||id)+' together '+lgFmtH(c.duo/60));
+    else if(c.grp) bits.push(esc(c.name||id)+' grouped '+lgFmtH(c.grp/60));
+    const g=(c.gear||[]).length, z=(c.firsts||[]).filter(f=>f.kind==='zone').length, fp=(c.firsts||[]).filter(f=>f.kind==='flight').length, m=(c.firsts||[]).filter(f=>f.kind==='mount');
+    if(g) bits.push(g+' upgrade'+(g>1?'s':''));
+    if(z) bits.push(z+' new zone'+(z>1?'s':''));
+    if(fp) bits.push(fp+' flight path'+(fp>1?'s':''));
+    m.forEach(x=>bits.push('mount: '+esc(x.name)));}
+  return bits.length?'<div class="lg-c muted">'+bits.join(' · ')+'</div>':'';
 }
 let lgDelArm=null;
 async function lgSave(doc){
@@ -4006,8 +4047,8 @@ $('#lg-list').addEventListener('click',async e=>{
   renderLog();
 });
 $('#lg-csv').addEventListener('click',()=>{
-  const rows=[['date','pair','character','from','to','xp','deaths','minutes','dungeons','loot','notes','source']];
-  for(const s of lgSessions().reverse()) for(const [id,c] of Object.entries(s.chars||{})) rows.push([String(s.at).slice(0,10),s.pair||'',c.name||id,c.from,c.to,c.xp||xpBetween(c.from,c.to),c.deaths||0,s.min||0,(s.runs||[]).join(' '),s.loot||'',s.notes||'',s.src||'']);
+  const rows=[['date','pair','character','from','to','xp','deaths','minutes','dungeons','loot','notes','source','minutes_grouped','minutes_together','kills','xp_quests','xp_kills','xp_exploring','gear_upgrades','new_zones']];
+  for(const s of lgSessions().reverse()) for(const [id,c] of Object.entries(s.chars||{})) rows.push([String(s.at).slice(0,10),s.pair||'',c.name||id,c.from,c.to,c.xp||xpBetween(c.from,c.to),c.deaths||0,s.min||0,(s.runs||[]).join(' '),s.loot||'',s.notes||'',s.src||'',c.grp??'',c.duo??'',c.kills??'',c.xq??'',c.xk??'',c.xe??'',c.gear?c.gear.length:'',c.firsts?c.firsts.filter(f=>f.kind==='zone').length:'']);
   const csv=rows.map(r=>r.map(v=>{const t=String(v); return /[",\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t;}).join(',')).join('\n');
   bkSave(csv,'forever-duo-session-log-'+bkLocalDate()+'.csv');
 });
@@ -4033,6 +4074,36 @@ function slotByName(n){const m=lgFind(n); return m&&m.id||null;}
 /* The game's class and race codes (PALADIN, Scourge) as the Ledger's keys, or null if this faction view has no such race. */
 function lgRaceKey(r){const t=String(r||'').toLowerCase().replace(/[^a-z]/g,''); const k=t==='scourge'?'undead':t==='skyborne'&&FAC==='a'?'skyborneA':t; return RACES[k]&&RACES[k].fac===FAC?k:null;}
 function lgClassKey(c){const k=String(c||'').toLowerCase(); return CLASSES[k]?k:null;}
+/* The leveling journey (addon 0.3): dings, time grouped, XP sources, gear upgrades and firsts.
+   Stored on a session's character entry as dings [{at,lvl,zone,pl,lt}] (pl = total /played seconds, lt = seconds at the level just finished),
+   grp and duo (minutes in any group, and with the other player's characters), gw {name:minutes}, xq xk xe xo (XP from quests, kills, exploring, other),
+   gear [{at,slot,name,id,il,was,wil,from,where}] and firsts [{at,kind,name,lvl,zone}] (kind zone, flight, spell or mount). */
+const JR_FROM=['quest','drop','dungeon','crafted','vendor','mail','trade','other','unknown'], JR_KIND=['zone','flight','spell','mount'];
+function lgJourneyClean(c){
+  const o={}, num=x=>{const v=parseInt(x,10); return v>=0?v:undefined;}, t=(x,n)=>typeof x==='string'?x.slice(0,n):'', at=x=>typeof x==='string'&&!isNaN(new Date(x))?x.slice(0,40):'';
+  const drop=r=>{for(const k of Object.keys(r)) if(r[k]===undefined||r[k]==='') delete r[k]; return r;};
+  if(Array.isArray(c.dings)) o.dings=c.dings.slice(0,60).filter(d=>d&&typeof d==='object'&&num(d.lvl)).map(d=>drop({at:at(d.at),lvl:Math.min(60,num(d.lvl)),zone:t(d.zone,60),pl:num(d.pl),lt:num(d.lt)}));
+  for(const k of ['grp','duo','xq','xk','xe','xo']) if(c[k]!==undefined&&num(c[k])!==undefined) o[k]=num(c[k]);
+  if(c.gw&&typeof c.gw==='object'){const g={}; Object.entries(c.gw).slice(0,8).forEach(([n,m])=>{if(num(m)!==undefined) g[String(n).slice(0,40)]=num(m);}); o.gw=g;}
+  if(Array.isArray(c.gear)) o.gear=c.gear.slice(0,40).filter(g=>g&&typeof g==='object'&&t(g.name,80)).map(g=>drop({at:at(g.at),slot:t(g.slot,20),name:t(g.name,80),id:num(g.id),il:num(g.il),was:t(g.was,80),wil:num(g.wil),from:JR_FROM.includes(g.from)?g.from:'unknown',where:t(g.where,80)}));
+  if(Array.isArray(c.firsts)) o.firsts=c.firsts.slice(0,150).filter(f=>f&&JR_KIND.includes(f.kind)&&t(f.name,80)).map(f=>drop({at:at(f.at),kind:f.kind,name:t(f.name,80),lvl:num(f.lvl),zone:t(f.zone,60)}));
+  for(const k of ['dings','gear','firsts']) if(o[k]&&!o[k].length) delete o[k];
+  return o;
+}
+/* Addon session -> stored fields. Time together counts the longest stretch grouped with any of the other player's characters (they overlap, so they aren't added). */
+function lgJourneyIn(s,id){
+  const o={}, iso=x=>{const d=new Date(x); return isNaN(d)?'':d.toISOString();}, sec=x=>Math.max(0,parseInt(x,10)||0);
+  if(Array.isArray(s.dings)) o.dings=s.dings.map(d=>d&&({at:iso(d.at),lvl:d.level,zone:d.zone,pl:d.played,lt:d.levelTime}));
+  if(s.grouped!==undefined){o.grp=Math.round(sec(s.grouped)/60); let duo=0; const gw={};
+    if(s.groupedWith&&typeof s.groupedWith==='object') for(const [n,v] of Object.entries(s.groupedWith).sort((a,b)=>sec(b[1])-sec(a[1]))){
+      gw[n]=Math.round(sec(v)/60); const m=lgFind(n), side=m&&(m.id?m.id.slice(-1):(state.arch[m.arch]||{}).side);
+      if(side&&side!==id.slice(-1)) duo=Math.max(duo,sec(v));}
+    o.duo=Math.round(duo/60); o.gw=gw;}
+  if(s.xpFrom&&typeof s.xpFrom==='object'){o.xq=s.xpFrom.quest; o.xk=s.xpFrom.kill; o.xe=s.xpFrom.explore; o.xo=s.xpFrom.other;}
+  if(Array.isArray(s.gear)) o.gear=s.gear.map(g=>g&&({at:iso(g.at),slot:g.slot,name:g.name,id:g.id,il:g.ilvl,was:g.was,wil:g.wasIlvl,from:g.from,where:g.where}));
+  if(Array.isArray(s.firsts)) o.firsts=s.firsts.map(f=>f&&({at:iso(f.at),kind:f.kind,name:f.name,lvl:f.level,zone:f.zone}));
+  return lgJourneyClean(o);
+}
 function ingestAddon(obj){
   if(!obj||obj.app!=='ForeverDuoLedger'||!(obj.v>=1)) throw 'This is not a Forever Duo Ledger addon export.';
   const plan={sessions:[],updates:[],levels:{},hearths:{},rest:{},skills:{},inv:{},qp:{},wl:{},runs:[],mail:[],seen:[],addons:{},unmatched:new Set(),skipped:0};
@@ -4062,7 +4133,7 @@ function ingestAddon(obj){
     const from=parseInt(s.levelFrom,10)||(+state.slots[id].level||1), to=parseInt(s.levelTo,10)||from, k=id.split('-')[0];
     const runs=(s.dungeons||[]).map(n=>{const d=DG.find(x=>sNorm(x.name)===sNorm(n)||x.id===n); return d&&d.id;}).filter(Boolean);
     lgQueue(plan,prev,{v:1,src:'addon',akey,at:start.toISOString(),min:end&&!isNaN(end)?Math.max(0,Math.round((end-start)/6e4)):(parseInt(s.minutes,10)||0),pair:k,
-      chars:{[id]:Object.assign({name:charName(id),from,to,xp:parseInt(s.xpGained,10)||0,deaths:parseInt(s.deaths,10)||0},s.kills!==undefined?{kills:Math.max(0,parseInt(s.kills,10)||0)}:{},s.moneyGained!==undefined?{money:Math.max(0,parseInt(s.moneyGained,10)||0)}:{},Array.isArray(s.deathLog)?{dlog:s.deathLog.slice(0,50).map(x=>({at:String(x.at||'').slice(0,40),zone:String(x.zone||'').slice(0,60),killer:String(x.killer||'').slice(0,60)}))}:{})},runs,loot:(s.items||[]).map(i=>i.name).filter(Boolean).join(', ').slice(0,300),notes:''});
+      chars:{[id]:Object.assign({name:charName(id),from,to,xp:parseInt(s.xpGained,10)||0,deaths:parseInt(s.deaths,10)||0},lgJourneyIn(s,id),s.kills!==undefined?{kills:Math.max(0,parseInt(s.kills,10)||0)}:{},s.moneyGained!==undefined?{money:Math.max(0,parseInt(s.moneyGained,10)||0)}:{},Array.isArray(s.deathLog)?{dlog:s.deathLog.slice(0,50).map(x=>({at:String(x.at||'').slice(0,40),zone:String(x.zone||'').slice(0,60),killer:String(x.killer||'').slice(0,60)}))}:{})},runs,loot:(s.items||[]).map(i=>i.name).filter(Boolean).join(', ').slice(0,300),notes:''});
     plan.levels[id]=Math.max(plan.levels[id]||0,to);
     runs.forEach(r=>plan.runs.push([k,r]));
     for(const q of (s.quests||[])){for(const d of DG){const hit=d.q.find(x=>sNorm(x[0])===sNorm(q.name)); if(hit&&qEligible(state.slots[id],hit)) plan.qp[qpKey(id,d.id,hit[0])]='done';}}
@@ -4300,7 +4371,7 @@ function bkClean(obj){
   if(d.wl&&typeof d.wl==='object'){for(const [k,v] of Object.entries(d.wl)){const m=/^([A-Z]-[cs])__[a-z0-9-]{1,40}$/.exec(k); if(m&&sk.has(m[1])&&['got','want','no'].includes(v)) out.wl[k]=v;}}
   if(d.sessions&&typeof d.sessions==='object'){for(const [k,v] of Object.entries(d.sessions).slice(0,5000)){
     if(!/^s-[\w-]{1,60}$/.test(k)||!v||typeof v!=='object'||!v.chars||typeof v.chars!=='object') continue;
-    const chars={}; for(const [cid,c] of Object.entries(v.chars)){ if(!(sk.has(cid)||ak.has(cid))||!c) continue; const fr=parseInt(c.from,10), to=parseInt(c.to,10); if(!(fr>=1&&fr<=60&&to>=1&&to<=60)) continue; chars[cid]={name:str(c.name,24)||'',from:fr,to:to,xp:Math.max(0,parseInt(c.xp,10)||0),deaths:Math.max(0,parseInt(c.deaths,10)||0)}; if(c.kills!==undefined) chars[cid].kills=Math.max(0,parseInt(c.kills,10)||0); if(c.money!==undefined) chars[cid].money=Math.max(0,parseInt(c.money,10)||0); if(Array.isArray(c.dlog)) chars[cid].dlog=c.dlog.slice(0,50).filter(x=>x&&typeof x==='object').map(x=>({at:str(x.at,40)||'',zone:str(x.zone,60)||'',killer:str(x.killer,60)||''})); }
+    const chars={}; for(const [cid,c] of Object.entries(v.chars)){ if(!(sk.has(cid)||ak.has(cid))||!c) continue; const fr=parseInt(c.from,10), to=parseInt(c.to,10); if(!(fr>=1&&fr<=60&&to>=1&&to<=60)) continue; chars[cid]={name:str(c.name,24)||'',from:fr,to:to,xp:Math.max(0,parseInt(c.xp,10)||0),deaths:Math.max(0,parseInt(c.deaths,10)||0)}; if(c.kills!==undefined) chars[cid].kills=Math.max(0,parseInt(c.kills,10)||0); if(c.money!==undefined) chars[cid].money=Math.max(0,parseInt(c.money,10)||0); if(Array.isArray(c.dlog)) chars[cid].dlog=c.dlog.slice(0,50).filter(x=>x&&typeof x==='object').map(x=>({at:str(x.at,40)||'',zone:str(x.zone,60)||'',killer:str(x.killer,60)||''})); Object.assign(chars[cid],lgJourneyClean(c)); }
     if(!Object.keys(chars).length) continue;
     out.sessions[k]={v:1,src:v.src==='addon'?'addon':'manual',at:str(v.at,40)||new Date().toISOString(),min:Math.max(0,parseInt(v.min,10)||0),pair:pk.has(v.pair)?v.pair:'',chars,runs:Array.isArray(v.runs)?v.runs.filter(r=>dk.has(r)):[],loot:str(v.loot,300)||'',notes:str(v.notes,1000)||'',akey:str(v.akey,120)||''};
   }}
@@ -5010,9 +5081,68 @@ function renderStats(){
   $('#st-pairs').innerHTML='<table class="st-table"><thead><tr><th>Pair</th><th>Levels</th><th>Time</th><th>Clears</th><th>Quests</th><th>Deaths</th></tr></thead><tbody>'+PAIRS.map(p=>{const pd=stData(p.k); const lv=[p.k+'-c',p.k+'-s'].map(id=>+state.slots[id].level||1).join(' / ');
     return '<tr><td><b>'+p.k+'</b> '+esc(pairName(p.k))+'</td><td class="mono">'+lv+'</td><td>'+(pd.min?stFmtH(pd.min):'–')+'</td><td>'+pd.runs.length+'</td><td>'+pd.qDone+'</td><td>'+pd.deaths+'</td></tr>';}).join('')+'</tbody></table>';
   /* milestones */
+  renderJourney(v);
   $('#st-miles').innerHTML=d.miles.length?'<ul class="st-list">'+d.miles.slice(0,20).map(m=>'<li><span>'+(m.dg?'Pair '+esc(m.pair)+' cleared '+esc((DG.find(x=>x.id===m.dg)||{name:m.dg}).name):esc(charName(m.id))+' reached '+m.m)+'</span><span class="muted">'+esc(lgFmtDate(new Date(m.at)))+'</span></li>').join('')+'</ul>':'<p class="muted">Milestones show here as you log sessions: every tenth level and each first clear.</p>';
 }
 $('#st-scope').addEventListener('change',renderStats);
+/* Leveling journey: only sessions from addon 0.3 or later carry these fields. */
+const JR_XP=[['xq','Quests','var(--xq)'],['xk','Kills','var(--xk)'],['xe','Exploring','var(--xe)'],['xo','Other','var(--muted)']];
+const JR_FROM_TXT={quest:'quest reward',drop:'drop',dungeon:'dungeon drop',crafted:'crafted',vendor:'bought',mail:'mail',trade:'trade',other:'other',unknown:'source unknown'};
+function renderJourney(scope){
+  const ids=new Set(stIds(scope)), pl=state.players;
+  const rows=[]; for(const s of lgSessions()) for(const [id,c] of Object.entries(s.chars||{})) if(ids.has(id)&&(c.grp!==undefined||c.xq!==undefined||c.dings||c.gear||c.firsts)) rows.push({s,id,c});
+  $('#jr-body').hidden=!rows.length; $('#jr-empty').hidden=!!rows.length; if(!rows.length) return;
+  /* tiles */
+  /* Each player's addon reports the same evening separately, so time is added up per player and the larger total is shown, never both added together. */
+  const side={c:{grp:0,duo:0,min:0},s:{grp:0,duo:0,min:0}}; const firsts=[], gear=[];
+  rows.forEach(({s,id,c})=>{const w=side[id.slice(-1)]; w.grp+=c.grp||0; w.duo+=c.duo||0; if(c.grp!==undefined) w.min+=+s.min||0;
+    (c.firsts||[]).forEach(f=>firsts.push(Object.assign({},f,{cid:id}))); (c.gear||[]).forEach(g=>gear.push(Object.assign({},g,{cid:id})));});
+  const cnt=k=>firsts.filter(f=>f.kind===k).length, top=side.c.duo>side.s.duo?'c':'s';
+  $('#jr-tiles').innerHTML=[
+    stTile('Time together',stFmtH(side[top].duo),side[top].min?Math.round(side[top].duo/side[top].min*100)+'% of '+esc(pl[top])+"'s "+stFmtH(side[top].min)+' tracked':''),
+    stTile('Time in any group',stFmtH(Math.max(side.c.grp,side.s.grp)),''),
+    stTile('Gear upgrades',gear.length,''),
+    stTile('New zones',cnt('zone'),cnt('flight')+' flight path'+(cnt('flight')===1?'':'s')),
+    stTile('Spells learned',cnt('spell'),cnt('mount')?cnt('mount')+' mount'+(cnt('mount')===1?'':'s'):'')].join('');
+  /* XP sources, one stacked bar per player plus legend with shares; the table repeats the numbers */
+  const xp={c:{},s:{}}; rows.forEach(({id,c})=>JR_XP.forEach(([k])=>{xp[id.slice(-1)][k]=(xp[id.slice(-1)][k]||0)+(+c[k]||0);}));
+  const tot=w=>JR_XP.reduce((a,[k])=>a+(xp[w][k]||0),0), pct=(w,k)=>tot(w)?Math.round((xp[w][k]||0)/tot(w)*100):0;
+  $('#jr-xp').innerHTML=['c','s'].filter(w=>tot(w)).map(w=>'<div class="jr-row"><b>'+esc(pl[w])+'</b> <span class="muted">'+tot(w).toLocaleString()+' XP</span>'+
+    '<div class="jr-stack" role="img" aria-label="'+esc(pl[w]+': '+JR_XP.map(([k,l])=>l+' '+pct(w,k)+'%').join(', '))+'">'+JR_XP.filter(([k])=>xp[w][k]).map(([k,l,col])=>'<i style="flex:'+xp[w][k]+';background:'+col+'" title="'+esc(l+': '+(xp[w][k]).toLocaleString()+' XP ('+pct(w,k)+'%)')+'"></i>').join('')+'</div>'+
+    '<div class="jr-key">'+JR_XP.map(([k,l,col])=>'<span><i style="background:'+col+'"></i>'+l+' '+pct(w,k)+'%</span>').join('')+'</div></div>').join('')||'<p class="muted">No XP split yet.</p>';
+  $('#jr-xp-table').innerHTML='<tr><th></th>'+['c','s'].map(w=>'<th>'+esc(pl[w])+'</th>').join('')+'</tr>'+JR_XP.map(([k,l])=>'<tr><td>'+l+'</td>'+['c','s'].map(w=>'<td>'+(xp[w][k]||0).toLocaleString()+'</td>').join('')+'</tr>').join('');
+  /* time at each level, for one character */
+  const withD=[...new Set(rows.filter(r=>(r.c.dings||[]).length).map(r=>r.id))], sel=$('#jr-char');
+  const cur=withD.includes(sel.value)?sel.value:withD[0]||'';
+  const o=withD.map(id=>opt(id,charName(id),cur)).join(''); if(sel.dataset.sig!==o){sel.innerHTML=o; sel.dataset.sig=o;} sel.value=cur; sel.hidden=withD.length<2;
+  const dings=[]; rows.filter(r=>r.id===cur).forEach(r=>(r.c.dings||[]).forEach(d=>dings.push(d)));
+  dings.sort((a,b)=>a.lvl-b.lvl); const byLv=new Map(); dings.forEach(d=>byLv.set(d.lvl,d));
+  const list=[...byLv.values()].map((d,i,arr)=>{let lt=d.lt; const prev=byLv.get(d.lvl-1); if(lt===undefined&&prev&&prev.pl!==undefined&&d.pl!==undefined) lt=d.pl-prev.pl; return Object.assign({},d,{lt:lt>0?lt:undefined});});
+  const bars=list.filter(d=>d.lt), svg=$('#jr-lv');
+  $('#jr-lv-wrap').hidden=!bars.length; $('#jr-lv-empty').hidden=!!bars.length;
+  $('#jr-lv-empty').textContent=cur?'Each bar needs two dings in a row with the addon running, so the chart starts at the second one.':'No level-ups recorded yet.';
+  if(bars.length){const W=640,H=180,L=48,R=8,T=10,B=28,n=bars.length,max=Math.max(...bars.map(d=>d.lt/3600)),slot=(W-L-R)/n,bw=Math.max(3,Math.min(28,slot-2)),x=i=>L+i*slot+(slot-bw)/2,y=h=>T+(1-h/max)*(H-T-B);
+    let g=''; [0,0.5,1].forEach(f=>{const yy=y(max*f); g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+yy+'" y2="'+yy+'" stroke="var(--line)" stroke-width="1"/><text x="'+(L-6)+'" y="'+(yy+4)+'" text-anchor="end" class="lg-ax">'+(Math.round(max*f*10)/10)+' h</text>';});
+    bars.forEach((d,i)=>{const top=y(d.lt/3600), base=H-B, r=Math.min(4,(base-top)/2,bw/2);
+      g+='<g class="st-bar" tabindex="0" data-tip="'+esc('Level '+(d.lvl-1)+' to '+d.lvl+': '+lgFmtH(d.lt/3600)+(d.zone?' · dinged in '+d.zone:''))+'"><rect x="'+(L+i*slot)+'" y="'+T+'" width="'+slot+'" height="'+(H-T-B)+'" fill="transparent"/>'+
+        '<path d="M'+x(i)+' '+base+' V'+(top+r)+' Q'+x(i)+' '+top+' '+(x(i)+r)+' '+top+' H'+(x(i)+bw-r)+' Q'+(x(i)+bw)+' '+top+' '+(x(i)+bw)+' '+(top+r)+' V'+base+' Z" fill="var(--teal)"/></g>';
+      if(i===0||i===n-1||n<=12) g+='<text x="'+(x(i)+bw/2)+'" y="'+(H-10)+'" text-anchor="middle" class="lg-ax">'+d.lvl+'</text>';});
+    svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.innerHTML=g;}
+  $('#jr-lv-table').innerHTML='<tr><th>Reached</th><th>On</th><th>Zone</th><th>Time at the level before</th></tr>'+list.map(d=>'<tr><td>'+d.lvl+'</td><td>'+esc(d.at?lgFmtDate(new Date(d.at)):'')+'</td><td>'+esc(d.zone||'')+'</td><td>'+(d.lt?lgFmtH(d.lt/3600):'–')+'</td></tr>').join('');
+  /* gear and firsts, newest first */
+  const byAt=(a,b)=>String(b.at).localeCompare(String(a.at));
+  $('#jr-gear').innerHTML=gear.length?'<ul class="st-list">'+gear.sort(byAt).slice(0,12).map(g=>'<li><span>'+esc(charName(g.cid))+': <b>'+esc(g.name)+'</b>'+(g.slot?' <span class="muted">'+esc(g.slot)+'</span>':'')+
+    (g.il?' <span class="chip">'+(g.wil?g.wil+' → ':'')+g.il+'</span>':'')+'</span><span class="muted">'+esc(JR_FROM_TXT[g.from]||g.from)+(g.where?', '+esc(g.where):'')+(g.at?' · '+esc(lgFmtDate(new Date(g.at))):'')+'</span></li>').join('')+'</ul>':'<p class="muted">No upgrades recorded yet.</p>';
+  const FK={zone:'Entered',flight:'Flight path',mount:'Mount',spell:'Learned'};
+  const fl=firsts.filter(f=>f.kind!=='spell').sort(byAt);
+  $('#jr-firsts').innerHTML=fl.length?'<ul class="st-list">'+fl.slice(0,15).map(f=>'<li><span>'+esc(charName(f.cid))+' · '+FK[f.kind]+' <b>'+esc(f.name)+'</b></span><span class="muted">'+(f.lvl?'level '+f.lvl:'')+(f.at?' · '+esc(lgFmtDate(new Date(f.at))):'')+'</span></li>').join('')+'</ul>'+(cnt('spell')?'<p class="muted">Plus '+cnt('spell')+' spell'+(cnt('spell')===1?'':'s')+' learned.</p>':''):'<p class="muted">New zones, flight paths and mounts show here.</p>';
+}
+$('#jr-char').addEventListener('change',()=>renderJourney($('#st-scope').value||'all'));
+{const tip=$('#jr-tip'), svg=$('#jr-lv');
+ const show=g=>{const b=g.getBoundingClientRect(), w=$('#jr-lv-wrap').getBoundingClientRect(); tip.textContent=g.dataset.tip; tip.hidden=false; tip.style.left=Math.max(0,Math.min(w.width-tip.offsetWidth,b.left-w.left+b.width/2-tip.offsetWidth/2))+'px'; tip.style.top=Math.max(0,b.top-w.top-34)+'px';};
+ svg.addEventListener('mouseover',e=>{const g=e.target.closest('.st-bar'); if(g) show(g);});
+ svg.addEventListener('focusin',e=>{const g=e.target.closest('.st-bar'); if(g) show(g);});
+ svg.addEventListener('mouseleave',()=>{tip.hidden=true;}); svg.addEventListener('focusout',()=>{tip.hidden=true;});}
 {const tip=$('#st-tip');
  const show=g=>{const b=g.getBoundingClientRect(), w=$('#st-chart-wrap').getBoundingClientRect(); tip.textContent=g.dataset.tip; tip.hidden=false; tip.style.left=Math.max(0,Math.min(w.width-tip.offsetWidth,b.left-w.left+b.width/2-tip.offsetWidth/2))+'px'; tip.style.top=Math.max(0,b.top-w.top-34)+'px';};
  $('#st-chart').addEventListener('mouseover',e=>{const g=e.target.closest('.st-bar'); if(g) show(g);});
