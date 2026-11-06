@@ -703,6 +703,7 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
 .arch-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .arch-list li>div{flex:1;min-width:160px}
 .arch-list li.arch-box{display:block}
+a.btn{text-decoration:none}
 .ch-edit{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
 .ch-edit .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
 .ch-pairs-head{margin-top:30px}
@@ -2482,6 +2483,13 @@ function unpairChar(id,quiet){
   return to;
 }
 function deleteChar(id){retireChar(id,true);}
+/* Blizzard's Forever armory: /armory/character/first-last, no realm. A character shows up there from level 10, and only with its full name. */
+const ARMORY_BASE='https://worldofwarcraft.blizzard.com/en-us/forever/us/armory/character/';
+function armoryUrl(sl){
+  const nm=String(sl&&sl.name||'').trim(); if(!nm||nm.split(/\s+/).length<2||(+sl.level||1)<10) return '';
+  const slug=nm.toLowerCase().split(/\s+/).map(encodeURIComponent).join('-');
+  return '<a class="btn" href="'+esc(ARMORY_BASE+slug)+'" target="_blank" rel="noopener" title="Open on the WoW Forever Armory">Armory</a>';
+}
 /* ---------- Archived and deleted characters ----------
    Logged sessions point at a character's seat (like "C-s"). Archiving or deleting moves the character out of its seat into the
    arch collection under its own id, and its sessions move with it, so a new character placed in that seat starts clean.
@@ -2621,12 +2629,15 @@ function charCardHTML(id){
   const sl=state.slots[id], who=id.slice(-1), C=CLASSES[sl.cls], R=RACES[sl.race], pk=pairOf(id), pt=partnerOf(id), ed=ui.editing.has(id);
   const other=who==='c'?'s':'c', w=canWrite;
   let acts='';
+  const arm=armoryUrl(sl);
   if(w){
     acts='<button type="button" class="btn" data-edit="'+id+'" aria-expanded="'+ed+'">'+(ed?'Done':'Edit')+'</button>';
     if(sl.style!=='solo') acts+='<button type="button" class="btn" data-pairopen="'+id+'" aria-expanded="'+(ui.pairing===id)+'">'+(pt?'Change partner…':'Pair with…')+'</button>';
     if(pt) acts+='<button type="button" class="btn" data-unpair="'+id+'">Leave pair</button>';
+    if(arm) acts+=arm;
     acts+='<button type="button" class="btn ch-del" data-archgo="'+id+'" title="Hide it but keep its history. You can restore it later.">Archive</button><button type="button" class="btn" data-delask="'+id+'">Delete</button>';
   }
+  if(!w&&arm) acts=arm;
   let box='';
   if(ui.pairing===id){
     const cands=SLOT_IDS().filter(x=>x.endsWith('-'+other)&&x!==pt&&state.slots[x].style!=='solo');
