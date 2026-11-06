@@ -702,6 +702,8 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
 .arch-list{list-style:none;margin:8px 0;padding:0;display:flex;flex-direction:column;gap:6px}
 .arch-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .arch-list li>div{flex:1;min-width:160px}
+.arch-list li.arch-box{display:block}
+a.btn{text-decoration:none}
 .ch-edit{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
 .ch-edit .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
 .ch-pairs-head{margin-top:30px}
@@ -1143,6 +1145,7 @@ html[data-nopairs] .nopairs-msg{display:block}
         <textarea id="lg-imp-text" rows="5" aria-label="Addon export" placeholder='{"app":"ForeverDuoLedger","v":1, ...}'></textarea>
         <div class="bk-acts"><button type="button" class="btn" id="lg-imp-check">Check import</button><label class="btn" for="lg-imp-file"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Sync from game</label><input type="file" id="lg-imp-file" accept=".lua,.json,.txt,application/json,text/plain" class="vh"><button type="button" class="btn primary" id="lg-imp-go" hidden>Import</button><button type="button" class="btn" id="lg-send-game"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Send to game</button></div>
         <p id="lg-imp-who" hidden><label for="lg-imp-side">New characters belong to <select id="lg-imp-side"></select></label></p>
+        <div id="lg-imp-remake" hidden></div>
         <p id="lg-imp-msg" role="status"></p>
         <p id="lg-game-msg" role="status"></p>
         <details><summary>Export format for addon authors (version 1)</summary><p class="muted">JSON with app "ForeverDuoLedger" and v 1. "characters" is optional; restXP, xpMax, resting and logout there fill the Rested tab; professions (skill by name) and inventory (bags plus bank, item name to count) fill the materials planner; "sessions" holds one entry per character per session. Times are ISO 8601. Quests are matched by name and items by item id. "mail" lists what that character mailed; entries that match the Mailbox queue by recipient name and item name are marked sent. Optional "kills", "moneyGained" (copper) and "deathLog" feed the Stats tab. A top-level "addons" list ticks installed addons on the Launch prep tab, and every character found by name is marked as reserved.</p><pre id="lg-spec" class="lg-spec"></pre></details>
@@ -2480,6 +2483,13 @@ function unpairChar(id,quiet){
   return to;
 }
 function deleteChar(id){retireChar(id,true);}
+/* Blizzard's Forever armory: /armory/character/first-last, no realm. A character shows up there from level 10, and only with its full name. */
+const ARMORY_BASE='https://worldofwarcraft.blizzard.com/en-us/forever/us/armory/character/';
+function armoryUrl(sl){
+  const nm=String(sl&&sl.name||'').trim(); if(!nm||nm.split(/\s+/).length<2||(+sl.level||1)<10) return '';
+  const slug=nm.toLowerCase().split(/\s+/).map(encodeURIComponent).join('-');
+  return '<a class="btn" href="'+esc(ARMORY_BASE+slug)+'" target="_blank" rel="noopener" title="Open on the WoW Forever Armory">Armory</a>';
+}
 /* ---------- Archived and deleted characters ----------
    Logged sessions point at a character's seat (like "C-s"). Archiving or deleting moves the character out of its seat into the
    arch collection under its own id, and its sessions move with it, so a new character placed in that seat starts clean.
@@ -2549,14 +2559,18 @@ function restoreChar(aid){
 function renderArchive(force){
   const host=$('#ch-arch'); if(!host) return;
   const arch=archList(false), del=archList(true);
-  const sig=JSON.stringify([arch.map(a=>a.id),del.map(a=>a.id),pnName('c'),pnName('s'),canWrite,FAC]);
+  const sig=JSON.stringify([arch.map(a=>a.id+(a.remadeAs||'')),del.map(a=>a.id),pnName('c'),pnName('s'),canWrite,FAC,ui.archRemake||'',SLOT_IDS().map(x=>x+(state.slots[x].name||'')).join()]);
   if(!force&&host.dataset.sig===sig) return; host.dataset.sig=sig;
   if(!arch.length&&!del.length){host.innerHTML=''; return;}
   const was=host.querySelector('details'), open=was?was.open:false;
   const when=iso=>{try{return new Date(iso).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}catch(_){return '';}};
   const row=a=>{const R=RACES[a.race], C=CLASSES[a.cls], here=R&&R.fac===FAC;
-    return '<li>'+(C?classBadge(a.cls,1):'')+'<div><b>'+esc(a.name||'Unnamed')+'</b> <span class="muted">'+esc((R?R.name+' ':'')+(C?C.name:'')+' · lvl '+(+a.level||1)+' · '+pnName(a.side)+' · archived '+when(a.at))+'</span></div>'+
-      (canWrite?(here?'<button type="button" class="btn mini" data-archrestore="'+esc(a.id)+'">Restore</button>':'<span class="muted">Switch faction to restore</span>'):'')+'</li>';};
+    const live=SLOT_IDS().filter(x=>x.endsWith('-'+a.side));
+    const box=ui.archRemake===a.id?(live.length?'<div class="movebox"><label for="arch-rm-'+esc(a.id)+'">Move '+esc(a.name||'its')+'\'s plans to</label><select id="arch-rm-'+esc(a.id)+'">'+live.map(x=>opt(x,charName(x)+': '+CLASSES[state.slots[x].cls].name+', lvl '+(+state.slots[x].level||1),'')).join('')+'</select>'+
+      '<p class="muted">Pair, main or alt, play style, spec, professions, recipes wanted, wishlist and talents move over. Level, quests and sessions stay here.</p><div class="mvbtns"><button type="button" class="btn primary" data-archremakego="'+esc(a.id)+'">Move plans</button><button type="button" class="btn" data-archremake="'+esc(a.id)+'">Cancel</button></div></div>'
+      :'<div class="movebox"><p class="muted">'+esc(pnName(a.side))+' has no characters to move the plans to yet.</p></div>'):'';
+    return '<li>'+(C?classBadge(a.cls,1):'')+'<div><b>'+esc(a.name||'Unnamed')+'</b> <span class="muted">'+esc((R?R.name+' ':'')+(C?C.name:'')+' · lvl '+(+a.level||1)+' · '+pnName(a.side)+' · archived '+when(a.at)+(a.remadeAs?' · remade as '+a.remadeAs:''))+'</span></div>'+
+      (canWrite?(a.remadeAs?'':'<button type="button" class="btn mini" data-archremake="'+esc(a.id)+'">Remake as…</button>')+(here?'<button type="button" class="btn mini" data-archrestore="'+esc(a.id)+'">Restore</button>':'<span class="muted">Switch faction to restore</span>'):'')+'</li>'+(box?'<li class="arch-box">'+box+'</li>':'');};
   host.innerHTML='<details class="box ch-arch"'+(open?' open':'')+'><summary><b>Archived characters</b> <span class="muted">('+arch.length+(del.length?', '+del.length+' deleted':'')+')</span></summary>'+
     '<p class="muted">Archived characters keep their sessions in the log and stats, and Sync from game leaves them alone. Restore brings one back with its plans, quest ticks and wishlist, without a pair.</p>'+
     (arch.length?'<ul class="arch-list">'+arch.map(row).join('')+'</ul>':'')+
@@ -2615,12 +2629,15 @@ function charCardHTML(id){
   const sl=state.slots[id], who=id.slice(-1), C=CLASSES[sl.cls], R=RACES[sl.race], pk=pairOf(id), pt=partnerOf(id), ed=ui.editing.has(id);
   const other=who==='c'?'s':'c', w=canWrite;
   let acts='';
+  const arm=armoryUrl(sl);
   if(w){
     acts='<button type="button" class="btn" data-edit="'+id+'" aria-expanded="'+ed+'">'+(ed?'Done':'Edit')+'</button>';
     if(sl.style!=='solo') acts+='<button type="button" class="btn" data-pairopen="'+id+'" aria-expanded="'+(ui.pairing===id)+'">'+(pt?'Change partner…':'Pair with…')+'</button>';
     if(pt) acts+='<button type="button" class="btn" data-unpair="'+id+'">Leave pair</button>';
+    if(arm) acts+=arm;
     acts+='<button type="button" class="btn ch-del" data-archgo="'+id+'" title="Hide it but keep its history. You can restore it later.">Archive</button><button type="button" class="btn" data-delask="'+id+'">Delete</button>';
   }
+  if(!w&&arm) acts=arm;
   let box='';
   if(ui.pairing===id){
     const cands=SLOT_IDS().filter(x=>x.endsWith('-'+other)&&x!==pt&&state.slots[x].style!=='solo');
@@ -3049,6 +3066,8 @@ $('#ch-cols').addEventListener('click',e=>{
 $('#ch-arch').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b||!canWrite) return; const d=b.dataset;
   if(d.archrestore){const id=restoreChar(d.archrestore); if(id){const c=document.getElementById('char-'+id); if(c) c.scrollIntoView({block:'nearest'}); focusSoon('#char-'+CSS.escape(id)+' [data-edit]');} return;}
+  if(d.archremake){ui.archRemake=ui.archRemake===d.archremake?null:d.archremake; renderArchive(true); focusSoon('#arch-rm-'+CSS.escape(d.archremake)); return;}
+  if(d.archremakego){const aid=d.archremakego, sel=document.getElementById('arch-rm-'+aid); ui.archRemake=null; if(sel&&sel.value){const id=remakeChar(aid,sel.value); syncPairs(); renderAll(true); const c=document.getElementById('char-'+id); if(c) c.scrollIntoView({block:'nearest'});} else renderArchive(true); return;}
   if(d.archforget){delete state.arch[d.archforget]; archWrite(d.archforget); renderArchive(true); return;}
 });
 $('#ch-ideas').addEventListener('click',e=>{
@@ -4070,15 +4089,54 @@ function lgOwnerUI(){
   const sides=[...new Set(lgPlan.seen.concat(Object.keys(lgPlan.levels)).map(id=>id.slice(-1)))];
   sel.innerHTML='<option value="">Choose a player</option>'+['s','c'].map(w=>'<option value="'+w+'">'+esc(state.players[w]||w)+'</option>').join('');
   sel.value=sides.length===1?sides[0]:'';
+  lgRemakeUI();
+}
+/* A new character might be a remake of one you archived (Forever has no rename, so you delete and make it again).
+   Offer that player's archived characters, same class first, and preselect the only same-class one. */
+function lgRemakeCands(side,cls){
+  return archList(false).filter(a=>a.side===side&&!a.remadeAs&&a.slot).sort((x,y)=>(y.cls===cls)-(x.cls===cls));
+}
+function lgRemakeUI(){
+  const box=$('#lg-imp-remake'); if(!box) return;
+  const side=$('#lg-imp-side').value;
+  const rows=lgPlan&&canWrite&&(side==='c'||side==='s')?lgPlan.create.map((c,i)=>[c,i,lgRemakeCands(side,c.cls)]).filter(r=>r[2].length):[];
+  box.hidden=!rows.length; if(!rows.length){box.innerHTML=''; return;}
+  box.innerHTML='<p class="muted">Is a new character a remake of one you archived? Its plans move over: pair, main or alt, play style, spec, professions, recipes wanted, wishlist and talents. Level, quests and sessions stay with the old one.</p>'+
+    rows.map(([c,i,cands])=>{const same=cands.filter(a=>a.cls===c.cls), pick=same.length===1?same[0].id:'';
+      return '<p><label for="lg-rm-'+i+'">'+esc(c.name)+' is <select id="lg-rm-'+i+'" data-remake="'+i+'">'+opt('','a new character',pick)+cands.map(a=>opt(a.id,'a remake of '+(a.name||'Unnamed')+' ('+CLASSES[a.cls].name+', lvl '+(+a.level||1)+')',pick)).join('')+'</select></label></p>';}).join('');
+}
+$('#lg-imp-side').addEventListener('change',lgRemakeUI);
+/* Move an archived character's plans onto a live one. If its old pair is still waiting with an empty seat, the new character takes that seat. */
+function remakeChar(aid,id){
+  const a=state.arch[aid], sl=state.slots[id]; if(!canWrite||!a||!a.slot||!isMade(id)) return id;
+  const old=a.slot, sameCls=old.cls===sl.cls;
+  if(a.from&&a.from.slice(-1)===id.slice(-1)&&!isMade(a.from)&&partnerOf(a.from)&&!partnerOf(id)){swapSlots(id,a.from); id=a.from;}
+  const t=state.slots[id];
+  for(const f of ['tag','style','crafts']) if(old[f]!==undefined) t[f]=old[f];
+  for(const f of ['p1','p2']) if(typeof old[f]==='string'&&(old[f]===''||PROFS[old[f]])) t[f]=old[f];
+  if(sameCls&&CLASSES[t.cls].specs.some(x=>x[0]===old.spec)) t.spec=old.spec;
+  if(CAMP[old.camp]&&campOptions(t).includes(old.camp)) t.camp=old.camp;
+  saveSlot(id);
+  const pre=id+'__';
+  for(const [k,v] of Object.entries(a.wl||{})) if(v!=='got'){state.wl[pre+k]=v; if(db&&canWrite) db.collection('wl').doc(pre+k).set({s:v}).catch(()=>{});}
+  if(sameCls&&a.tal){state.tal[id]={second:a.tal.second}; talWrite(id);}
+  const ok=x=>!x||isMade(x);
+  for(const [mid,m] of Object.entries(a.mail||{})){
+    const n=bkClone(m); if(n.to===a.from) n.to=id; if(n.from===a.from) n.from=id;
+    if(ok(n.to)&&ok(n.from)&&n.to&&!state.mail[mid]){state.mail[mid]=n; mlWrite(mid);}
+  }
+  a.remadeAs=(t.name||'').trim()||'a new character'; archWrite(aid);
+  return id;
 }
 /* Make the characters the game knows and the Ledger doesn't, then read the file again so their sessions match. */
-function lgCreateChars(p,side){
-  for(const c of p.create){
-    const id=newChar(side); if(!id) continue; const sl=state.slots[id];
+function lgCreateChars(p,side,remakes){
+  p.create.forEach((c,i)=>{
+    const id=newChar(side); if(!id) return; const sl=state.slots[id];
     Object.assign(sl,{name:c.name,cls:c.cls,race:c.race,spec:CLASSES[c.cls].specs[0][0],level:c.level,status:'Leveling'},c.guid?{guid:c.guid,realm:c.realm||''}:{});
     if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl)[0];
     saveSlot(id);
-  }
+    const aid=remakes&&remakes[i]; if(aid&&state.arch[aid]){syncPairs(); remakeChar(aid,id); p.remade=(p.remade||0)+1;}
+  });
   syncPairs();
 }
 function lgPlanText(p){
@@ -4110,15 +4168,17 @@ function lgFromLua(text){
 }
 async function lgCheck(text){
   try{lgObj=JSON.parse(lgFromLua(text)); lgPlan=ingestAddon(lgObj); $('#lg-imp-msg').textContent=lgPlanText(lgPlan); $('#lg-imp-go').hidden=!(canWrite&&(lgPlan.create.length||lgPlan.sessions.length||lgPlan.updates.length||Object.keys(lgPlan.levels).length||lgPlan.mail.length||lgPlan.seen.length||Object.keys(lgPlan.addons).length)); lgOwnerUI();}
-  catch(err){lgPlan=null; lgObj=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true; $('#lg-imp-msg').textContent=typeof err==='string'?err:'That text is not valid JSON.';}
+  catch(err){lgPlan=null; lgObj=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true; $('#lg-imp-remake').hidden=true; $('#lg-imp-msg').textContent=typeof err==='string'?err:'That text is not valid JSON.';}
 }
 $('#lg-imp-check').addEventListener('click',()=>lgCheck($('#lg-imp-text').value));
 $('#lg-imp-file').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0]; e.target.value=''; if(!f) return; if(f.size>2e6){$('#lg-imp-msg').textContent='That file is too large.'; return;} const t=await f.text(); $('#lg-imp-text').value=t; lgCheck(t);});
 $('#lg-imp-go').addEventListener('click',async()=>{
   if(!lgPlan||!canWrite) return; let p=lgPlan;
   if(p.create.length){const side=$('#lg-imp-side').value; if(side!=='c'&&side!=='s'){$('#lg-imp-msg').textContent='Choose whose characters these are first, then press Import.'; $('#lg-imp-side').focus(); return;}
-    const made=p.create.length; lgCreateChars(p,side); p=ingestAddon(lgObj); p.created=made;}
-  lgPlan=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true;
+    const remakes={}; document.querySelectorAll('#lg-imp-remake [data-remake]').forEach(x=>{if(x.value) remakes[x.dataset.remake]=x.value;});
+    if(new Set(Object.values(remakes)).size<Object.keys(remakes).length){$('#lg-imp-msg').textContent='Two new characters are set as a remake of the same one. Pick one of them, then press Import.'; return;}
+    const made=p.create.length; lgCreateChars(p,side,remakes); const remade=p.remade||0; p=ingestAddon(lgObj); p.created=made; p.remade=remade;}
+  lgPlan=null; $('#lg-imp-go').hidden=true; $('#lg-imp-who').hidden=true; $('#lg-imp-remake').hidden=true;
   for(const s of p.sessions) await lgSave(s);
   for(const [id,doc] of (p.updates||[])){state.sessions[id]=doc; if(db&&canWrite){bkBeforeEdit(); setSync('Saving…'); try{await db.collection('sessions').doc(id).set(doc); setSync('Saved','on');}catch(e){setSync('Save failed','off');}}}
   for(const [id,lv] of Object.entries(p.levels)){const sl=state.slots[id]; if(lv>(+sl.level||1)){sl.level=lv; saveSlot(id);}}
@@ -4133,7 +4193,7 @@ $('#lg-imp-go').addEventListener('click',async()=>{
   for(const [w,names] of Object.entries(p.addons)){const {addons}=lnSeed(); for(const a of addons){const hit=names.some(n=>{const nn=sNorm(n), at=sNorm(a.t); return nn&&(at.includes(nn)||nn.includes(at.split(' (')[0]));}); if(hit&&!a[w]){const d=Object.assign({},a,{[w]:true}); delete d.id; state.launch[a.id]=d; lnWrite(a.id);}}}
   for(const [mid,t] of p.mail){const m=state.mail[mid]; if(m){m.sentAt=t; mlWrite(mid);}}
   const byPair={}; p.runs.forEach(([k,r])=>(byPair[k]=byPair[k]||[]).push(r)); for(const [k,r] of Object.entries(byPair)) lgApplyRuns(k,r);
-  $('#lg-imp-msg').textContent='Imported. '+(p.created?(p.created===1?'1 character':p.created+' characters')+' added on the Characters tab. ':'')+lgPlanText(p);
+  $('#lg-imp-msg').textContent='Imported. '+(p.created?(p.created===1?'1 character':p.created+' characters')+' added on the Characters tab'+(p.remade?', '+p.remade+' with plans from an archived character':'')+'. ':'')+lgPlanText(p);
   renderAll(true);
 });
 $('#lg-spec').textContent=JSON.stringify(ADDON_FORMAT,null,2);
