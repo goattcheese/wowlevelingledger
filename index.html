@@ -1139,7 +1139,7 @@ html[data-nopairs] .nopairs-msg{display:block}
       <details class="tn-card lg-addon" open>
         <summary><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>Sync with the Duo Ledger addon</summary>
         <p class="muted"><b>From the game:</b> after a /reload or logout, press <b>Sync from game</b> and pick <span class="mono">DuoLedger.lua</span> in <span class="mono">WTF\Account\&lt;account&gt;\SavedVariables</span>. You can also paste the addon's Export text below. One sync brings in every character on that WoW account that has played with the addon on. Characters are matched by name, and the first name is enough. A character the Ledger doesn't have yet is added for you: pick whose it is before you press Import. Syncing the same data twice is safe, and a session that grew since last time is updated. The import also raises levels, sets hearths, marks dungeon quests turned in and wishlist items obtained.</p>
-        <p class="muted"><b>To the game:</b> press <b>Send to game</b> and save <span class="mono">LedgerData.lua</span> into <span class="mono">Interface\AddOns\DuoLedger</span>, replacing the old one. Then type /reload in game. This works while you're playing, because the Ledger and the game never write the same file.</p>
+        <p class="muted"><b>To the game:</b> press <b>Send to game</b> and save <span class="mono">LedgerData.lua</span> into <span class="mono">Interface\AddOns\DuoLedger</span>, replacing the old one. Then type /reload in game. This works while you're playing, because the Ledger and the game never write the same file. It also tells the addon which characters you archived or deleted, and the addon forgets them at that /reload.</p>
         <textarea id="lg-imp-text" rows="5" aria-label="Addon export" placeholder='{"app":"ForeverDuoLedger","v":1, ...}'></textarea>
         <div class="bk-acts"><button type="button" class="btn" id="lg-imp-check">Check import</button><label class="btn" for="lg-imp-file"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Sync from game</label><input type="file" id="lg-imp-file" accept=".lua,.json,.txt,application/json,text/plain" class="vh"><button type="button" class="btn primary" id="lg-imp-go" hidden>Import</button><button type="button" class="btn" id="lg-send-game"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Send to game</button></div>
         <p id="lg-imp-who" hidden><label for="lg-imp-side">New characters belong to <select id="lg-imp-side"></select></label></p>
@@ -2503,7 +2503,7 @@ function reKeySessions(from,to){
 function retireChar(id,deleted){
   if(!canWrite||!isMade(id)) return;
   const sl=state.slots[id], pre=id+'__', aid='ar-'+bkStamp()+'-'+Math.random().toString(36).slice(2,6);
-  const rec={name:(sl.name||'').trim(),cls:sl.cls,race:sl.race,level:+sl.level||1,side:id.slice(-1),from:id,at:new Date().toISOString(),deleted:!!deleted};
+  const rec={name:(sl.name||'').trim(),guid:sl.guid||'',realm:sl.realm||'',cls:sl.cls,race:sl.race,level:+sl.level||1,side:id.slice(-1),from:id,at:new Date().toISOString(),deleted:!!deleted};
   if(!deleted){
     rec.slot=bkClone(sl);
     rec.cq=Object.keys(state.cq).filter(k=>k.startsWith(pre)&&state.cq[k]).map(k=>k.slice(pre.length));
@@ -3887,7 +3887,7 @@ function wlForDungeon(k,dgId){
    The addon contract is ADDON_FORMAT below; ingestAddon() is the single entry point a future live connection can call too. */
 const XP_TO_NEXT=[0,400,900,1400,2100,2800,3600,4500,5400,6500,7600,8800,10100,11400,12900,14400,16000,17700,19400,21300,23200,25200,27300,29400,31700,34000,36400,38900,41400,44300,47400,50800,54500,58600,62800,67100,71600,76100,80800,85700,90700,95800,101000,106300,111800,117500,123200,129100,135100,141200,147500,153900,160400,167100,173900,180800,187900,195000,202300,209800];
 function xpBetween(a,b){a=Math.max(1,Math.min(60,a|0)); b=Math.max(1,Math.min(60,b|0)); let s=0; for(let l=a;l<b;l++) s+=XP_TO_NEXT[l]||0; return s;}
-const ADDON_FORMAT={app:'ForeverDuoLedger',v:1,addons:['Questie','Details'],characters:[{name:'Grumtusk',class:'PALADIN',race:'Scourge',level:15,xp:3200,xpMax:14400,restXP:5200,resting:true,logout:'2026-11-05T21:31:00Z',professions:{Blacksmithing:82,Mining:95,'First Aid':60},inventory:{'Copper Bar':24,'Rough Stone':18},zone:'Tirisfal Glades',hearth:'Undercity'}],
+const ADDON_FORMAT={app:'ForeverDuoLedger',v:1,addons:['Questie','Details'],characters:[{name:'Grumtusk',guid:'Player-1234-0A1B2C3D',realm:'CamwowUS1',class:'PALADIN',race:'Scourge',level:15,xp:3200,xpMax:14400,restXP:5200,resting:true,logout:'2026-11-05T21:31:00Z',professions:{Blacksmithing:82,Mining:95,'First Aid':60},inventory:{'Copper Bar':24,'Rough Stone':18},zone:'Tirisfal Glades',hearth:'Undercity'}],
   sessions:[{character:'Grumtusk',start:'2026-11-05T19:00:00Z',end:'2026-11-05T21:30:00Z',levelFrom:12,levelTo:15,xpGained:24000,deaths:0,quests:[{id:5761,name:'Slaying the Beast'}],items:[{id:14148,name:'Crystalline Cuffs'}],dungeons:['Ragefire Chasm'],mail:[{to:'Mendra',item:'Copper Bar',qty:20}],kills:212,moneyGained:4350,deathLog:[{at:'2026-11-05T20:14:00Z',zone:'Ragefire Chasm',killer:'Taragaman the Hungerer'}]}]};
 function lgSessions(){return Object.entries(state.sessions).map(([id,s])=>Object.assign({id},s)).sort((a,b)=>String(b.at).localeCompare(String(a.at)));}
 function lgCharStats(id){
@@ -3995,9 +3995,15 @@ $('#lg-csv').addEventListener('click',()=>{
 /* ---------- Addon import (future live connection uses the same function) ---------- */
 /* Forever characters have a first and a last name. A full match wins; otherwise the first names are compared, if only one character has that first name. */
 /* Archived and deleted characters count too, so a name that belongs to one of them isn't matched to someone else or added again. */
-function lgFind(n){const t=String(n||'').trim().toLowerCase(); if(!t) return null;
-  const made=Object.keys(state.slots).filter(id=>state.slots[id].made&&(state.slots[id].name||'').trim());
-  const gone=Object.keys(state.arch).filter(a=>state.arch[a]&&(state.arch[a].name||'').trim());
+/* With the game's character id (GUID), that wins over names, and a name only matches a character with the same id or none saved yet:
+   a character remade with an old name gets a new id, so it isn't mistaken for the archived one. */
+function lgFind(n,guid){const t=String(n||'').trim().toLowerCase(); guid=typeof guid==='string'?guid.trim():'';
+  if(guid){const live=Object.keys(state.slots).find(id=>state.slots[id].made&&state.slots[id].guid===guid); if(live) return {id:live};
+    const ga=Object.keys(state.arch).find(a=>state.arch[a]&&state.arch[a].guid===guid); if(ga) return {arch:ga};}
+  if(!t) return null;
+  const fits=x=>!guid||!x.guid||x.guid===guid;
+  const made=Object.keys(state.slots).filter(id=>state.slots[id].made&&(state.slots[id].name||'').trim()&&fits(state.slots[id]));
+  const gone=Object.keys(state.arch).filter(a=>state.arch[a]&&(state.arch[a].name||'').trim()&&fits(state.arch[a]));
   const full=made.find(id=>state.slots[id].name.trim().toLowerCase()===t); if(full) return {id:full};
   const fullGone=gone.find(a=>state.arch[a].name.trim().toLowerCase()===t); if(fullGone) return {arch:fullGone};
   const first=x=>x.trim().toLowerCase().split(/\s+/)[0], f=first(t), hits=made.filter(id=>first(state.slots[id].name)===f);
@@ -4012,11 +4018,14 @@ function ingestAddon(obj){
   if(!obj||obj.app!=='ForeverDuoLedger'||!(obj.v>=1)) throw 'This is not a Forever Duo Ledger addon export.';
   const plan={sessions:[],updates:[],levels:{},hearths:{},rest:{},skills:{},inv:{},qp:{},wl:{},runs:[],mail:[],seen:[],addons:{},unmatched:new Set(),skipped:0};
   const known=new Map(lgSessions().filter(s=>s.akey).map(s=>[s.akey,s]));
-  plan.create=[]; plan.retired=new Set(); plan.retiredSess=0;
-  for(const c of (obj.characters||[])){const m=lgFind(c.name), id=m&&m.id;
+  plan.create=[]; plan.retired=new Set(); plan.retiredSess=0; plan.ids={}; plan.byName=new Map();
+  const gid=v=>typeof v==='string'&&/^[\w-]{3,60}$/.test(v)?v:'', realmOf=v=>typeof v==='string'?v.trim().slice(0,60):'';
+  for(const c of (obj.characters||[])){const m=lgFind(c.name,gid(c.guid)), id=m&&m.id;
+    if(m) plan.byName.set(String(c.name||'').trim().toLowerCase(),m);
     if(m&&m.arch){plan.retired.add(String(c.name||'').trim()); continue;}
+    if(id&&gid(c.guid)) plan.ids[id]={guid:gid(c.guid),realm:realmOf(c.realm)};
     if(!id){const race=lgRaceKey(c.race), cls=lgClassKey(c.class), nm=String(c.name||'').trim().slice(0,40);
-      if(nm&&race&&cls&&!plan.create.some(x=>x.name.toLowerCase()===nm.toLowerCase())) plan.create.push({name:nm,cls,race,level:Math.max(1,Math.min(60,parseInt(c.level,10)||1))});
+      if(nm&&race&&cls&&!plan.create.some(x=>x.name.toLowerCase()===nm.toLowerCase())) {plan.create.push({name:nm,cls,race,level:Math.max(1,Math.min(60,parseInt(c.level,10)||1)),guid:gid(c.guid),realm:realmOf(c.realm)}); plan.byName.set(nm.toLowerCase(),null);}
       else plan.unmatched.add(c.name);
       continue;}
     if(!state.slots[id].reserved) plan.seen.push(id);
@@ -4027,7 +4036,7 @@ function ingestAddon(obj){
     if(c.inventory&&typeof c.inventory==='object'){const it={}; Object.entries(c.inventory).slice(0,400).forEach(([k,v])=>{const x=parseInt(v,10); if(x>0) it[String(k).slice(0,80)]=x;}); plan.inv[id]={at:new Date().toISOString(),items:it};}
     if(c.restXP!==undefined&&+c.xpMax>0){const lo=c.logout&&!isNaN(new Date(c.logout))?new Date(c.logout).toISOString():new Date().toISOString(); plan.rest[id]={place:c.resting?'inn':'out',at:lo,pct:Math.max(0,Math.min(150,(+c.restXP||0)/(+c.xpMax)*100))};}}
   for(const s of (obj.sessions||[]).slice(0,500)){
-    const sm=lgFind(s.character); if(sm&&sm.arch){plan.retiredSess++; continue;}
+    const sk=String(s.character||'').trim().toLowerCase(), sm=plan.byName.has(sk)?plan.byName.get(sk):lgFind(s.character); if(sm&&sm.arch){plan.retiredSess++; continue;}
     const id=sm&&sm.id; if(!id){if(!plan.create.some(x=>x.name.toLowerCase()===String(s.character||'').trim().toLowerCase())) plan.unmatched.add(s.character); continue;}
     const akey=(String(s.character)+'|'+String(s.start)).slice(0,120); const prev=known.get(akey);
     const start=new Date(s.start), end=s.end?new Date(s.end):null; if(isNaN(start)) continue;
@@ -4066,7 +4075,7 @@ function lgOwnerUI(){
 function lgCreateChars(p,side){
   for(const c of p.create){
     const id=newChar(side); if(!id) continue; const sl=state.slots[id];
-    Object.assign(sl,{name:c.name,cls:c.cls,race:c.race,spec:CLASSES[c.cls].specs[0][0],level:c.level,status:'Leveling'});
+    Object.assign(sl,{name:c.name,cls:c.cls,race:c.race,spec:CLASSES[c.cls].specs[0][0],level:c.level,status:'Leveling'},c.guid?{guid:c.guid,realm:c.realm||''}:{});
     if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl)[0];
     saveSlot(id);
   }
@@ -4113,6 +4122,7 @@ $('#lg-imp-go').addEventListener('click',async()=>{
   for(const s of p.sessions) await lgSave(s);
   for(const [id,doc] of (p.updates||[])){state.sessions[id]=doc; if(db&&canWrite){bkBeforeEdit(); setSync('Saving…'); try{await db.collection('sessions').doc(id).set(doc); setSync('Saved','on');}catch(e){setSync('Save failed','off');}}}
   for(const [id,lv] of Object.entries(p.levels)){const sl=state.slots[id]; if(lv>(+sl.level||1)){sl.level=lv; saveSlot(id);}}
+  for(const [id,g] of Object.entries(p.ids||{})){const sl=state.slots[id]; if(sl&&(sl.guid!==g.guid||(g.realm&&sl.realm!==g.realm))){sl.guid=g.guid; if(g.realm) sl.realm=g.realm; saveSlot(id);}}
   for(const [id,h] of Object.entries(p.hearths)){state.slots[id].hearth=h; saveSlot(id);}
   for(const [id,r] of Object.entries(p.rest||{})){state.slots[id].rest=r; saveSlot(id);}
   for(const [id,sk] of Object.entries(p.skills||{})){state.slots[id].skill=Object.assign({},state.slots[id].skill||{},sk); saveSlot(id);}
@@ -4148,7 +4158,9 @@ function lgGameData(){
     const mail=mlToSend(id).slice(0,40).map(m=>({to:m.to&&state.slots[m.to]?charName(m.to):'',item:m.item,qty:m.qty||1,standing:!!m.standing,note:m.note||''}));
     chars.push({name:sl.name,level:+sl.level||1,class:(CLASSES[sl.cls]||{}).name||'',hearth:sl.hearth||'',player:state.players[side]||'',partner:ps&&ps.name?ps.name:'',partnerLevel:ps&&ps.name?(+ps.level||1):0,tag:sl.tag||'alt',style:sl.style||'flex',wishlist:wl,mail});
   }
-  return {app:'ForeverDuoLedger',v:1,at:new Date().toISOString().replace(/\.\d+Z$/,'Z'),characters:chars};
+  /* archived and deleted characters: the addon forgets them at the next /reload */
+  const retired=Object.values(state.arch).filter(a=>a&&(a.name||a.guid)).slice(0,200).map(a=>({name:a.name||'',guid:a.guid||''}));
+  return {app:'ForeverDuoLedger',v:1,at:new Date().toISOString().replace(/\.\d+Z$/,'Z'),characters:chars,retired};
 }
 function lgGameFile(){
   return '-- Written by the Forever Duo Ledger on '+new Date().toISOString()+'.\n-- Don\'t edit it: Send to game replaces the whole file. The game never writes here.\nDuoLedgerLedgerData = '+luaVal(lgGameData(),'')+'\n';
@@ -4194,6 +4206,7 @@ function bkClean(obj){
       if(CLASSES[src.cls]&&RACES[src.race]&&RACES[src.race].classes.includes(src.cls)){sl.cls=src.cls;sl.race=src.race;}
       if(typeof src.spec==='string'&&CLASSES[sl.cls].specs.some(x=>x[0]===src.spec)) sl.spec=src.spec; else if(!CLASSES[sl.cls].specs.some(x=>x[0]===sl.spec)) sl.spec=CLASSES[sl.cls].specs[0][0];
       const nm=str(src.name,24); if(nm!==null) sl.name=nm;
+      for(const f of ['guid','realm']){const v=str(src[f],60); if(v!==null) sl[f]=v;}
       const lv=parseInt(src.level,10); if(lv>=1&&lv<=60) sl.level=lv;
       if(STATUS.includes(src.status)) sl.status=src.status;
       for(const f of ['p1','p2']) if(typeof src[f]==='string'&&(src[f]===''||PROFS[src[f]])) sl[f]=src[f];
@@ -5549,7 +5562,7 @@ renderAll(true);
       const was=SLOT_IDS().join()+'|'+PAIRS.map(p=>p.k).join();
       snap.docs.forEach(d=>{const v=d.data(); if(!v||!/^[A-Z0-9]{1,6}-[cs]$/.test(d.id)) return;
         if(!state.slots[d.id]) ensureGroup(d.id.split('-')[0],RACES[v.race]?RACES[v.race].fac:'h');
-        if(!state.slots[d.id]||localDirty.has('slots/'+d.id)) return; const base=state.slots[d.id]; for(const f of ['name','race','cls','spec','level','status','p1','p2','camp','skill','crafts','hearth','alt','reserved','rest','inv','leg','tag','style']) if(v[f]!==undefined) base[f]=v[f];
+        if(!state.slots[d.id]||localDirty.has('slots/'+d.id)) return; const base=state.slots[d.id]; for(const f of ['name','race','cls','spec','level','status','p1','p2','camp','skill','crafts','hearth','alt','reserved','rest','inv','leg','tag','style','guid','realm']) if(v[f]!==undefined) base[f]=v[f];
         /* slots saved before characters existed have no made flag: anything saved back then is a character */
         base.made=v.made===undefined?true:!!v.made; changed.add(d.id.split('-')[0]);});
       syncPairs(); navDefault();
