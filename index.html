@@ -698,6 +698,10 @@ details.pp > summary{cursor:pointer;font-size:.85rem;color:var(--teal)}
 .ch-card .chips{display:flex;flex-wrap:wrap;gap:4px}
 .ch-acts{display:flex;flex-wrap:wrap;gap:6px}
 .ch-acts .ch-del{margin-left:auto}
+.ch-arch{margin-top:14px}
+.arch-list{list-style:none;margin:8px 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.arch-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arch-list li>div{flex:1;min-width:160px}
 .ch-edit{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
 .ch-edit .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
 .ch-pairs-head{margin-top:30px}
@@ -983,6 +987,7 @@ html[data-nopairs] .nopairs-msg{display:block}
       <div class="prose ch-intro"><h2>Characters</h2><p>Build your characters one at a time, then pair one of <span data-pname="c">Blair</span>'s with one of <span data-pname="s">Shane</span>'s. A character with no pair waits on the bench until you slot it in, and pairs can swap partners as you level at different speeds.</p></div>
       <div id="pair-notice"></div>
       <div class="ch-cols" id="ch-cols"></div>
+      <div id="ch-arch"></div>
       <div class="wave-head ch-pairs-head"><span class="eyebrow">Pairs</span><h2>Who levels with whom</h2></div>
       <p class="muted ch-legend">A pair is judged on <b>synergy</b> first: how the two classes cover each other through crowd control, healing, pets and buffs. Tank plus healer makes dungeons easy, but it is not required. Checks: <span class="tag ok">ok</span> fine, <span class="tag warn">warn</span> a caveat, <span class="tag bad">fix</span> worth changing (shared profession, same class), <span class="tag info">gap</span> something to plan around.</p>
       <div class="waves" id="waves"></div>
@@ -2058,7 +2063,7 @@ Object.assign(ROUTES,{
 ROUTES.west.fac='h'; ROUTES.kalimdor.fac='h';
 
 /* ---------- State ---------- */
-const state = {slots:{}, pairs:{}, runs:{}, cq:{}, qp:{}, wl:{}, sessions:{}, live:{}, mail:{}, launch:{}, sched:{}, tal:{}, legacy:{}, patch:{}, patchok:{}, patchMeta:null, players:{c:'Cousin',s:'Shane'}};
+const state = {slots:{}, pairs:{}, runs:{}, cq:{}, qp:{}, wl:{}, sessions:{}, live:{}, mail:{}, launch:{}, sched:{}, tal:{}, arch:{}, legacy:{}, patch:{}, patchok:{}, patchMeta:null, players:{c:'Cousin',s:'Shane'}};
 for (const p of PAIRS_ALL){
   state.slots[p.k+'-c'] = Object.assign({skill:{},crafts:'',name:'',level:1,status:p.fac==='a'?'Planned':(p.wave===1?(p.k==='A'?'Leveling':'Benched'):'Planned')}, p.c);
   state.slots[p.k+'-s'] = Object.assign({skill:{},crafts:'',name:'',level:1,status:p.fac==='a'?'Planned':(p.wave===1?(p.k==='A'?'Leveling':'Benched'):'Planned')}, p.s);
@@ -2474,13 +2479,89 @@ function unpairChar(id,quiet){
   swapSlots(id,to);
   return to;
 }
-function deleteChar(id){
+function deleteChar(id){retireChar(id,true);}
+/* ---------- Archived and deleted characters ----------
+   Logged sessions point at a character's seat (like "C-s"). Archiving or deleting moves the character out of its seat into the
+   arch collection under its own id, and its sessions move with it, so a new character placed in that seat starts clean.
+   An archived character keeps its sheet, quest ticks, wishlist, talents and open mail for Restore.
+   A deleted one keeps only its name, class and race, so Sync from game knows to leave it out. */
+const archChains={};
+function archWrite(aid){
+  if(!db||!canWrite) return;
+  const data=state.arch[aid]?bkClone(state.arch[aid]):null; bkBeforeEdit(); setSync('Saving…');
+  archChains[aid]=(archChains[aid]||Promise.resolve()).then(()=>data?db.collection('arch').doc(aid).set(data):db.collection('arch').doc(aid).delete())
+    .then(()=>setSync('Saved','on')).catch(e=>setSync(e&&e.code==='quota_exceeded'?'Storage full':'Save failed','off'));
+}
+function archList(deleted){return Object.entries(state.arch).filter(([,a])=>a&&!!a.deleted===!!deleted).map(([id,a])=>Object.assign({id},a)).sort((x,y)=>String(y.at).localeCompare(String(x.at)));}
+function reKeySessions(from,to){
+  for(const [sid,sd] of Object.entries(state.sessions)){
+    if(!sd||!sd.chars||!sd.chars[from]) continue;
+    const nc={}; for(const [cid,v] of Object.entries(sd.chars)) nc[cid===from?to:cid]=v;
+    sd.chars=nc; if(db&&canWrite) db.collection('sessions').doc(sid).set(sd).catch(()=>{});
+  }
+}
+function retireChar(id,deleted){
   if(!canWrite||!isMade(id)) return;
+  const sl=state.slots[id], pre=id+'__', aid='ar-'+bkStamp()+'-'+Math.random().toString(36).slice(2,6);
+  const rec={name:(sl.name||'').trim(),cls:sl.cls,race:sl.race,level:+sl.level||1,side:id.slice(-1),from:id,at:new Date().toISOString(),deleted:!!deleted};
+  if(!deleted){
+    rec.slot=bkClone(sl);
+    rec.cq=Object.keys(state.cq).filter(k=>k.startsWith(pre)&&state.cq[k]).map(k=>k.slice(pre.length));
+    rec.qp={}; for(const [k,v] of Object.entries(state.qp)) if(k.startsWith(pre)) rec.qp[k.slice(pre.length)]=v;
+    rec.wl={}; for(const [k,v] of Object.entries(state.wl)) if(k.startsWith(pre)) rec.wl[k.slice(pre.length)]=v;
+    if(state.tal[id]) rec.tal={second:state.tal[id].second};
+    rec.mail={};
+  }
+  for(const [mid,m] of Object.entries(state.mail)){
+    if(!m||m.hide||(m.to!==id&&m.from!==id)) continue;
+    if(!deleted) rec.mail[mid]=bkClone(m);
+    delete state.mail[mid]; mlWrite(mid);
+  }
+  reKeySessions(id,aid);
+  state.arch[aid]=rec; archWrite(aid);
   clearCharData(id);
   state.slots[id]=seatDefault(id);
   writeDoc('slots',id,Object.assign({},state.slots[id]));
   ui.editing.delete(id);
   syncPairs(); renderAll(true);
+}
+/* Put an archived character back on the Characters tab, with no pair. Returns its new seat id. */
+function restoreChar(aid){
+  const a=state.arch[aid]; if(!canWrite||!a||a.deleted||!a.slot||!RACES[a.race]||RACES[a.race].fac!==FAC) return null;
+  const id=newChar(a.side); if(!id) return null;
+  const sl=Object.assign(state.slots[id],bkClone(a.slot),{made:true});
+  if(!campOptions(sl).includes(sl.camp)) sl.camp=campOptions(sl)[0];
+  saveSlot(id);
+  const pre=id+'__';
+  for(const k of a.cq||[]){state.cq[pre+k]=true; if(db&&canWrite) db.collection('cq').doc(pre+k).set({done:true}).catch(()=>{});}
+  for(const [col,src] of [['qp',a.qp],['wl',a.wl]]) for(const [k,v] of Object.entries(src||{})){state[col][pre+k]=v; if(db&&canWrite) db.collection(col).doc(pre+k).set({s:v}).catch(()=>{});}
+  if(a.tal){state.tal[id]={second:a.tal.second}; talWrite(id);}
+  const ok=x=>!x||isMade(x);
+  for(const [mid,m] of Object.entries(a.mail||{})){
+    const n=bkClone(m); if(n.to===a.from) n.to=id; if(n.from===a.from) n.from=id;
+    if(ok(n.to)&&ok(n.from)&&n.to&&!state.mail[mid]){state.mail[mid]=n; mlWrite(mid);}
+  }
+  reKeySessions(aid,id);
+  delete state.arch[aid]; archWrite(aid);
+  ui.editing.add(id); syncPairs(); renderAll(true);
+  return id;
+}
+function renderArchive(force){
+  const host=$('#ch-arch'); if(!host) return;
+  const arch=archList(false), del=archList(true);
+  const sig=JSON.stringify([arch.map(a=>a.id),del.map(a=>a.id),pnName('c'),pnName('s'),canWrite,FAC]);
+  if(!force&&host.dataset.sig===sig) return; host.dataset.sig=sig;
+  if(!arch.length&&!del.length){host.innerHTML=''; return;}
+  const was=host.querySelector('details'), open=was?was.open:false;
+  const when=iso=>{try{return new Date(iso).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}catch(_){return '';}};
+  const row=a=>{const R=RACES[a.race], C=CLASSES[a.cls], here=R&&R.fac===FAC;
+    return '<li>'+(C?classBadge(a.cls,1):'')+'<div><b>'+esc(a.name||'Unnamed')+'</b> <span class="muted">'+esc((R?R.name+' ':'')+(C?C.name:'')+' · lvl '+(+a.level||1)+' · '+pnName(a.side)+' · archived '+when(a.at))+'</span></div>'+
+      (canWrite?(here?'<button type="button" class="btn mini" data-archrestore="'+esc(a.id)+'">Restore</button>':'<span class="muted">Switch faction to restore</span>'):'')+'</li>';};
+  host.innerHTML='<details class="box ch-arch"'+(open?' open':'')+'><summary><b>Archived characters</b> <span class="muted">('+arch.length+(del.length?', '+del.length+' deleted':'')+')</span></summary>'+
+    '<p class="muted">Archived characters keep their sessions in the log and stats, and Sync from game leaves them alone. Restore brings one back with its plans, quest ticks and wishlist, without a pair.</p>'+
+    (arch.length?'<ul class="arch-list">'+arch.map(row).join('')+'</ul>':'')+
+    (del.length?'<p class="muted"><b>Deleted.</b> Sync from game skips these names. Allow a name again if you make a new character with it.</p><ul class="arch-list">'+del.map(a=>'<li>'+(CLASSES[a.cls]?classBadge(a.cls,1):'')+'<div><b>'+esc(a.name||'Unnamed')+'</b> <span class="muted">'+esc(pnName(a.side)+' · deleted '+when(a.at))+'</span></div>'+(canWrite?'<button type="button" class="btn mini" data-archforget="'+esc(a.id)+'">Allow again</button>':'')+'</li>').join('')+'</ul>':'')+
+    '</details>';
 }
 function moveBoxHTML(id){
   if(ui.moving!==id) return '';
@@ -2538,7 +2619,7 @@ function charCardHTML(id){
     acts='<button type="button" class="btn" data-edit="'+id+'" aria-expanded="'+ed+'">'+(ed?'Done':'Edit')+'</button>';
     if(sl.style!=='solo') acts+='<button type="button" class="btn" data-pairopen="'+id+'" aria-expanded="'+(ui.pairing===id)+'">'+(pt?'Change partner…':'Pair with…')+'</button>';
     if(pt) acts+='<button type="button" class="btn" data-unpair="'+id+'">Leave pair</button>';
-    acts+='<button type="button" class="btn ch-del" data-delask="'+id+'">Delete</button>';
+    acts+='<button type="button" class="btn ch-del" data-archgo="'+id+'" title="Hide it but keep its history. You can restore it later.">Archive</button><button type="button" class="btn" data-delask="'+id+'">Delete</button>';
   }
   let box='';
   if(ui.pairing===id){
@@ -2548,7 +2629,7 @@ function charCardHTML(id){
       '<p class="muted">If the other character already has a partner, that partner goes back to having no pair.</p></div>'
       :'<div class="movebox"><p class="muted">'+esc(pnName(other))+' has no Duo or Flexible characters yet.</p><div class="mvbtns"><button type="button" class="btn" data-pairx="'+id+'">Close</button></div></div>';
   }
-  if(ui.del===id) box+='<div class="movebox"><p><b>Delete '+esc(charName(id))+'?</b> Its quest ticks, wishlist and talent picks go with it. Logged sessions stay in the log.</p><div class="mvbtns"><button type="button" class="btn primary" data-delgo="'+id+'">Delete</button><button type="button" class="btn" data-delx="'+id+'">Keep it</button></div></div>';
+  if(ui.del===id) box+='<div class="movebox"><p><b>Delete '+esc(charName(id))+' for good?</b> Its quest ticks, wishlist, talent picks and open mail go with it. Logged sessions stay in the log under its name, and Sync from game won\'t add it back. To keep everything instead, press <b>Archive</b>.</p><div class="mvbtns"><button type="button" class="btn primary" data-delgo="'+id+'">Delete</button><button type="button" class="btn" data-delx="'+id+'">Keep it</button></div></div>';
   return '<article class="ch-card'+(sl.tag==='main'?' main':'')+'" id="char-'+id+'" data-char="'+id+'">'+
    '<div class="ch-top">'+raceBadge(sl.race)+classBadge(sl.cls)+'<div class="ch-name"><b>'+esc(sl.name||'Unnamed')+'</b><span class="muted">'+esc(R.name+' '+specInfo(sl).name+' '+C.name+' · lvl '+(+sl.level||1))+'</span></div>'+roleTag(specInfo(sl).role)+'</div>'+
    '<div class="chips"><span class="chip'+(sl.tag==='main'?' brass':'')+'">'+esc(TAGS[sl.tag]||'Alt')+'</span><span class="chip">'+esc(STYLES[sl.style]||'Flexible')+'</span><span class="chip">'+esc(sl.status)+'</span>'+
@@ -2578,6 +2659,7 @@ function refreshChar(id){
   if(focusId){const f=document.getElementById(focusId); if(f) f.focus();}
 }
 function renderRoster(force){
+  renderArchive(force);
   const host=$('#ch-cols'); if(!host) return;
   const sig=SLOT_IDS().map(id=>id+(state.slots[id].tag||'')).join()+'|'+pnName('c')+'|'+pnName('s')+'|'+canWrite;
   if(force||host.dataset.sig!==sig){
@@ -2962,6 +3044,12 @@ $('#ch-cols').addEventListener('click',e=>{
   if(d.delask){ui.del=ui.del===d.delask?null:d.delask; ui.pairing=null; refreshChar(d.delask); focusSoon('[data-delgo="'+d.delask+'"]'); return;}
   if(d.delx){ui.del=null; refreshChar(d.delx); return;}
   if(d.delgo){ui.del=null; deleteChar(d.delgo); return;}
+  if(d.archgo){ui.del=null; retireChar(d.archgo,false); return;}
+});
+$('#ch-arch').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b||!canWrite) return; const d=b.dataset;
+  if(d.archrestore){const id=restoreChar(d.archrestore); if(id){const c=document.getElementById('char-'+id); if(c) c.scrollIntoView({block:'nearest'}); focusSoon('#char-'+CSS.escape(id)+' [data-edit]');} return;}
+  if(d.archforget){delete state.arch[d.archforget]; archWrite(d.archforget); renderArchive(true); return;}
 });
 $('#ch-ideas').addEventListener('click',e=>{
   const b=e.target.closest('button[data-idea]'); if(!b||!canWrite) return;
@@ -3906,11 +3994,17 @@ $('#lg-csv').addEventListener('click',()=>{
 });
 /* ---------- Addon import (future live connection uses the same function) ---------- */
 /* Forever characters have a first and a last name. A full match wins; otherwise the first names are compared, if only one character has that first name. */
-function slotByName(n){const t=String(n||'').trim().toLowerCase(); if(!t) return null;
+/* Archived and deleted characters count too, so a name that belongs to one of them isn't matched to someone else or added again. */
+function lgFind(n){const t=String(n||'').trim().toLowerCase(); if(!t) return null;
   const made=Object.keys(state.slots).filter(id=>state.slots[id].made&&(state.slots[id].name||'').trim());
-  const full=made.find(id=>state.slots[id].name.trim().toLowerCase()===t); if(full) return full;
+  const gone=Object.keys(state.arch).filter(a=>state.arch[a]&&(state.arch[a].name||'').trim());
+  const full=made.find(id=>state.slots[id].name.trim().toLowerCase()===t); if(full) return {id:full};
+  const fullGone=gone.find(a=>state.arch[a].name.trim().toLowerCase()===t); if(fullGone) return {arch:fullGone};
   const first=x=>x.trim().toLowerCase().split(/\s+/)[0], f=first(t), hits=made.filter(id=>first(state.slots[id].name)===f);
-  return hits.length===1?hits[0]:null;}
+  if(hits.length===1) return {id:hits[0]}; if(hits.length) return null;
+  const ghits=gone.filter(a=>first(state.arch[a].name)===f);
+  return ghits.length===1?{arch:ghits[0]}:null;}
+function slotByName(n){const m=lgFind(n); return m&&m.id||null;}
 /* The game's class and race codes (PALADIN, Scourge) as the Ledger's keys, or null if this faction view has no such race. */
 function lgRaceKey(r){const t=String(r||'').toLowerCase().replace(/[^a-z]/g,''); const k=t==='scourge'?'undead':t==='skyborne'&&FAC==='a'?'skyborneA':t; return RACES[k]&&RACES[k].fac===FAC?k:null;}
 function lgClassKey(c){const k=String(c||'').toLowerCase(); return CLASSES[k]?k:null;}
@@ -3918,8 +4012,9 @@ function ingestAddon(obj){
   if(!obj||obj.app!=='ForeverDuoLedger'||!(obj.v>=1)) throw 'This is not a Forever Duo Ledger addon export.';
   const plan={sessions:[],updates:[],levels:{},hearths:{},rest:{},skills:{},inv:{},qp:{},wl:{},runs:[],mail:[],seen:[],addons:{},unmatched:new Set(),skipped:0};
   const known=new Map(lgSessions().filter(s=>s.akey).map(s=>[s.akey,s]));
-  plan.create=[];
-  for(const c of (obj.characters||[])){const id=slotByName(c.name);
+  plan.create=[]; plan.retired=new Set(); plan.retiredSess=0;
+  for(const c of (obj.characters||[])){const m=lgFind(c.name), id=m&&m.id;
+    if(m&&m.arch){plan.retired.add(String(c.name||'').trim()); continue;}
     if(!id){const race=lgRaceKey(c.race), cls=lgClassKey(c.class), nm=String(c.name||'').trim().slice(0,40);
       if(nm&&race&&cls&&!plan.create.some(x=>x.name.toLowerCase()===nm.toLowerCase())) plan.create.push({name:nm,cls,race,level:Math.max(1,Math.min(60,parseInt(c.level,10)||1))});
       else plan.unmatched.add(c.name);
@@ -3932,7 +4027,8 @@ function ingestAddon(obj){
     if(c.inventory&&typeof c.inventory==='object'){const it={}; Object.entries(c.inventory).slice(0,400).forEach(([k,v])=>{const x=parseInt(v,10); if(x>0) it[String(k).slice(0,80)]=x;}); plan.inv[id]={at:new Date().toISOString(),items:it};}
     if(c.restXP!==undefined&&+c.xpMax>0){const lo=c.logout&&!isNaN(new Date(c.logout))?new Date(c.logout).toISOString():new Date().toISOString(); plan.rest[id]={place:c.resting?'inn':'out',at:lo,pct:Math.max(0,Math.min(150,(+c.restXP||0)/(+c.xpMax)*100))};}}
   for(const s of (obj.sessions||[]).slice(0,500)){
-    const id=slotByName(s.character); if(!id){if(!plan.create.some(x=>x.name.toLowerCase()===String(s.character||'').trim().toLowerCase())) plan.unmatched.add(s.character); continue;}
+    const sm=lgFind(s.character); if(sm&&sm.arch){plan.retiredSess++; continue;}
+    const id=sm&&sm.id; if(!id){if(!plan.create.some(x=>x.name.toLowerCase()===String(s.character||'').trim().toLowerCase())) plan.unmatched.add(s.character); continue;}
     const akey=(String(s.character)+'|'+String(s.start)).slice(0,120); const prev=known.get(akey);
     const start=new Date(s.start), end=s.end?new Date(s.end):null; if(isNaN(start)) continue;
     const from=parseInt(s.levelFrom,10)||(+state.slots[id].level||1), to=parseInt(s.levelTo,10)||from, k=id.split('-')[0];
@@ -3979,7 +4075,7 @@ function lgCreateChars(p,side){
 function lgPlanText(p){
   const pl=(n,w)=>n+' '+w+(n===1?'':'s');
   const add=(p.create||[]).length?'Adds '+pl(p.create.length,'new character')+': '+p.create.map(c=>c.name+' ('+RACES[c.race].name+' '+CLASSES[c.cls].name+', level '+c.level+')').join(', ')+'. Their sessions come in with them. ':'';
-  return add+[pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger, and the file doesn\'t say its class and race (or it belongs to the other faction), so it was left out.':'');
+  return add+[pl(p.sessions.length,'new session')].concat(p.updates&&p.updates.length?[pl(p.updates.length,'session')+' updated']:[]).concat([pl(Object.keys(p.levels).length,'level update'),pl(Object.keys(p.qp).length,'quest turn-in'),pl(Object.keys(p.wl).length,'wishlist item')+' obtained',pl(Object.keys(p.hearths).length,'hearth'),pl(Object.keys(p.rest||{}).length,'rested update'),pl(Object.keys(p.skills||{}).length,'profession update'),pl(Object.keys(p.inv||{}).length,'bag count'),pl(p.mail.length,'mail')+' marked sent',pl(p.seen.length,'name')+' confirmed']).join(', ')+'.'+(p.skipped?' '+pl(p.skipped,'session')+' already imported.':'')+(p.retired&&p.retired.size?' Left out '+[...p.retired].map(n=>'"'+n+'"').join(', ')+(p.retiredSess?' and '+pl(p.retiredSess,'session'):'')+', archived or deleted on the Characters tab.':'')+(p.unmatched.size?' No character named '+[...p.unmatched].map(n=>'"'+n+'"').join(', ')+' in the ledger, and the file doesn\'t say its class and race (or it belongs to the other faction), so it was left out.':'');
 }
 /* The addon's SavedVariables file (DuoLedger.lua) is Lua, not JSON. It keeps the latest export as a Lua string under ["lastExport"]. */
 function lgFromLua(text){
@@ -4080,7 +4176,7 @@ function bkStamp(d){d=d||new Date();return bkLocalDate(d).replace(/-/g,'')+'-'+S
 function bkWhen(iso){try{return new Date(iso).toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});}catch(_){return iso;}}
 function bkDump(){
   return {app:'forever-duo-ledger',format:1,savedAt:new Date().toISOString(),
-    data:{slots:bkClone(state.slots),pairs:bkClone(state.pairs),runs:Object.keys(state.runs).filter(k=>state.runs[k]).sort(),cq:Object.keys(state.cq).filter(k=>state.cq[k]).sort(),qp:bkClone(state.qp),wl:bkClone(state.wl),sessions:bkClone(state.sessions),mail:bkClone(state.mail),players:bkClone(state.players)}};
+    data:{slots:bkClone(state.slots),pairs:bkClone(state.pairs),runs:Object.keys(state.runs).filter(k=>state.runs[k]).sort(),cq:Object.keys(state.cq).filter(k=>state.cq[k]).sort(),qp:bkClone(state.qp),wl:bkClone(state.wl),sessions:bkClone(state.sessions),mail:bkClone(state.mail),arch:bkClone(state.arch),players:bkClone(state.players)}};
 }
 function bkSummary(d){const sl=Object.values(d.slots||{});const lv=sl.map(s=>+(s&&s.level)||1);
   return {named:sl.filter(s=>s&&s.name).length,maxLv:Math.max(1,...lv),runs:(d.runs||[]).length,cq:(d.cq||[]).length};}
@@ -4089,7 +4185,7 @@ function bkSummaryText(s){const pl=(n,w)=>n+' '+w+(n===1?'':'s');
 /* Validate a backup and keep only fields this ledger understands. Throws a readable message. */
 function bkClean(obj){
   if(!obj||typeof obj!=='object'||obj.app!=='forever-duo-ledger'||!obj.data||typeof obj.data!=='object') throw 'This file is not a Forever Duo Ledger backup.';
-  const d=obj.data, out={slots:{},pairs:{},runs:[],cq:[],qp:{},wl:{},sessions:{},mail:{},players:bkClone(state.players)};
+  const d=obj.data, out={slots:{},pairs:{},runs:[],cq:[],qp:{},wl:{},sessions:{},mail:{},arch:{},players:bkClone(state.players)};
   const str=(v,n)=>typeof v==='string'?v.slice(0,n):null;
   if(d.slots&&typeof d.slots==='object') for(const id of Object.keys(d.slots)) if(/^[A-Z0-9]{1,6}-[cs]$/.test(id)&&!state.slots[id]&&d.slots[id]&&d.slots[id].made) ensureGroup(id.split('-')[0],RACES[d.slots[id].race]?RACES[d.slots[id].race].fac:'h');
   for(const id of Object.keys(state.slots)){
@@ -4120,13 +4216,18 @@ function bkClean(obj){
     out.pairs[k]=pr;
   }
   const pk=new Set(PAIRS_ALL.map(p=>p.k)), dk=new Set(DG.map(x=>x.id)), sk=new Set(Object.keys(state.slots));
+  /* archived and deleted characters: the record is kept as saved, and their ids stay valid for sessions */
+  if(d.arch&&typeof d.arch==='object'){for(const [k,v] of Object.entries(d.arch).slice(0,500)){
+    if(!/^ar-[\w-]{1,60}$/.test(k)||!v||typeof v!=='object'||!(v.side==='c'||v.side==='s')||!CLASSES[v.cls]||!RACES[v.race]) continue;
+    const a=bkClone(v); a.name=str(v.name,40)||''; a.level=Math.max(1,Math.min(60,parseInt(v.level,10)||1)); a.deleted=!!v.deleted; out.arch[k]=a;}}
+  const ak=new Set(Object.keys(out.arch));
   if(Array.isArray(d.runs)) out.runs=[...new Set(d.runs.filter(k=>typeof k==='string'&&/^[A-Z]__[a-z]+$/.test(k)&&pk.has(k.split('__')[0])&&dk.has(k.split('__')[1])))];
   if(Array.isArray(d.cq)) out.cq=[...new Set(d.cq.filter(k=>typeof k==='string'&&k.length<120&&sk.has(k.split('__')[0])&&/^[A-Z]-[cs]__[\w-]+$/.test(k)))];
   if(d.qp&&typeof d.qp==='object'){for(const [k,v] of Object.entries(d.qp)){const m=/^([A-Z]-[cs])__([a-z]+)__[a-z0-9+-]{1,80}$/.exec(k); if(m&&sk.has(m[1])&&dk.has(m[2])&&(v==='up'||v==='done')) out.qp[k]=v;}}
   if(d.wl&&typeof d.wl==='object'){for(const [k,v] of Object.entries(d.wl)){const m=/^([A-Z]-[cs])__[a-z0-9-]{1,40}$/.exec(k); if(m&&sk.has(m[1])&&['got','want','no'].includes(v)) out.wl[k]=v;}}
   if(d.sessions&&typeof d.sessions==='object'){for(const [k,v] of Object.entries(d.sessions).slice(0,5000)){
     if(!/^s-[\w-]{1,60}$/.test(k)||!v||typeof v!=='object'||!v.chars||typeof v.chars!=='object') continue;
-    const chars={}; for(const [cid,c] of Object.entries(v.chars)){ if(!sk.has(cid)||!c) continue; const fr=parseInt(c.from,10), to=parseInt(c.to,10); if(!(fr>=1&&fr<=60&&to>=1&&to<=60)) continue; chars[cid]={name:str(c.name,24)||'',from:fr,to:to,xp:Math.max(0,parseInt(c.xp,10)||0),deaths:Math.max(0,parseInt(c.deaths,10)||0)}; if(c.kills!==undefined) chars[cid].kills=Math.max(0,parseInt(c.kills,10)||0); if(c.money!==undefined) chars[cid].money=Math.max(0,parseInt(c.money,10)||0); if(Array.isArray(c.dlog)) chars[cid].dlog=c.dlog.slice(0,50).filter(x=>x&&typeof x==='object').map(x=>({at:str(x.at,40)||'',zone:str(x.zone,60)||'',killer:str(x.killer,60)||''})); }
+    const chars={}; for(const [cid,c] of Object.entries(v.chars)){ if(!(sk.has(cid)||ak.has(cid))||!c) continue; const fr=parseInt(c.from,10), to=parseInt(c.to,10); if(!(fr>=1&&fr<=60&&to>=1&&to<=60)) continue; chars[cid]={name:str(c.name,24)||'',from:fr,to:to,xp:Math.max(0,parseInt(c.xp,10)||0),deaths:Math.max(0,parseInt(c.deaths,10)||0)}; if(c.kills!==undefined) chars[cid].kills=Math.max(0,parseInt(c.kills,10)||0); if(c.money!==undefined) chars[cid].money=Math.max(0,parseInt(c.money,10)||0); if(Array.isArray(c.dlog)) chars[cid].dlog=c.dlog.slice(0,50).filter(x=>x&&typeof x==='object').map(x=>({at:str(x.at,40)||'',zone:str(x.zone,60)||'',killer:str(x.killer,60)||''})); }
     if(!Object.keys(chars).length) continue;
     out.sessions[k]={v:1,src:v.src==='addon'?'addon':'manual',at:str(v.at,40)||new Date().toISOString(),min:Math.max(0,parseInt(v.min,10)||0),pair:pk.has(v.pair)?v.pair:'',chars,runs:Array.isArray(v.runs)?v.runs.filter(r=>dk.has(r)):[],loot:str(v.loot,300)||'',notes:str(v.notes,1000)||'',akey:str(v.akey,120)||''};
   }}
@@ -4203,6 +4304,7 @@ async function bkApply(data){
     {const cur=state.wl, w=data.wl||{}; for(const k of Object.keys(w)) if(cur[k]!==w[k]) ops.push(['wl',k,{s:w[k]}]); for(const k of Object.keys(cur)) if(!w[k]) ops.push(['wl',k,null]);}
     {const cur=state.sessions, w=data.sessions||{}; for(const k of Object.keys(w)) if(JSON.stringify(cur[k])!==JSON.stringify(w[k])) ops.push(['sessions',k,w[k]]); for(const k of Object.keys(cur)) if(!w[k]) ops.push(['sessions',k,null]);}
     {const cur=state.mail, w=data.mail||{}; for(const k of Object.keys(w)) if(JSON.stringify(cur[k])!==JSON.stringify(w[k])) ops.push(['mail',k,w[k]]); for(const k of Object.keys(cur)) if(!w[k]) ops.push(['mail',k,null]);}
+    {const cur=state.arch, w=data.arch||{}; for(const k of Object.keys(w)) if(JSON.stringify(cur[k])!==JSON.stringify(w[k])) ops.push(['arch',k,w[k]]); for(const k of Object.keys(cur)) if(!w[k]) ops.push(['arch',k,null]);}
     ops.push(['meta','players',data.players]);
     let n=0;
     for(const [c,id,body] of ops){
@@ -4218,6 +4320,7 @@ async function bkApply(data){
     state.wl=Object.assign({},data.wl||{});
     state.sessions=bkClone(data.sessions||{});
     state.mail=bkClone(data.mail||{});
+    state.arch=bkClone(data.arch||{});
     state.players=Object.assign({},data.players);
     bkPending=null; bkMsg('Restored. The previous ledger is saved in the snapshot list.','ok'); setSync('Saved','on');
     syncPairs(); renderAll(true);
@@ -5503,6 +5606,10 @@ renderAll(true);
     },()=>{});
     db.collection('legacy').onSnapshot(snap=>{const next={}; snap.docs.forEach(d=>{const v=d.data(); if(v&&v.done&&typeof v.done==='object') next[d.id]={done:v.done};}); state.legacy=next; renderLegacy();},()=>{});
     db.collection('tal').onSnapshot(snap=>{const next={}; snap.docs.forEach(d=>{const v=d.data(); if(v&&v.second) next[d.id]={second:v.second};}); for(const k of Object.keys(talPending)) if(talPending[k]>0){if(state.tal[k]) next[k]=state.tal[k]; else delete next[k];} state.tal=next; renderTalents();},()=>{});
+    db.collection('arch').onSnapshot(snap=>{
+      const next={}; snap.docs.forEach(d=>{const v=d.data(); if(v&&/^ar-[\w-]{1,60}$/.test(d.id)&&(v.side==='c'||v.side==='s')) next[d.id]=v;});
+      state.arch=next; renderArchive(); bkSeen('arch');
+    },()=>{});
     db.collection('live').onSnapshot(snap=>{
       const next={}; snap.docs.forEach(d=>{const v=d.data(); if(v&&v.start) next[d.id]=v;});
       for(const k of Object.keys(plPending)) if(plPending[k]>0){if(state.live[k]) next[k]=state.live[k]; else delete next[k];}
